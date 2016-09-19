@@ -53,6 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 114000013488689578, guid: f1eaf2617b2f4684899221ac2103216e,
     type: 2}
+  playerPrefab: {fileID: 114000014224288060, guid: 7da19ba3e4c42034b855cd19f57ddc5f,
+    type: 2}
   sizeX: 10
   sizeZ: 10
   mazeGenAlgorithm: DepthFirstSearch
