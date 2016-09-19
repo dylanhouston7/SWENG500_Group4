@@ -5,16 +5,18 @@ using System.Collections.Generic;
 public class Maze : MonoBehaviour {
 
     public MazeCell cellPrefab;
+    public Player playerPrefab;
 
     public int sizeX, sizeZ;
     public string mazeGenAlgorithm;    
 
 
     private MazeCell[,] cellInstances;
-    private Player playerInstance;
 
-	// Use this for initialization
-	void Start () {
+    private Player playerInstance = null;
+
+    // Use this for initialization
+    void Start () {
 
         // Get a default maze structure of defined size
         MazeStructure.Maze2D maze = MazeStructure.Maze2D.GetInstance(sizeZ, sizeX);
@@ -58,9 +60,20 @@ public class Maze : MonoBehaviour {
                 // Handle Start Cell
                 if(cell.CellType == MazeStructure.Cell2D.CellTypeEnum.kStartCell)
                 {
-                    // TODO: Change Cell Floor Material                    
+                    // TODO: Change Cell Floor Material
 
-                    // TODO: Instantiate Player GameObject and position at the Maze start cell
+                    // TODO: Generate PlayerObject                    
+                    if (playerInstance != null)
+                    {
+                        Destroy(playerInstance.gameObject);
+                    }
+                    else
+                    {
+                        playerInstance = Instantiate(playerPrefab) as Player;
+                        Vector3 position = new Vector3(cell.PositionX, 1, cell.PositionZ);
+                        playerInstance.setPlayerPosition(position);
+                    }
+
                 }
             }
         }
