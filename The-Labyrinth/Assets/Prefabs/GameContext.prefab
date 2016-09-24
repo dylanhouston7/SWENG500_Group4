@@ -9,30 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000013260305312}
+  m_RootGameObject: {fileID: 1000013191681892}
   m_IsPrefabParent: 1
---- !u!1 &1000013260305312
+--- !u!1 &1000013191681892
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000012299078404}
-  - 114: {fileID: 114000012140474264}
+  - 4: {fileID: 4000011593904594}
+  - 114: {fileID: 114000013474969616}
   m_Layer: 0
-  m_Name: Maze
+  m_Name: GameContext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000012299078404
+--- !u!4 &4000011593904594
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013260305312}
+  m_GameObject: {fileID: 1000013191681892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,21 +40,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &114000012140474264
+--- !u!114 &114000013474969616
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013260305312}
+  m_GameObject: {fileID: 1000013191681892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de9ad827576008a44a788bccb6058421, type: 3}
+  m_Script: {fileID: 11500000, guid: ce2e026e81801274f92e77f44b2fecb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 114000013488689578, guid: f1eaf2617b2f4684899221ac2103216e,
-    type: 2}
-  playerPrefab: {fileID: 114000014224288060, guid: 7da19ba3e4c42034b855cd19f57ddc5f,
-    type: 2}
-  sizeX: 10
-  sizeZ: 10
-  mazeGenAlgorithm: DepthFirstSearch
+  m_difficultyLevel: 0

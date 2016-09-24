@@ -3,34 +3,55 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    public Maze mazePrefab;
+    // Public Members
+    public MazeStructure.Maze2D mazeStructure = null;
 
-    public int sizeX, sizeY;
+    // Private Memebers
+    private int sizeX, sizeZ;
 
-    private Maze mazeInstance = null;
-  
-
-    // Use this for initialization
+    // Unity Methods
     void Start()
     {
-
+        // TODO: 
+        switch (GameContext.m_context.m_difficultyLevel)
+        {
+            case 0: { sizeX = 10; sizeZ = 10; break; }
+            case 1: { sizeX = 15; sizeZ = 15; break; }
+            case 2: { sizeX = 20; sizeZ = 20; break; }
+        };
     }
 
     void Update()
     {
+        // Generate a new Maze Level
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            mazePrefab.sizeX = sizeX;
-            mazePrefab.sizeZ = sizeY;
+            Debug.Log("Generating Maze");
 
-            if (mazeInstance != null)
-            {
-                Destroy(mazeInstance.gameObject);
-            }
-            else
-            {
-                mazeInstance = Instantiate(mazePrefab) as Maze;
-            }
+            // Get a default maze structure of defined size
+            mazeStructure = MazeStructure.Maze2D.GetInstance(sizeX, sizeZ);
+
+            // Modify the default maze structure with the maze generation algorithm
+            MazeStructure.DepthFirstSearchMazeGenerator.Generate(mazeStructure);
+
+            // Publish Event: RenderMaze
+            // TODO:
         }
+    }
+
+    void OnEnable()
+    {
+        // TODO: Setup Event Pubs/Subs
+    }
+
+    void OnDisable()
+    {
+        // TODO: Cleanup Event Pubs/Subs
+    }
+
+    // Event Subscribers
+    void CompletedMaze()
+    {
+        // TODO: 
     }
 }
