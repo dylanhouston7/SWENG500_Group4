@@ -36,9 +36,7 @@ public class MainMenu : MonoBehaviour {
     {
         if (isStart)
         {
-            // Initial maze. 
-            // TODO: Replace with a screen that lets the user select the difficulty of the maze.
-            SceneManager.LoadScene(1);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
         }
     }
 
@@ -48,4 +46,23 @@ public class MainMenu : MonoBehaviour {
     void Update () {
 	
 	}
+
+    // TODO: Remove :: Test Code Only
+    void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 100, 30), "Diff 1"))
+        {
+            GameContext.m_context.m_difficultyLevel = 0;
+        }
+
+        if (GUI.Button(new Rect(10, 45, 100, 30), "Diff 2"))
+        {
+            GameContext.m_context.m_difficultyLevel = 1;
+        }
+
+        if (GUI.Button(new Rect(10, 80, 100, 30), "Diff 3"))
+        {
+            GameContext.m_context.m_difficultyLevel = 2;
+        }
+    }
 }

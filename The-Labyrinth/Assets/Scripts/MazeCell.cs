@@ -1,11 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MazeCell : MonoBehaviour {    
-
+public class MazeCell : MonoBehaviour
+{
+    // Prefabs
     public CellFloor cellFloorPrefab;
     public CellWall cellWallPrefab;
 
+    // Public Members
+    public enum CellTypeEnum { kStandard = 0, kStart, kEnd }
+
+    // Private Members
+    private CellTypeEnum cellType = CellTypeEnum.kStandard;
+    public CellTypeEnum CellType
+    {
+        set { cellType = value; }
+        get { return cellType; }
+    }
     private CellFloor cellFloorInstance;
     private CellWall cellLeftWallInstance;
     private CellWall cellRightWallInstance;
@@ -13,18 +24,32 @@ public class MazeCell : MonoBehaviour {
     private CellWall cellBackWallInstance;
     private CellWall cellCeilingInstance;
 
-    // Use this for initialization
-    void Start () {
-
+    // Unity Methods
+    void Start()
+    {
         // Create Cell Floor
-        cellFloorInstance = Instantiate(cellFloorPrefab) as CellFloor;
-        cellFloorInstance.transform.parent = transform;
+        cellFloorInstance = Instantiate(cellFloorPrefab, transform) as CellFloor;
         cellFloorInstance.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+
+        // Configure Cell Type Behavior
+        switch (CellType)
+        {
+            case CellTypeEnum.kStandard: { break; }
+            case CellTypeEnum.kStart: { cellFloorInstance.GetComponent<Renderer>().material.color = Color.red; break; }
+            case CellTypeEnum.kEnd: { cellFloorInstance.GetComponent<Renderer>().material.color = Color.green; break; }
+            default:
+                {
+                    break;
+                }
+        };
     }
 
-    public void BuildCellWall(MazeStructure.Cell2D.CellWallEnum wall)
+    // Other Methods
+    public void BuildCellWall(
+        MazeStructure.Cell2D.CellWallEnum wall
+        )
     {
-        switch(wall)
+        switch (wall)
         {
             case MazeStructure.Cell2D.CellWallEnum.kLeft:
                 {
@@ -57,13 +82,15 @@ public class MazeCell : MonoBehaviour {
 
     public void BuildCellCeiling()
     {
-        cellCeilingInstance = Instantiate(cellWallPrefab) as CellWall;
-        cellCeilingInstance.transform.parent = transform;
+        cellCeilingInstance = Instantiate(cellWallPrefab, transform) as CellWall;
         cellCeilingInstance.transform.Rotate(0.0f, 0.0f, 90.0f);
         cellCeilingInstance.transform.localPosition = new Vector3(0.0f, 1.0f, 0.0f);
     }
 
-    public void RemoveCellWall(MazeStructure.Cell2D.CellWallEnum wall, float timeDelay = 0.0f)
+    public void RemoveCellWall(
+        MazeStructure.Cell2D.CellWallEnum wall,
+        float timeDelay = 0.0f
+        )
     {
         switch (wall)
         {
@@ -90,7 +117,9 @@ public class MazeCell : MonoBehaviour {
         };
     }
 
-    public void RemoveCellCeiling(float timeDelay = 0.0f)
+    public void RemoveCellCeiling(
+        float timeDelay = 0.0f
+        )
     {
         Destroy(cellCeilingInstance, timeDelay);
     }
