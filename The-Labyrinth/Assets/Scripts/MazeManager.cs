@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class MazeManager : MonoBehaviour
@@ -14,6 +15,8 @@ public class MazeManager : MonoBehaviour
     // 
 
     // Private Members
+    private UnityAction handleEventRenderMaze;
+    private UnityAction handleResetMaze;
     private MazeCell[,] mazeInstance = null;
     public int MazeSizeX
     {
@@ -42,20 +45,29 @@ public class MazeManager : MonoBehaviour
 
     private Player playerInstance = null;
 
-    void Update()
-    {        
-        // TODO: Temp Code Until Event Messaging is Implemented
-        if(mazeInstance == null && refGameManager.mazeStructure != null)
-        {            
-            RenderMaze();
-        }
+    void Awake()
+    {
+        // Initialize Event Handlers
+        handleEventRenderMaze = new UnityAction(RenderMaze);
+        handleResetMaze = new UnityAction(ResetMaze);
     }
 
+    void OnEnable()
+    {
+        EventManager.StartListening("RenderMaze", handleEventRenderMaze);
+        EventManager.StartListening("ResetMaze", handleResetMaze);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening("RenderMaze", handleEventRenderMaze);
+        EventManager.StopListening("ResetMaze", handleResetMaze);
+    }
 
     // Other Methods
     public void RenderMaze()
     {
-        Debug.Log("Rendering Maze");
+        Debug.Log("MazeManager: RenderMaze Method Called!");
 
         // Render Maze Structure
         mazeInstance = new MazeCell[refGameManager.mazeStructure.SizeX, refGameManager.mazeStructure.SizeZ];
@@ -115,8 +127,10 @@ public class MazeManager : MonoBehaviour
         }
     }
 
-    public void RestMaze()
+    public void ResetMaze()
     {
+        Debug.Log("MazeManager: ResetMaze Method Called!");
+
         for (int x = 0; x < MazeSizeX; ++x)
         {
             for (int z = 0; z < MazeSizeZ; ++z)

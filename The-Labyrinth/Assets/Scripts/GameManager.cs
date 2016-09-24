@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
@@ -7,26 +8,34 @@ public class GameManager : MonoBehaviour
     public MazeStructure.Maze2D mazeStructure = null;
 
     // Private Memebers
-    private int sizeX, sizeZ;
+    private UnityAction handleEventCompletedMaze;
+    private int sizeX, sizeZ;    
 
     // Unity Methods
-    void Start()
+    void Awake()
     {
-        // TODO: 
+        // Initialize Event Handlers
+        handleEventCompletedMaze = new UnityAction(CompletedMaze);
+        
+        // Initialize the Difficulty Level
         switch (GameContext.m_context.m_difficultyLevel)
         {
             case 0: { sizeX = 10; sizeZ = 10; break; }
             case 1: { sizeX = 15; sizeZ = 15; break; }
             case 2: { sizeX = 20; sizeZ = 20; break; }
+            default:
+                {
+                    sizeX = 10; sizeZ = 10; break;
+                }
         };
     }
 
     void Update()
     {
-        // Generate a new Maze Level
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Load/Generate a new Maze Level
+        if (mazeStructure == null)
         {
-            Debug.Log("Generating Maze");
+            Debug.Log("GameManager: Generating Maze");
 
             // Get a default maze structure of defined size
             mazeStructure = MazeStructure.Maze2D.GetInstance(sizeX, sizeZ);
@@ -35,23 +44,38 @@ public class GameManager : MonoBehaviour
             MazeStructure.DepthFirstSearchMazeGenerator.Generate(mazeStructure);
 
             // Publish Event: RenderMaze
-            // TODO:
+            EventManager.TriggerEvent("RenderMaze");
+        }
+
+        // TODO: Remove :: Test Code Only
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            EventManager.TriggerEvent("CompletedMaze");
         }
     }
 
     void OnEnable()
     {
-        // TODO: Setup Event Pubs/Subs
+        EventManager.StartListening("CompletedMaze", handleEventCompletedMaze);
     }
 
     void OnDisable()
     {
-        // TODO: Cleanup Event Pubs/Subs
+        EventManager.StopListening("CompletedMaze", handleEventCompletedMaze);
     }
 
     // Event Subscribers
     void CompletedMaze()
     {
-        // TODO: 
+        Debug.Log("GameManager: CompletedMaze Method Called!");
+
+        // TODO: Calculate Player Score
+        //
+
+        // TODO: Store Player Score to the GameContext
+        //
+
+        // Load Main Menu
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 }
