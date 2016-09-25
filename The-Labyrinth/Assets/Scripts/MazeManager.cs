@@ -89,7 +89,7 @@ public class MazeManager : MonoBehaviour
                 // Position the Maze Cell
                 mazeInstance[x, z].transform.localPosition = new Vector3(x, 0, z);
 
-                // Cell Type
+                // Set Cell Type
                 switch (cell.CellType)
                 {
                     case MazeStructure.Cell2D.CellTypeEnum.kStandardCell:
@@ -135,7 +135,7 @@ public class MazeManager : MonoBehaviour
         {
             for (int z = 0; z < MazeSizeZ; ++z)
             {
-                Destroy(mazeInstance[x, z]);
+                Destroy(mazeInstance[x, z].gameObject);
             }
         }
     }
