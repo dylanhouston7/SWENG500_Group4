@@ -33,10 +33,13 @@ public class Player : MonoBehaviour
         // Notice how we provide a position and a rotation for it.  
         playerCam = (Camera)Camera.Instantiate(original.GetComponent<Camera>(), this.gameObject.transform.position, Quaternion.FromToRotation(new Vector3(0, 15, 0), new Vector3(0, 0, 0)));
 
+        //Attach Camera Controller to player camera object
         playerCam.gameObject.AddComponent<CameraController>().player = this.gameObject;
 
+        //Destroy origional camera
         GameObject.DestroyObject(original);
 
+        //Enable the new camera
         playerCam.enabled = true;
     }
 }
