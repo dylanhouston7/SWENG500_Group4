@@ -12,13 +12,28 @@ namespace MazeStructure
                 int maze_size = maze.SizeX;
                 int maze_center = maze_size / 2;
                 Cell2D cell = maze.GetCell(maze_center, 0);
+
+                // Set Start Cell
                 cell.CellType = Cell2D.CellTypeEnum.kStartCell;
                 
                 // Remove cell walls between all cells down the Center of the Maze
-                while(!cell.IsNull())
+                while(true)
                 {
                     cell.RemoveWall(maze.GetCell(maze_center, cell.PositionZ + 1));
-                    cell = maze.GetCell(maze_center, cell.PositionZ + 1);
+
+                    Cell2D nextCell = maze.GetCell(maze_center, cell.PositionZ + 1);
+                    if(!nextCell.IsNull())
+                    {
+                        cell = nextCell;
+                    }
+                    else
+                   {
+                        // Set End Cell
+                        cell.CellType = Cell2D.CellTypeEnum.kEndCell;
+
+                        // End Maze Generation Algorithm
+                        break;
+                    }
                 }
             }
             else
@@ -39,9 +54,13 @@ namespace MazeStructure
                 Stack<Cell2D> cellStack = new Stack<Cell2D>();
                 int numCells = maze.SizeX * maze.SizeZ;
                 
-                // Step 1: Random Selection of Starting Cell along X-axis
+                // Step 1a: Random Selection of Starting Cell along X-axis
                 Cell2D startCell = maze.GetCell(rand.Next(0, maze.SizeX), 0);
                 startCell.CellType = Cell2D.CellTypeEnum.kStartCell;
+
+                // Step 1b: End Cell Determination setup
+                int mazePathLength = 0;
+                Cell2D endCell = null;
 
                 // Step 2: Apply Algorithm until all cells have been visited
                 Cell2D currentCell = startCell;
@@ -80,9 +99,21 @@ namespace MazeStructure
                     }
                     else
                     {
+                        // Define the End Cell
+                        // Note: 
+                        // - End Cell is the Cell with the longest length path to the Start Cell
+                        if(cellStack.Count > mazePathLength)
+                        {
+                            endCell = currentCell;
+                            mazePathLength = cellStack.Count;
+                        }
+
                         currentCell = cellStack.Pop();
                     }
                 }
+
+                // Set End Cell
+                endCell.CellType = Cell2D.CellTypeEnum.kEndCell;
             }
             else
             {
