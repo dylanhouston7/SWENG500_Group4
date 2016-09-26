@@ -2,22 +2,15 @@
 using System.Collections;
 using System;
 
-public class Player : MonoBehaviour {
-
-    public CamObject cameraPrefab;
-
-    private CamObject cameraInstance = null;
+public class Player : MonoBehaviour
+{
+    private Camera playerCam;
 
     void Start ()
     {
         this.gameObject.AddComponent<PlayerController>();
 
-        //Temporary -- Still working on creating camera object that will be attached to player object
-        Vector3 offset = new Vector3(0, 10, -10);
-        Camera.main.gameObject.transform.position = offset;
-
-        Vector3 rotation = new Vector3(45, 0, 0);
-        Camera.main.gameObject.transform.rotation = Quaternion.Euler(rotation);
+        this.createPlayerCamera();
     }
 
     // Update is called once per frame
@@ -29,5 +22,21 @@ public class Player : MonoBehaviour {
     public void setPlayerPosition(Vector3 position)
     {
         this.transform.localPosition = position;
+    }
+
+    private void createPlayerCamera()
+    {
+        // Find the 'main' camera object.
+        var original = GameObject.FindWithTag("MainCamera");
+
+        // Create a new camera to use, copying from the main camera
+        // Notice how we provide a position and a rotation for it.  
+        playerCam = (Camera)Camera.Instantiate(original.GetComponent<Camera>(), this.gameObject.transform.position, Quaternion.FromToRotation(new Vector3(0, 15, 0), new Vector3(0, 0, 0)));
+
+        playerCam.gameObject.AddComponent<CameraController>().player = this.gameObject;
+
+        GameObject.DestroyObject(original);
+
+        playerCam.enabled = true;
     }
 }

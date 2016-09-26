@@ -12,14 +12,12 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-   
+        //Set Offset
+        offset = transform.position - player.transform.position;
     }
 
     void LateUpdate()
-    {
-        //Set Offset
-        offset = transform.position - player.transform.position;
-
+    { 
         //Set Position
         transform.position = player.transform.position + offset;
     }
