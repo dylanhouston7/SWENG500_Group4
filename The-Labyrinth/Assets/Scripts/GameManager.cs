@@ -46,12 +46,6 @@ public class GameManager : MonoBehaviour
             // Publish Event: RenderMaze
             EventManager.TriggerEvent("RenderMaze");
         }
-
-        // TODO: Remove :: Test Code Only
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            EventManager.TriggerEvent("CompletedMaze");
-        }
     }
 
     void OnEnable()
