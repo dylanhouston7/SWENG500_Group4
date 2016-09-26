@@ -1,15 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CellFloor : MonoBehaviour {
+public class CellFloor : MonoBehaviour
+{
+    private MazeCell.CellTypeEnum celltype = MazeCell.CellTypeEnum.kStandard;
+    public MazeCell.CellTypeEnum CellType
+    {
+        set { celltype = value; }
+        get { return celltype; }
+    }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    void Start()
+    {
+        if (celltype == MazeCell.CellTypeEnum.kStart)
+        {
+            this.GetComponent<Renderer>().material.color = Color.red;
+        }
+        else if (celltype == MazeCell.CellTypeEnum.kEnd)
+        {
+            this.GetComponent<Renderer>().material.color = Color.green;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (celltype == MazeCell.CellTypeEnum.kEnd)
+        {
+            Debug.Log("Published Event: CompletedMaze");
+
+            EventManager.TriggerEvent("CompletedMaze");
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (celltype == MazeCell.CellTypeEnum.kStart)
+        {
+            Debug.Log("Published Event: StartedMaze");
+
+            EventManager.TriggerEvent("StartedMaze");
+        }
+    }
 }

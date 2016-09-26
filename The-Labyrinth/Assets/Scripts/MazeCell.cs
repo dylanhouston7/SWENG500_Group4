@@ -38,8 +38,8 @@ public class MazeCell : MonoBehaviour
         switch (CellType)
         {
             case CellTypeEnum.kStandard: { break; }
-            case CellTypeEnum.kStart: { cellFloorInstance.GetComponent<Renderer>().material.color = Color.red; break; }
-            case CellTypeEnum.kEnd: { cellFloorInstance.GetComponent<Renderer>().material.color = Color.green; break; }
+            case CellTypeEnum.kStart: { cellFloorInstance.CellType = CellType; break; }
+            case CellTypeEnum.kEnd: { cellFloorInstance.CellType = CellType; break; }
             default:
                 {
                     break;
