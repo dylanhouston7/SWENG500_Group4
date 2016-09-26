@@ -25,12 +25,15 @@ public class MazeCell : MonoBehaviour
     private CellWall cellCeilingInstance;
 
     // Unity Methods
-    void Start()
+    void Awake()
     {
         // Create Cell Floor
         cellFloorInstance = Instantiate(cellFloorPrefab, transform) as CellFloor;
         cellFloorInstance.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+    }
 
+    void Start()
+    {
         // Configure Cell Type Behavior
         switch (CellType)
         {
