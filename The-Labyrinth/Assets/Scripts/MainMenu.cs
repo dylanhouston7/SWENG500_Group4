@@ -10,17 +10,22 @@ public class MainMenu : MonoBehaviour {
     /// <summary>
     /// Indicates whether or not the menu item specifies to start the game
     /// </summary>
-    public bool isStart;
+    public bool StartFlag;
 
     /// <summary>
     /// Indicates whether or not the menu item specifies to show achievements
     /// </summary>
-    public bool isAchievements;
+    public bool AchievementFlag;
 
     /// <summary>
     /// Indicates whether or not the menu item specifies to show the credits
     /// </summary>
-    public bool isCredits;
+    public bool CreditFlag;
+
+    /// <summary>
+    /// Points to the main scene-- the first maze
+    /// </summary>
+    private const string MainMenuScene = "MainScene";
 
     /// <summary>
     /// Use this for initialization
@@ -34,9 +39,9 @@ public class MainMenu : MonoBehaviour {
     /// </summary>
     void OnMouseUp()
     {
-        if (isStart)
+        if (StartFlag)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene(MainMenuScene);
         }
     }
 

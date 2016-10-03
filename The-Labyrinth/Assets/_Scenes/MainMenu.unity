@@ -510,9 +510,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a552469fd077d31499e711d1a122a64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStart: 0
-  isAchievements: 0
-  isCredits: 0
+  StartFlag: 0
+  AchievementFlag: 0
+  CreditFlag: 0
 --- !u!114 &684051176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,9 +770,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a552469fd077d31499e711d1a122a64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStart: 1
-  isAchievements: 0
-  isCredits: 0
+  StartFlag: 1
+  AchievementFlag: 0
+  CreditFlag: 0
 --- !u!1 &1506724401
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,9 +848,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a552469fd077d31499e711d1a122a64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStart: 0
-  isAchievements: 0
-  isCredits: 0
+  StartFlag: 0
+  AchievementFlag: 0
+  CreditFlag: 0
 --- !u!114 &2052055532
 MonoBehaviour:
   m_ObjectHideFlags: 0
