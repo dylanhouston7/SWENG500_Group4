@@ -70,13 +70,13 @@ public class MazeManager : MonoBehaviour
         Debug.Log("MazeManager: RenderMaze Method Called!");
 
         // Render Maze Structure
-        mazeInstance = new MazeCell[refGameManager.mazeStructure.SizeX, refGameManager.mazeStructure.SizeZ];
-        for (int x = 0; x < refGameManager.mazeStructure.SizeX; ++x)
+        mazeInstance = new MazeCell[refGameManager.m_mazeStructure.SizeX, refGameManager.m_mazeStructure.SizeZ];
+        for (int x = 0; x < refGameManager.m_mazeStructure.SizeX; ++x)
         {
-            for (int z = 0; z < refGameManager.mazeStructure.SizeZ; ++z)
+            for (int z = 0; z < refGameManager.m_mazeStructure.SizeZ; ++z)
             {
                 // Get the Cell Structure Blueprint for the Cell
-                MazeStructure.Cell2D cell = refGameManager.mazeStructure.GetCell(x, z);
+                MazeStructure.Cell2D cell = refGameManager.m_mazeStructure.GetCell(x, z);
 
                 // Build Maze Cell from the CellStructure Blueprint
                 mazeInstance[x, z] = Instantiate(cellPrefab, transform) as MazeCell;
@@ -125,6 +125,9 @@ public class MazeManager : MonoBehaviour
                 };
             }
         }
+
+        // Publish Event: RenderMaze
+        EventManager.TriggerEvent("RenderMazeCompleted");
     }
 
     public void ResetMaze()
@@ -138,6 +141,8 @@ public class MazeManager : MonoBehaviour
                 Destroy(mazeInstance[x, z].gameObject);
             }
         }
+
+        mazeInstance = null;
     }
 
     void InstantiatePlayerGameObject(

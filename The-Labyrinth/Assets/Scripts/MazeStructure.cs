@@ -1,10 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MazeStructure
 {
+    [Serializable]
     public class Maze2D
     {
+        private String m_name;
+        public String Name
+        {
+            set { m_name = value; }
+            get { return m_name; }
+        }
+
+        public enum DifficultyLevelEnum { kEasy, kNormal, kHard, kEpic };
+        private DifficultyLevelEnum m_difficulty_level = DifficultyLevelEnum.kNormal;
+        public DifficultyLevelEnum Difficulty
+        {
+            get { return m_difficulty_level; }
+        }
+
         private Cell2D[/*SizeX*/,/*SizeZ*/] m_cells = null;
         public int SizeX
         {
@@ -82,6 +98,22 @@ namespace MazeStructure
             }
 
             return cell;
+        }
+
+        public Cell2D GetStartCell()
+        {
+            Cell2D startCell = new MazeStructure.NullCell();
+
+            foreach(Cell2D cell in m_cells)
+            {
+                if(cell.CellType == Cell2D.CellTypeEnum.kStartCell)
+                {
+                    startCell = cell;
+                    break;
+                }
+            }
+
+            return startCell;
         }
     }
 

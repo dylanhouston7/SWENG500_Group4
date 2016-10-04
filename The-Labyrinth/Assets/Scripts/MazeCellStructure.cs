@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MazeStructure
 {
+    [Serializable]
     public class Cell2D
     {
         Maze2D m_maze = null;
