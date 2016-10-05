@@ -16,6 +16,8 @@ public class GameContext : MonoBehaviour
     public int m_nextMazeIndex;
     public List<MazeStructure.Maze2D> m_installedMazes;
 
+    public MazeStructure.Maze2D m_currentMaze;
+
     // Unity Methods
     void Awake()
     {
@@ -55,6 +57,8 @@ public class GameContext : MonoBehaviour
     {
         m_nextMazeIndex = 0;
         m_installedMazes = new List<MazeStructure.Maze2D>();
+
+        m_currentMaze = new MazeStructure.NullMaze();
     }
 
     void LoadInstalledMazes()

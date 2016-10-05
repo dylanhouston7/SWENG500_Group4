@@ -5,7 +5,7 @@ using System.Collections;
 public class MazeManager : MonoBehaviour
 {
     // References
-    public GameManager refGameManager = null;
+    //
 
     // Prefabs
     public MazeCell cellPrefab;
@@ -70,13 +70,13 @@ public class MazeManager : MonoBehaviour
         Debug.Log("MazeManager: RenderMaze Method Called!");
 
         // Render Maze Structure
-        mazeInstance = new MazeCell[refGameManager.m_mazeStructure.SizeX, refGameManager.m_mazeStructure.SizeZ];
-        for (int x = 0; x < refGameManager.m_mazeStructure.SizeX; ++x)
+        mazeInstance = new MazeCell[GameContext.m_context.m_currentMaze.SizeX, GameContext.m_context.m_currentMaze.SizeZ];
+        for (int x = 0; x < GameContext.m_context.m_currentMaze.SizeX; ++x)
         {
-            for (int z = 0; z < refGameManager.m_mazeStructure.SizeZ; ++z)
+            for (int z = 0; z < GameContext.m_context.m_currentMaze.SizeZ; ++z)
             {
                 // Get the Cell Structure Blueprint for the Cell
-                MazeStructure.Cell2D cell = refGameManager.m_mazeStructure.GetCell(x, z);
+                MazeStructure.Cell2D cell = GameContext.m_context.m_currentMaze.GetCell(x, z);
 
                 // Build Maze Cell from the CellStructure Blueprint
                 mazeInstance[x, z] = Instantiate(cellPrefab, transform) as MazeCell;

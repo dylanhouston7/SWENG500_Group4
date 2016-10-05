@@ -5,7 +5,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     // Public Members
-    public MazeStructure.Maze2D m_mazeStructure = null;
+    //
 
     // Private Memebers
     private UnityAction m_handleEventRenderMazeCompleted;
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         // Initialize Member Variables        
-        m_mazeStructure = new MazeStructure.NullMaze();
+        //
 
         // Initialize Event Handlers
         m_handleEventRenderMazeCompleted = new UnityAction(RenderMazeCompleted);
@@ -37,14 +37,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // Load/Generate a new Maze Level
-        if (m_mazeStructure.IsNull())
+        // Load/Generate a Maze Level
+        if (GameContext.m_context.m_currentMaze.IsNull())
         {
             if(GameContext.m_context.m_nextMazeIndex < GameContext.m_context.m_installedMazes.Count)
             {
                 Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_nextMazeIndex);
 
-                m_mazeStructure = GameContext.m_context.m_installedMazes[GameContext.m_context.m_nextMazeIndex];
+                GameContext.m_context.m_currentMaze = GameContext.m_context.m_installedMazes[GameContext.m_context.m_nextMazeIndex];
 
                 ++GameContext.m_context.m_nextMazeIndex;
             }
@@ -53,10 +53,10 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GameManager: Generating Maze");
 
                 // Get a default maze structure of defined size
-                m_mazeStructure = MazeStructure.Maze2D.GetInstance(m_sizeX, m_sizeZ);
+                GameContext.m_context.m_currentMaze = MazeStructure.Maze2D.GetInstance(m_sizeX, m_sizeZ);
 
                 // Modify the default maze structure with the maze generation algorithm
-                MazeStructure.DepthFirstSearchMazeGenerator.Generate(m_mazeStructure);
+                MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_currentMaze);
             }
 
             // Publish Event: RenderMaze
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("GameManager: Adding Current Maze to Installed Mazes List");
 
-            GameContext.m_context.m_installedMazes.Add(m_mazeStructure);
+            GameContext.m_context.m_installedMazes.Add(GameContext.m_context.m_currentMaze);
         }
 
         // TEMP CODE: For exiting maze level loop to return to main menu
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
         // - Enable the Player GameObject
 
         // Get the Maze StartCell
-        MazeStructure.Cell2D startCell = m_mazeStructure.GetStartCell();
+        MazeStructure.Cell2D startCell = GameContext.m_context.m_currentMaze.GetStartCell();
         if(!startCell.IsNull())
         {
             // TODO: Place Player GameObject at the start cell location
@@ -128,10 +128,20 @@ public class GameManager : MonoBehaviour
         // TODO: Calculate Player Score
         //
 
-        // TODO: Store Player Score to the GameContext
+        // TODO: Store Player Score to the GameContext current Player account
         //
 
-        // Load Main Menu
+        // TODO: Load Maze Completion Summary Menu
+        // - Should provide the user with:
+        //  + Player's calculated score
+        //  + Option to go to next installed maze level if one exists
+        //  + Option to go to the main menu
+
+        // *************************************************************************
+        // *************************************************************************
+        // TEMP CODE: 
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+        // *************************************************************************
+        // *************************************************************************
     }
 }
