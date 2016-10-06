@@ -134,15 +134,18 @@ public class MazeManager : MonoBehaviour
     {
         Debug.Log("MazeManager: ResetMaze Method Called!");
 
-        for (int x = 0; x < MazeSizeX; ++x)
+        if(mazeInstance != null)
         {
-            for (int z = 0; z < MazeSizeZ; ++z)
+            for (int x = 0; x < MazeSizeX; ++x)
             {
-                Destroy(mazeInstance[x, z].gameObject);
+                for (int z = 0; z < MazeSizeZ; ++z)
+                {
+                    Destroy(mazeInstance[x, z].gameObject);
+                }
             }
-        }
 
-        mazeInstance = null;
+            mazeInstance = null;
+        }
     }
 
     void InstantiatePlayerGameObject(
