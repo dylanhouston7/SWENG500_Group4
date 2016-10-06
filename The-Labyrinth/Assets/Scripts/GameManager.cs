@@ -137,6 +137,9 @@ public class GameManager : MonoBehaviour
         //  + Option to go to next installed maze level if one exists
         //  + Option to go to the main menu
 
+        // Reset the currentMaze instance
+        GameContext.m_context.m_currentMaze = new MazeStructure.NullMaze();
+
         // *************************************************************************
         // *************************************************************************
         // TEMP CODE: 
