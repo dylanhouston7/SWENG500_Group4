@@ -5,12 +5,14 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     // Public Members
-    //
+    public Player playerPrefab;
 
     // Private Memebers
     private UnityAction m_handleEventRenderMazeCompleted;
     private UnityAction m_handleEventCompletedMaze;
     private int m_sizeX, m_sizeZ;
+
+    private Player playerInstance = null;
 
     // Unity Methods
     void Awake()
@@ -118,6 +120,10 @@ public class GameManager : MonoBehaviour
 
             // TODO: Enable Player GameObject
             //
+            GameObject obj;
+            obj = Instantiate(Resources.Load("Player"), transform) as GameObject;
+            obj.GetComponent<Player>().startingPos = new Vector3(startCell.PositionX, 0.5f, startCell.PositionZ);
+
         }
     }
 

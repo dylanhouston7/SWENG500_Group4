@@ -9,7 +9,7 @@ public class MazeManager : MonoBehaviour
 
     // Prefabs
     public MazeCell cellPrefab;
-    public Player playerPrefab;
+    
 
     // Public Members
     // 
@@ -43,7 +43,7 @@ public class MazeManager : MonoBehaviour
         }
     }
 
-    private Player playerInstance = null;
+    
 
     void Awake()
     {
@@ -103,9 +103,7 @@ public class MazeManager : MonoBehaviour
                             // - Add Start Cell Behavior to Cell
                             // - Instantiate Player GameObject and position in Maze
 
-                            mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStart;
-
-                            InstantiatePlayerGameObject(new Vector3(cell.PositionX, 0.5f, cell.PositionZ));
+                            mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStart;                           
 
                             break;
                         }
@@ -146,20 +144,5 @@ public class MazeManager : MonoBehaviour
 
             mazeInstance = null;
         }
-    }
-
-    void InstantiatePlayerGameObject(
-    Vector3 startPosition
-    )
-    {
-        // Ensure there is only ever one Player GameObject            
-        if (playerInstance != null)
-        {
-            Destroy(playerInstance.gameObject);
-        }
-
-        // Position Player GameObject
-        playerInstance = Instantiate(playerPrefab, transform) as Player;
-        playerInstance.transform.localPosition = startPosition;
     }
 }

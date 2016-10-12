@@ -9,7 +9,7 @@ public class GameContext : MonoBehaviour
 {
     // Public Members
     public static GameContext m_context;
-
+    
     // Public Persistent Storage between Scenes
     public int m_difficultyLevel = 0;
 
