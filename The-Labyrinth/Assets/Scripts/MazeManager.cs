@@ -10,7 +10,6 @@ public class MazeManager : MonoBehaviour
 
     // Prefabs
     public MazeCell cellPrefab;
-    //public Player playerPrefab;
 
     // Public Members
     public int MazeSizeX
@@ -43,7 +42,6 @@ public class MazeManager : MonoBehaviour
     private UnityAction handleEventShowMazeSolution;
     private UnityAction handleEventResetMaze;
     private MazeCell[,] mazeInstance = null;
-    private Player playerInstance = null;
 
     void Awake()
     {
@@ -63,6 +61,7 @@ public class MazeManager : MonoBehaviour
     void OnDisable()
     {
         EventManager.StopListening("RenderMaze", handleEventRenderMaze);
+        EventManager.StopListening("ShowMazeSolution", handleEventShowMazeSolution);
         EventManager.StopListening("ResetMaze", handleEventResetMaze);
     }
 
@@ -110,8 +109,6 @@ public class MazeManager : MonoBehaviour
                             // - Instantiate Player GameObject and position in Maze
 
                             mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStart;
-
-                            //InstantiatePlayerGameObject(new Vector3(cell.PositionX, 0.5f, cell.PositionZ));
 
                             break;
                         }
@@ -166,19 +163,4 @@ public class MazeManager : MonoBehaviour
             mazeInstance = null;
         }
     }
-
-    //void InstantiatePlayerGameObject(
-    //Vector3 startPosition
-    //)
-    //{
-    //    // Ensure there is only ever one Player GameObject            
-    //    if (playerInstance != null)
-    //    {
-    //        Destroy(playerInstance.gameObject);
-    //    }
-
-    //    // Position Player GameObject
-    //    playerInstance = Instantiate(playerPrefab, transform) as Player;
-    //    playerInstance.transform.localPosition = startPosition;
-    //}
 }
