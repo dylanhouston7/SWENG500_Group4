@@ -7,6 +7,12 @@ namespace MazeStructure
     [Serializable]
     public class Maze2D
     {
+        Guid m_guid;
+        public Guid GUID
+        {
+            get { return m_guid; }
+        }
+
         private String m_name;
         public String Name
         {
@@ -18,6 +24,7 @@ namespace MazeStructure
         private DifficultyLevelEnum m_difficulty_level = DifficultyLevelEnum.kNormal;
         public DifficultyLevelEnum Difficulty
         {
+            set { m_difficulty_level = value; }
             get { return m_difficulty_level; }
         }
 
@@ -49,7 +56,19 @@ namespace MazeStructure
             }
         }
 
-        protected Maze2D() { }
+        private List<Cell2D> m_maze_solution_path = null;
+        public List<Cell2D> MazeSolutionPath
+        {
+            set { m_maze_solution_path = value; }
+            get { return m_maze_solution_path; }
+        }
+
+        protected Maze2D()
+        {
+            m_guid = Guid.NewGuid();
+
+            m_maze_solution_path = new List<Cell2D>();
+        }
 
         public static Maze2D GetInstance(int sizeX, int sizeZ)
         {
@@ -85,9 +104,9 @@ namespace MazeStructure
 
             if (
                 x >= 0 &&
-                x < m_cells.GetLength(0) &&             
+                x < SizeX &&             
                 z >= 0 &&
-                z < m_cells.GetLength(1)
+                z < SizeZ
                 )
             {
                 cell = m_cells[x, z];

@@ -54,6 +54,13 @@ namespace MazeStructure
             set { m_cell_type = value; }
         }
 
+        private bool m_isSolutionCell;
+        public bool IsSolutionCell
+        {
+            set { m_isSolutionCell = value; }
+            get { return m_isSolutionCell; }
+        }
+
         protected Cell2D()
         {
             m_walls = new List<bool>((int)CellWallEnum.kSize);
@@ -65,6 +72,8 @@ namespace MazeStructure
             m_adjacent_cells = new List<Cell2D>();
 
             m_cell_type = CellTypeEnum.kStandardCell;
+
+            m_isSolutionCell = false;
         }
 
         public static bool CellCompare(Cell2D cell_a, Cell2D cell_b)
@@ -116,6 +125,57 @@ namespace MazeStructure
             return result;
         }
 
+        public virtual bool HasPathToCell(Cell2D cell)
+        {
+            bool result = false;
+
+            if(IsAdjacentCell(cell))
+            {
+                // Determine directional Vector to other Cell
+                int delta_x = PositionX - cell.PositionX;
+                int delta_z = PositionZ - cell.PositionZ;
+
+                if (delta_z == -1)
+                {
+                    // Vector Direction = Front
+                    if(!Walls[(int)CellWallEnum.kFront] && !cell.Walls[(int)CellWallEnum.kBack])
+                    {
+                        result = true;
+                    }
+                }
+                else if (delta_z == 1)
+                {
+                    // Vector Direction = Back
+                    if (!Walls[(int)CellWallEnum.kBack] && !cell.Walls[(int)CellWallEnum.kFront])
+                    {
+                        result = true;
+                    }
+                }
+                else if (delta_x == -1)
+                {
+                    // Vector Direction = Right
+                    if (!Walls[(int)CellWallEnum.kRight] && !cell.Walls[(int)CellWallEnum.kLeft])
+                    {
+                        result = true;
+                    }
+                }
+                else if (delta_x == 1)
+                {
+                    // Vector Direction = Left
+                    if (!Walls[(int)CellWallEnum.kLeft] && !cell.Walls[(int)CellWallEnum.kRight])
+                    {
+                        result = true;
+                    }
+                }
+                else
+                {
+                    // TODO: Throw Exception
+                }
+            }
+
+            return result;
+        }
+
         public virtual bool IsAdjacentCell(Cell2D cell)
         {
             bool result = false;
@@ -151,7 +211,7 @@ namespace MazeStructure
                 if (delta_z == -1)
                 {
                     RemoveWall(CellWallEnum.kFront);
-                    cell.RemoveWall(CellWallEnum.kBack);                    
+                    cell.RemoveWall(CellWallEnum.kBack);
                 }
                 else if (delta_z == 1)
                 {

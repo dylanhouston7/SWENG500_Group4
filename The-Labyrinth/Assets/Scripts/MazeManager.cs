@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MazeManager : MonoBehaviour
 {
@@ -9,15 +10,9 @@ public class MazeManager : MonoBehaviour
 
     // Prefabs
     public MazeCell cellPrefab;
-    public Player playerPrefab;
+    //public Player playerPrefab;
 
     // Public Members
-    // 
-
-    // Private Members
-    private UnityAction handleEventRenderMaze;
-    private UnityAction handleResetMaze;
-    private MazeCell[,] mazeInstance = null;
     public int MazeSizeX
     {
         get
@@ -43,25 +38,32 @@ public class MazeManager : MonoBehaviour
         }
     }
 
+    // Private Members
+    private UnityAction handleEventRenderMaze;
+    private UnityAction handleEventShowMazeSolution;
+    private UnityAction handleEventResetMaze;
+    private MazeCell[,] mazeInstance = null;
     private Player playerInstance = null;
 
     void Awake()
     {
         // Initialize Event Handlers
         handleEventRenderMaze = new UnityAction(RenderMaze);
-        handleResetMaze = new UnityAction(ResetMaze);
+        handleEventShowMazeSolution = new UnityAction(ShowMazeSolution);
+        handleEventResetMaze = new UnityAction(ResetMaze);
     }
 
     void OnEnable()
     {
         EventManager.StartListening("RenderMaze", handleEventRenderMaze);
-        EventManager.StartListening("ResetMaze", handleResetMaze);
+        EventManager.StartListening("ShowMazeSolution", handleEventShowMazeSolution);
+        EventManager.StartListening("ResetMaze", handleEventResetMaze);
     }
 
     void OnDisable()
     {
         EventManager.StopListening("RenderMaze", handleEventRenderMaze);
-        EventManager.StopListening("ResetMaze", handleResetMaze);
+        EventManager.StopListening("ResetMaze", handleEventResetMaze);
     }
 
     // Other Methods
@@ -89,7 +91,11 @@ public class MazeManager : MonoBehaviour
                 // Position the Maze Cell
                 mazeInstance[x, z].transform.localPosition = new Vector3(x, 0, z);
 
-                // Set Cell Type
+                // Set Cell Properties
+                // - Cell Type
+                // - Cell is part of the maze solution
+
+                // Set Cell Type property
                 switch (cell.CellType)
                 {
                     case MazeStructure.Cell2D.CellTypeEnum.kStandardCell:
@@ -105,7 +111,7 @@ public class MazeManager : MonoBehaviour
 
                             mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStart;
 
-                            InstantiatePlayerGameObject(new Vector3(cell.PositionX, 0.5f, cell.PositionZ));
+                            //InstantiatePlayerGameObject(new Vector3(cell.PositionX, 0.5f, cell.PositionZ));
 
                             break;
                         }
@@ -123,11 +129,24 @@ public class MazeManager : MonoBehaviour
                             break;
                         }
                 };
+
+                // Set Cell IsSolution property
+                mazeInstance[x, z].IsSolutionCell = cell.IsSolutionCell;
             }
         }
 
-        // Publish Event: RenderMaze
+        // Publish Event: RenderMazeCompleted
         EventManager.TriggerEvent("RenderMazeCompleted");
+    }
+
+    public void ShowMazeSolution()
+    {
+        Debug.Log("MazeManager: ShowMazeSolution Method Called!");
+
+        foreach(MazeStructure.Cell2D cell in GameContext.m_context.m_currentMaze.MazeSolutionPath)
+        {
+            mazeInstance[cell.PositionX, cell.PositionZ].ShowSolutionCell();
+        }
     }
 
     public void ResetMaze()
@@ -140,7 +159,7 @@ public class MazeManager : MonoBehaviour
             {
                 for (int z = 0; z < MazeSizeZ; ++z)
                 {
-                    Destroy(mazeInstance[x, z].gameObject);
+                    DestroyImmediate(mazeInstance[x, z].gameObject);
                 }
             }
 
@@ -148,18 +167,18 @@ public class MazeManager : MonoBehaviour
         }
     }
 
-    void InstantiatePlayerGameObject(
-    Vector3 startPosition
-    )
-    {
-        // Ensure there is only ever one Player GameObject            
-        if (playerInstance != null)
-        {
-            Destroy(playerInstance.gameObject);
-        }
+    //void InstantiatePlayerGameObject(
+    //Vector3 startPosition
+    //)
+    //{
+    //    // Ensure there is only ever one Player GameObject            
+    //    if (playerInstance != null)
+    //    {
+    //        Destroy(playerInstance.gameObject);
+    //    }
 
-        // Position Player GameObject
-        playerInstance = Instantiate(playerPrefab, transform) as Player;
-        playerInstance.transform.localPosition = startPosition;
-    }
+    //    // Position Player GameObject
+    //    playerInstance = Instantiate(playerPrefab, transform) as Player;
+    //    playerInstance.transform.localPosition = startPosition;
+    //}
 }

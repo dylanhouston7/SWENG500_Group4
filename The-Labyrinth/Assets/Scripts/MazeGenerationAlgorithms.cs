@@ -92,8 +92,8 @@ namespace MazeStructure
                     startCell.CellType = Cell2D.CellTypeEnum.kStartCell;
 
                     // Step 1b: End Cell Determination setup
-                    int mazePathLength = 0;
-                    Cell2D endCell = null;
+                    int mazePathLength = -1;
+                    Cell2D endCell = new NullCell();
 
                     // Step 2: Apply Algorithm until all cells have been visited
                     Cell2D currentCell = startCell;
@@ -143,6 +143,15 @@ namespace MazeStructure
 
                             currentCell = cellStack.Pop();
                         }
+                    }
+
+                    // Special Case:
+                    // Summary: When the maze is generated that never backtracks but 
+                    //          while generating visits every cell resulting in the 
+                    //          maze generation loop to exit without setting an end cell
+                    if(endCell.IsNull())
+                    {
+                        endCell = currentCell;
                     }
 
                     // Set End Cell

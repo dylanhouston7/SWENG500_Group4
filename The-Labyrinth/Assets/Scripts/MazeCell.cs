@@ -17,6 +17,14 @@ public class MazeCell : MonoBehaviour
         set { cellType = value; }
         get { return cellType; }
     }
+
+    private bool isSolutionCell = false;
+    public bool IsSolutionCell
+    {
+        set { isSolutionCell = value; }
+        get { return isSolutionCell; }
+    }
+
     private CellFloor cellFloorInstance;
     private CellWall cellLeftWallInstance;
     private CellWall cellRightWallInstance;
@@ -30,21 +38,7 @@ public class MazeCell : MonoBehaviour
         // Create Cell Floor
         cellFloorInstance = Instantiate(cellFloorPrefab, transform) as CellFloor;
         cellFloorInstance.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-    }
-
-    void Start()
-    {
-        // Configure Cell Type Behavior
-        switch (CellType)
-        {
-            case CellTypeEnum.kStandard: { break; }
-            case CellTypeEnum.kStart: { cellFloorInstance.CellType = CellType; break; }
-            case CellTypeEnum.kEnd: { cellFloorInstance.CellType = CellType; break; }
-            default:
-                {
-                    break;
-                }
-        };
+        cellFloorInstance.ParentCell = this;
     }
 
     // Other Methods
@@ -125,5 +119,21 @@ public class MazeCell : MonoBehaviour
         )
     {
         Destroy(cellCeilingInstance, timeDelay);
+    }
+
+    public void ShowSolutionCell()
+    {
+        if(isSolutionCell)
+        {
+            cellFloorInstance.ShowSolution(true);
+        }        
+    }
+
+    public void HideSolutionCell()
+    {
+        if (isSolutionCell)
+        {
+            cellFloorInstance.ShowSolution(false);
+        }
     }
 }
