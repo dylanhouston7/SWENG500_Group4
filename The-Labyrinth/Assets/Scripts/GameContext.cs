@@ -11,8 +11,6 @@ public class GameContext : MonoBehaviour
     public static GameContext m_context;
     
     // Public Persistent Storage between Scenes
-    public int m_difficultyLevel = 0;
-
     public int m_nextMazeIndex;
     public List<MazeStructure.Maze2D> m_installedMazes;
 

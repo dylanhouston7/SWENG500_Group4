@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     // Private Memebers
     private UnityAction m_handleEventRenderMazeCompleted;
     private UnityAction m_handleEventCompletedMaze;
-    private int m_sizeX, m_sizeZ;
 
     private Player playerInstance = null;
 
@@ -23,6 +22,9 @@ public class GameManager : MonoBehaviour
         // Initialize Event Handlers
         m_handleEventRenderMazeCompleted = new UnityAction(RenderMazeCompleted);
         m_handleEventCompletedMaze = new UnityAction(CompletedMaze);
+
+        // Initialize GameContext Elements
+        GameContext.m_context.m_currentMaze = new MazeStructure.NullMaze();
     }
 
     void Update()
@@ -43,10 +45,13 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GameManager: Generating Maze");
 
                 // Get a default maze structure of defined size
-                GameContext.m_context.m_currentMaze = MazeStructure.Maze2D.GetInstance(m_sizeX, m_sizeZ);
+                GameContext.m_context.m_currentMaze = MazeStructure.Maze2D.GetInstance(5, 5);
 
                 // Modify the default maze structure with the maze generation algorithm
                 MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_currentMaze);
+
+                // Solve the generated maze with the maze solving algorithm
+                MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_currentMaze);
             }
 
             // Publish Event: RenderMaze
@@ -56,12 +61,12 @@ public class GameManager : MonoBehaviour
 
         // *************************************************************************
         // *************************************************************************
-        // TEST CODE: Testing Save/Load Installed Mazes
+        // TEST CODE: Shows the Maze Solution
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
         {
-            Debug.Log("GameManager: Adding Current Maze to Installed Mazes List");
+            Debug.Log("GameManager: Showing Maze Solution");
 
-            GameContext.m_context.m_installedMazes.Add(GameContext.m_context.m_currentMaze);
+            EventManager.TriggerEvent("ShowMazeSolution");
         }
 
         // TEMP CODE: For exiting maze level loop to return to main menu
@@ -129,9 +134,6 @@ public class GameManager : MonoBehaviour
         //  + Player's calculated score
         //  + Option to go to next installed maze level if one exists
         //  + Option to go to the main menu
-
-        // Reset the currentMaze instance
-        GameContext.m_context.m_currentMaze = new MazeStructure.NullMaze();
 
         // *************************************************************************
         // *************************************************************************
