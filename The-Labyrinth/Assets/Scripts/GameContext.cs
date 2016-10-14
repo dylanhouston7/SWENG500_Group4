@@ -86,8 +86,7 @@ public class GameContext : MonoBehaviour
 
     void SaveInstalledMazes()
     {
-        if(m_installedMazes != null &&
-           m_installedMazes.Count > 0)
+        if(m_installedMazes != null)
         {
             Debug.Log("Saving Installed Mazes");
 
