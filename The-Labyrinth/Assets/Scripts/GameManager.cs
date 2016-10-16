@@ -16,13 +16,15 @@ public class GameManager : MonoBehaviour
     public Text textMazeTimer;
 
     // Public Prefab References
-    public Player playerPrefab;
+    public UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter tp;
 
     // Private Members
     private UnityAction m_handleEventRenderMazeCompleted;
     private UnityAction m_handleEventCompletedMaze;
 
-    private Player playerInstance = null;
+    private Camera playerCam;
+
+    public float xCameraRotate = 45;
 
     // Unity Methods
     void Awake()
@@ -132,9 +134,43 @@ public class GameManager : MonoBehaviour
             // TODO: Enable Player GameObject
             //
             GameObject obj;
-            obj = Instantiate(Resources.Load("Player"), transform) as GameObject;
-            obj.GetComponent<Player>().startingPos = new Vector3(startCell.PositionX, 0.5f, startCell.PositionZ);
+            obj = Instantiate(Resources.Load("ThirdPersonCharacter/Prefabs/ThirdPersonController"), transform) as GameObject;
+            tp = obj.GetComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter>();
+            tp.transform.position = new Vector3(startCell.PositionX, 0.5f, startCell.PositionZ);
+            tp.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+            this.createPlayerCamera();
         }
+
+
+    }
+
+    private void createPlayerCamera()
+    {
+        // Find the 'main' camera object.
+        var original = GameObject.FindWithTag("MainCamera");
+
+        // Create a new camera to use, copying from the main camera
+        // Notice how we provide a position and a rotation for it.  
+        float x = tp.transform.position.x;
+        float y = tp.transform.position.y;
+        float z = tp.transform.position.z;
+
+        //Create player camera
+        playerCam = (Camera)Camera.Instantiate(original.GetComponent<Camera>(), new Vector3(x, y, z), Quaternion.FromToRotation(new Vector3(0, 0, 0), new Vector3(0, 0, 0)));
+
+        //Attach Camera Controller to player camera object
+        playerCam.gameObject.AddComponent<CameraController>().player = tp.gameObject;
+
+        //Set initial Position
+        playerCam.transform.position = new Vector3(x, y + 2, z - 2);
+        playerCam.gameObject.transform.Rotate(new Vector3(xCameraRotate, 0, 0));
+
+        //Destroy origional camera
+        GameObject.DestroyObject(original);
+
+        //Enable the new camera
+        playerCam.enabled = true;
     }
 
     void CompletedMaze()
