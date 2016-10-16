@@ -512,7 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartFlag: 0
   AchievementFlag: 0
-  CreditFlag: 0
+  CreditFlag: 1
 --- !u!114 &684051176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -849,7 +849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartFlag: 0
-  AchievementFlag: 0
+  AchievementFlag: 1
   CreditFlag: 0
 --- !u!114 &2052055532
 MonoBehaviour:

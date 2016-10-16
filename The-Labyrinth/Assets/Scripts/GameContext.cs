@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Assets.Scripts.DifficultySettings;
 
 public class GameContext : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GameContext : MonoBehaviour
     public List<MazeStructure.Maze2D> m_installedMazes;
 
     public MazeStructure.Maze2D m_currentMaze;
+
+    public DifficultyEnum m_gameDifficulty;
 
     // Unity Methods
     void Awake()

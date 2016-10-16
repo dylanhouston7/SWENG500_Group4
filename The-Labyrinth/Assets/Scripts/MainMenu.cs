@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using Assets;
 
 /// <summary>
 /// Class that contains the links from the main menu to other screens
@@ -23,11 +24,6 @@ public class MainMenu : MonoBehaviour {
     public bool CreditFlag;
 
     /// <summary>
-    /// Points to the main scene-- the first maze
-    /// </summary>
-    private const string MainMenuScene = "MainScene";
-
-    /// <summary>
     /// Use this for initialization
     /// </summary>
     void Start () {
@@ -35,13 +31,13 @@ public class MainMenu : MonoBehaviour {
 	}
 
     /// <summary>
-    /// 
+    /// Handles mouse selection
     /// </summary>
     void OnMouseUp()
     {
         if (StartFlag)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(MainMenuScene);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.DifficultyScene);
         }
     }
 
