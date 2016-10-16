@@ -7,15 +7,17 @@ public class MazeGenerator : MonoBehaviour
     public Camera mainCamera;
     public Slider sliderMazeSizeX;
     public Slider sliderMazeSizeZ;
+    public Text textMazeSolutionPathLenValue;
 
     public InputField inputFieldMazeName;
+    public Dropdown dropDownMazeDifficultyLevel;
 
-    public Text countStoredMazes;
+    public Text textCountStoredMazes;
 
     void Start()
     {
         // Update Displayed Count of Stored Mazes
-        countStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
+        textCountStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
     }
 
     public void GenerateMaze()
@@ -39,6 +41,8 @@ public class MazeGenerator : MonoBehaviour
 
     public void ViewMazeSolution()
     {
+        textMazeSolutionPathLenValue.text = GameContext.m_context.m_currentMaze.MazeSolutionPath.Count.ToString();
+
         EventManager.TriggerEvent("ShowMazeSolution");
     }
 
@@ -52,13 +56,46 @@ public class MazeGenerator : MonoBehaviour
             // - Difficulty Level
             // - TBD
             // TODO: Implement
+
+            // Set Maze Name Property
             GameContext.m_context.m_currentMaze.Name = inputFieldMazeName.text;
+
+            // Set Maze Difficulty Property
+            MazeStructure.Maze2D.DifficultyLevelEnum mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kEasy;
+            switch(dropDownMazeDifficultyLevel.value)
+            {
+                case 0: // Easy
+                    {
+                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kEasy;
+                        break;
+                    }
+                case 1: // Normal
+                    {
+                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kNormal;
+                        break;
+                    }
+                case 2: // Hard
+                    {
+                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kHard;
+                        break;
+                    }
+                case 3: // Epic
+                    {
+                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kEpic;
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            };
+            GameContext.m_context.m_currentMaze.Difficulty = mazeDifficultyLevel;
 
             // Add Maze to list of stored mazes
             GameContext.m_context.m_installedMazes.Add(GameContext.m_context.m_currentMaze);
 
             // Update Displayed Count of Stored Mazes
-            countStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
+            textCountStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
         }
     }
     
@@ -68,6 +105,6 @@ public class MazeGenerator : MonoBehaviour
         GameContext.m_context.m_installedMazes.Clear();
 
         // Update Displayed Count of Stored Mazes
-        countStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
+        textCountStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
     }    
 }

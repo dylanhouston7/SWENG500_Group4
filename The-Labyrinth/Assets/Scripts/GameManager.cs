@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    // Public Members
+    // Public GameObject References
+    public Text textCurrentMazeName;
+    public Text textCurrentMazeDifficultyLevel;
+
+    // Public Prefab References
     public Player playerPrefab;
 
     // Private Memebers
@@ -52,10 +57,24 @@ public class GameManager : MonoBehaviour
 
                 // Solve the generated maze with the maze solving algorithm
                 MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_currentMaze);
+
+                // Set Maze Properties:
+                GameContext.m_context.m_currentMaze.Name = "Auto Generated";
+                GameContext.m_context.m_currentMaze.Difficulty = MazeStructure.Maze2D.DifficultyLevelEnum.kEasy;
             }
 
             // Publish Event: RenderMaze
             EventManager.TriggerEvent("RenderMaze");
+            textCurrentMazeName.text = GameContext.m_context.m_currentMaze.Name;
+            string mazeDifficultyLevelString = "";
+            switch (GameContext.m_context.m_currentMaze.Difficulty)
+            {
+                case MazeStructure.Maze2D.DifficultyLevelEnum.kEasy: mazeDifficultyLevelString = "Easy"; break;
+                case MazeStructure.Maze2D.DifficultyLevelEnum.kNormal: mazeDifficultyLevelString = "Normal"; break;
+                case MazeStructure.Maze2D.DifficultyLevelEnum.kHard: mazeDifficultyLevelString = "Hard"; break;
+                case MazeStructure.Maze2D.DifficultyLevelEnum.kEpic: mazeDifficultyLevelString = "Epic"; break;
+            };
+            textCurrentMazeDifficultyLevel.text = mazeDifficultyLevelString;
         }
 
 
