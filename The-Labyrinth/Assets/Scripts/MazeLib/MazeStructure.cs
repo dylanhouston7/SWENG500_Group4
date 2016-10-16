@@ -28,6 +28,13 @@ namespace MazeStructure
             get { return m_difficulty_level; }
         }
 
+        private int m_time_to_complete_maze;
+        public int TimeToCompleteMaze
+        {
+            set { m_time_to_complete_maze = value; }
+            get { return m_time_to_complete_maze; }
+        }
+
         private Cell2D[/*SizeX*/,/*SizeZ*/] m_cells = null;
         public int SizeX
         {

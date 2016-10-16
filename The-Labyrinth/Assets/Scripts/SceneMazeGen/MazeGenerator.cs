@@ -7,10 +7,12 @@ public class MazeGenerator : MonoBehaviour
     public Camera mainCamera;
     public Slider sliderMazeSizeX;
     public Slider sliderMazeSizeZ;
+    public Dropdown dropDownMazeGenAlgorithm;
     public Text textMazeSolutionPathLenValue;
 
     public InputField inputFieldMazeName;
     public Dropdown dropDownMazeDifficultyLevel;
+    public Slider sliderTimeToCompleteMaze;
 
     public Text textCountStoredMazes;
 
@@ -27,8 +29,26 @@ public class MazeGenerator : MonoBehaviour
         // Create a Default Maze of defined size
         GameContext.m_context.m_currentMaze = MazeStructure.Maze2D.GetInstance((int)sliderMazeSizeX.value, (int)sliderMazeSizeZ.value);
 
-        // Run Maze Generation Algorithm on Default Maze instance
-        MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_currentMaze);
+        // Run the Selected Maze Generation Algorithm on Default Maze instance
+        MazeStructure.MazeGenerator.MazeGenAlgorithmEnum mazeGenAlgorithm = MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch;
+        switch(dropDownMazeGenAlgorithm.value)
+        {
+            case 0: // Straight Z
+                {
+                    mazeGenAlgorithm = MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kStraight;
+                    break;
+                }
+            case 1: // Depth First Search
+                {
+                    mazeGenAlgorithm = MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch;
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        };
+        MazeStructure.MazeGenerator.Generate(mazeGenAlgorithm, GameContext.m_context.m_currentMaze);
 
         // Run Maze Solver Algorithm on Generated Maze
         MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_currentMaze);
@@ -54,7 +74,7 @@ public class MazeGenerator : MonoBehaviour
             // Set Maze Properties:
             // - Name
             // - Difficulty Level
-            // - TBD
+            // - Time to Complete
             // TODO: Implement
 
             // Set Maze Name Property
@@ -90,6 +110,16 @@ public class MazeGenerator : MonoBehaviour
                     }
             };
             GameContext.m_context.m_currentMaze.Difficulty = mazeDifficultyLevel;
+
+            // Set Maze Time to Complete Property
+            if(sliderTimeToCompleteMaze.value < 3600)
+            {
+                GameContext.m_context.m_currentMaze.TimeToCompleteMaze = (int)sliderTimeToCompleteMaze.value;
+            }
+            else
+            {
+                GameContext.m_context.m_currentMaze.TimeToCompleteMaze = -1;
+            }
 
             // Add Maze to list of stored mazes
             GameContext.m_context.m_installedMazes.Add(GameContext.m_context.m_currentMaze);
