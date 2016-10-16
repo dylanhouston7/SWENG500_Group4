@@ -23,6 +23,7 @@ namespace Assets.Scripts.DifficultySettings
         string Description { get; }
 
         /// <summary>
+        /// The timer to use
         /// </summary>
         ITimer timer { get;}
 

@@ -10,6 +10,11 @@ public class GameManager : MonoBehaviour
     public Text textCurrentMazeName;
     public Text textCurrentMazeDifficultyLevel;
 
+    /// <summary>
+    /// The maze timer for the maze
+    /// </summary>
+    public Text textMazeTimer;
+
     // Public Prefab References
     public Player playerPrefab;
 
