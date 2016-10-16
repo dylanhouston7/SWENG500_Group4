@@ -49,6 +49,17 @@ public class DifficultyMenu : MonoBehaviour
 
     void OnMouseEnter()
     {
+        IDifficulty difficulty = GetDifficulty();
+        Description = GameObject.Find("Description").GetComponent<TextMesh>();
+        Description.text = difficulty.Description;
+    }
+
+    /// <summary>
+    /// Retrieves the difficulty based on menu selectiopn
+    /// </summary>
+    /// <returns>The difficulty level</returns>
+    IDifficulty GetDifficulty()
+    {
         IDifficulty difficulty;
 
         // IMPROVE: Is there a better way to handle this?
@@ -78,34 +89,17 @@ public class DifficultyMenu : MonoBehaviour
             throw new System.Exception("Invalid difficulty given");
         }
 
-        Description = GameObject.Find("Description").GetComponent<TextMesh>();
-        Description.text = difficulty.Description;
+        return difficulty;
     }
 
-        /// <summary>
-        /// Handles the mouse up (click) event
-        /// </summary>
+    /// <summary>
+    /// Handles the mouse up (click) event
+    /// </summary>
     void OnMouseUp()
     {
-        if (EasyFlag)
-        {
-            GameContext.m_context.m_gameDifficulty = DifficultyEnum.EASY;
-        }
+        IDifficulty difficulty = GetDifficulty();
 
-        else if (MediumFlag)
-        {
-            GameContext.m_context.m_gameDifficulty = DifficultyEnum.MEDIUM;
-        }
-
-        else if (HardFlag)
-        {
-            GameContext.m_context.m_gameDifficulty = DifficultyEnum.HARD;
-        }
-
-        else if (EpicFlag)
-        {
-            GameContext.m_context.m_gameDifficulty = DifficultyEnum.EPIC;
-        }
+        GameContext.m_context.difficulty = difficulty;
 
         // TODO: Look at logic in GameManager to reflect difficulty and to set scoring algorithm
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);

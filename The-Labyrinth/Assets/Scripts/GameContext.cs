@@ -17,7 +17,10 @@ public class GameContext : MonoBehaviour
 
     public MazeStructure.Maze2D m_currentMaze;
 
-    public DifficultyEnum m_gameDifficulty;
+    /// <summary>
+    /// Specifies the difficulty level of the game
+    /// </summary>
+    public IDifficulty difficulty;
 
     // Unity Methods
     void Awake()

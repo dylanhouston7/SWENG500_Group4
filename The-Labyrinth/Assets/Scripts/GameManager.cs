@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
+using Assets.Scripts.DifficultySettings;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class GameManager : MonoBehaviour
     // Public Prefab References
     public Player playerPrefab;
 
-    // Private Memebers
+    // Private Members
     private UnityAction m_handleEventRenderMazeCompleted;
     private UnityAction m_handleEventCompletedMaze;
 
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GameManager: Generating Maze");
 
                 // Get a default maze structure of defined size
-                GameContext.m_context.m_currentMaze = MazeStructure.Maze2D.GetInstance(5, 5);
+                GameContext.m_context.m_currentMaze = GameContext.m_context.difficulty.GetRandomMaze();
 
                 // Modify the default maze structure with the maze generation algorithm
                 MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_currentMaze);
@@ -60,21 +61,14 @@ public class GameManager : MonoBehaviour
 
                 // Set Maze Properties:
                 GameContext.m_context.m_currentMaze.Name = "Auto Generated";
-                GameContext.m_context.m_currentMaze.Difficulty = MazeStructure.Maze2D.DifficultyLevelEnum.kEasy;
             }
 
             // Publish Event: RenderMaze
             EventManager.TriggerEvent("RenderMaze");
             textCurrentMazeName.text = GameContext.m_context.m_currentMaze.Name;
-            string mazeDifficultyLevelString = "";
-            switch (GameContext.m_context.m_currentMaze.Difficulty)
-            {
-                case MazeStructure.Maze2D.DifficultyLevelEnum.kEasy: mazeDifficultyLevelString = "Easy"; break;
-                case MazeStructure.Maze2D.DifficultyLevelEnum.kNormal: mazeDifficultyLevelString = "Normal"; break;
-                case MazeStructure.Maze2D.DifficultyLevelEnum.kHard: mazeDifficultyLevelString = "Hard"; break;
-                case MazeStructure.Maze2D.DifficultyLevelEnum.kEpic: mazeDifficultyLevelString = "Epic"; break;
-            };
-            textCurrentMazeDifficultyLevel.text = mazeDifficultyLevelString;
+
+            // Set the difficulty mode string
+            textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
         }
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.Timer;
+using MazeStructure;
 
 namespace Assets.Scripts.DifficultySettings
 {
@@ -30,6 +31,19 @@ namespace Assets.Scripts.DifficultySettings
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public string DifficultyString
+        {
+            get
+            {
+                return "MEDIUM";
+            }
+        }
+
+        public Maze2D GetRandomMaze()
+        {
+            return MazeStructure.Maze2D.GetInstance(10, 10);
         }
     }
 }

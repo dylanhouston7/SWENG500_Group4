@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.DifficultySettings;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -20,9 +21,9 @@ namespace MazeStructure
             get { return m_name; }
         }
 
-        public enum DifficultyLevelEnum { kEasy, kNormal, kHard, kEpic };
-        private DifficultyLevelEnum m_difficulty_level = DifficultyLevelEnum.kNormal;
-        public DifficultyLevelEnum Difficulty
+        private DifficultyEnum m_difficulty_level = DifficultyEnum.MEDIUM;
+
+        public DifficultyEnum Difficulty
         {
             set { m_difficulty_level = value; }
             get { return m_difficulty_level; }

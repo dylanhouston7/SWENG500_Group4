@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Assets.Scripts.DifficultySettings;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -81,31 +82,32 @@ public class MazeGenerator : MonoBehaviour
             GameContext.m_context.m_currentMaze.Name = inputFieldMazeName.text;
 
             // Set Maze Difficulty Property
-            MazeStructure.Maze2D.DifficultyLevelEnum mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kEasy;
+            DifficultyEnum mazeDifficultyLevel;
             switch(dropDownMazeDifficultyLevel.value)
             {
                 case 0: // Easy
                     {
-                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kEasy;
+                        mazeDifficultyLevel = DifficultyEnum.EASY;
                         break;
                     }
                 case 1: // Normal
                     {
-                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kNormal;
+                        mazeDifficultyLevel = DifficultyEnum.MEDIUM;
                         break;
                     }
                 case 2: // Hard
                     {
-                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kHard;
+                        mazeDifficultyLevel = DifficultyEnum.HARD;
                         break;
                     }
                 case 3: // Epic
                     {
-                        mazeDifficultyLevel = MazeStructure.Maze2D.DifficultyLevelEnum.kEpic;
+                        mazeDifficultyLevel = DifficultyEnum.EPIC;
                         break;
                     }
                 default:
                     {
+                        mazeDifficultyLevel = DifficultyEnum.EASY;
                         break;
                     }
             };
