@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿// File: DifficultyMenu.cs
+// Description: Script for the DifficultyMenu
+// Author: Dylan Houston
+
+using UnityEngine;
 using System.Collections;
 using Assets;
 using Assets.Scripts.DifficultySettings;
@@ -47,6 +51,9 @@ public class DifficultyMenu : MonoBehaviour
 	
 	}
 
+    /// <summary>
+    /// Updates the description text on the Difficulty Menu, based on what difficulty level is hovered over.
+    /// </summary>
     void OnMouseEnter()
     {
         IDifficulty difficulty = GetDifficulty();

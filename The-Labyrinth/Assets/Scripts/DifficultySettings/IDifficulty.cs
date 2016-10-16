@@ -17,19 +17,23 @@ namespace Assets.Scripts.DifficultySettings
         /// </summary>
         DifficultyEnum Difficulty {get;}
 
+        /// <summary>
+        /// The difficulty type
+        /// </summary>
         string Description { get; }
 
         /// <summary>
-        /// The timer to use for the difficulty
         /// </summary>
         ITimer timer { get;}
 
+        /// <summary>
+        /// The difficulty type
+        /// </summary>
         string DifficultyString { get; }
 
         /// <summary>
-        /// Returns a random maze for this difficulty level.
+        /// The difficulty type
         /// </summary>
-        /// <returns>A random maze</returns>
-       Maze2D GetRandomMaze();
+        Maze2D GetRandomMaze();
     }
 }

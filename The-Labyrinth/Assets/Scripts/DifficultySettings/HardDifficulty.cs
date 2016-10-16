@@ -1,4 +1,8 @@
-﻿using System;
+﻿// File: HardDifficulty.cs
+// Description: Represents the Hard difficulty level
+// Author: Dylan Houston
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,16 +11,14 @@ using MazeStructure;
 
 namespace Assets.Scripts.DifficultySettings
 {
+    /// <summary>
+    /// Class for the Hard difficulty
+    /// </summary>
     public class HardDifficulty : IDifficulty
     {
-        public string Description
-        {
-            get
-            {
-                return "This difficulty does have timing restrictions, and the mazes are bigger than medium mode.";
-            }
-        }
-
+        /// <summary>
+        /// The difficulty type
+        /// </summary>
         public DifficultyEnum Difficulty
         {
             get
@@ -25,6 +27,20 @@ namespace Assets.Scripts.DifficultySettings
             }
         }
 
+        /// <summary>
+        /// The difficulty type
+        /// </summary>
+        public string Description
+        {
+            get
+            {
+                return "This difficulty does have timing restrictions, and the mazes are bigger than medium mode.";
+            }
+        }
+
+        /// <summary>
+        /// The timer to use
+        /// </summary>
         public ITimer timer
         {
             get
@@ -33,6 +49,9 @@ namespace Assets.Scripts.DifficultySettings
             }
         }
 
+        /// <summary>
+        /// The difficulty type
+        /// </summary>
         public string DifficultyString
         {
             get
@@ -41,6 +60,9 @@ namespace Assets.Scripts.DifficultySettings
             }
         }
 
+        /// <summary>
+        /// The difficulty type
+        /// </summary>
         public Maze2D GetRandomMaze()
         {
             return MazeStructure.Maze2D.GetInstance(15, 15);
