@@ -34,7 +34,7 @@ namespace Assets.Scripts.DifficultySettings
         {
             get
             {
-                return "This difficulty is the easiest, with no timing restrictions. The player does not get many points in this mode.";
+                return "Easiest mode with no timing restrictions.";
             }
         }
 

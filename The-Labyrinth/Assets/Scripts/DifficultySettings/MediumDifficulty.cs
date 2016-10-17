@@ -34,7 +34,7 @@ namespace Assets.Scripts.DifficultySettings
         {
             get
             {
-                return "This difficulty does not have timing restrictions, but the mazes are bigger than easy mode.";
+                return "No timing restrictions, but the mazes are bigger than easy mode.";
             }
         }
 
