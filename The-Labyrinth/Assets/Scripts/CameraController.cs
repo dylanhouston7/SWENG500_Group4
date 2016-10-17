@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     //Offset
     private Vector3 offset;
 
-    private Rigidbody rigidbody;
+    new Rigidbody rigidbody;
 
     public float distance = 5.0f;
     public float xSpeed = 120.0f;
@@ -26,8 +26,8 @@ public class CameraController : MonoBehaviour
 
     float sensitivity = 10f;
 
-    float x = 0.1f;
-    float y = 0.1f;
+    float x = 0.0f;
+    float y = 0.0f;
 
     void Start()
     {
@@ -84,7 +84,7 @@ public class CameraController : MonoBehaviour
             distance -= hit.distance;
         }
 
-        Vector3 negDistance = new Vector3(0.1f, 0.1f, -distance);
+        Vector3 negDistance = new Vector3(0f, 0f, -distance);
         Vector3 position = rotation * negDistance + target.position;
 
         transform.rotation = rotation;
