@@ -42,43 +42,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // Load/Generate a Maze Level
-        if (GameContext.m_context.m_currentMaze.IsNull())
-        {
-            if(GameContext.m_context.m_nextMazeIndex < GameContext.m_context.m_installedMazes.Count)
-            {
-                Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_nextMazeIndex);
-
-                GameContext.m_context.m_currentMaze = GameContext.m_context.m_installedMazes[GameContext.m_context.m_nextMazeIndex];
-
-                ++GameContext.m_context.m_nextMazeIndex;
-            }
-            else
-            {
-                Debug.Log("GameManager: Generating Maze");
-
-                // Get a default maze structure of defined size
-                GameContext.m_context.m_currentMaze = GameContext.m_context.difficulty.GetRandomMaze();
-
-                // Modify the default maze structure with the maze generation algorithm
-                MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_currentMaze);
-
-                // Solve the generated maze with the maze solving algorithm
-                MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_currentMaze);
-
-                // Set Maze Properties:
-                GameContext.m_context.m_currentMaze.Name = "Auto Generated";
-            }
-
-            // Publish Event: RenderMaze
-            EventManager.TriggerEvent("RenderMaze");
-            textCurrentMazeName.text = GameContext.m_context.m_currentMaze.Name;
-
-            // Set the difficulty mode string
-            textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
-        }
-
-
         // *************************************************************************
         // *************************************************************************
         // TEST CODE: Shows the Maze Solution
@@ -104,6 +67,47 @@ public class GameManager : MonoBehaviour
     {
         EventManager.StartListening("CompletedMaze", m_handleEventCompletedMaze);
         EventManager.StartListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);
+
+
+        // Load Mazes
+        if(!GameContext.m_context.m_installedMazesLoaded)
+        {
+            GameContext.m_context.LoadMazes();
+        }
+
+
+        // Load/Generate a Maze Level
+        if (GameContext.m_context.m_nextMazeIndex < GameContext.m_context.m_installedMazes[(int)GameContext.m_context.difficulty.Difficulty].Count)
+        {
+            Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_nextMazeIndex);
+
+            GameContext.m_context.m_currentMaze = GameContext.m_context.m_installedMazes[(int)GameContext.m_context.difficulty.Difficulty][GameContext.m_context.m_nextMazeIndex];
+
+            ++GameContext.m_context.m_nextMazeIndex;
+        }
+        else
+        {
+            Debug.Log("GameManager: Generating Maze");
+
+            // Get a default maze structure of defined size
+            GameContext.m_context.m_currentMaze = GameContext.m_context.difficulty.GetRandomMaze();
+
+            // Modify the default maze structure with the maze generation algorithm
+            MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_currentMaze);
+
+            // Solve the generated maze with the maze solving algorithm
+            MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_currentMaze);
+
+            // Set Maze Properties:
+            GameContext.m_context.m_currentMaze.Name = "Auto Generated";
+        }
+
+        // Publish Event: RenderMaze
+        EventManager.TriggerEvent("RenderMaze");
+        textCurrentMazeName.text = GameContext.m_context.m_currentMaze.Name;
+
+        // Set the difficulty mode string
+        textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
     }
 
     void OnDisable()

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using Assets.Scripts.DifficultySettings;
 
 public class MazeGenerator : MonoBehaviour
@@ -15,12 +16,20 @@ public class MazeGenerator : MonoBehaviour
     public Dropdown dropDownMazeDifficultyLevel;
     public Slider sliderTimeToCompleteMaze;
 
-    public Text textCountStoredMazes;
+    public Text textCountStoredEasyMazes;
+    public Text textCountStoredMediumMazes;
+    public Text textCountStoredHardMazes;
+    public Text textCountStoredEpicMazes;
 
     void Start()
     {
         // Update Displayed Count of Stored Mazes
-        textCountStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
+        UpdateMazeCounts();
+    }
+
+    void OnDisable()
+    {
+        GameContext.m_context.SaveMazes();
     }
 
     public void GenerateMaze()
@@ -90,7 +99,7 @@ public class MazeGenerator : MonoBehaviour
                         mazeDifficultyLevel = DifficultyEnum.EASY;
                         break;
                     }
-                case 1: // Normal
+                case 1: // Medium
                     {
                         mazeDifficultyLevel = DifficultyEnum.MEDIUM;
                         break;
@@ -123,20 +132,31 @@ public class MazeGenerator : MonoBehaviour
                 GameContext.m_context.m_currentMaze.TimeToCompleteMaze = -1;
             }
 
-            // Add Maze to list of stored mazes
-            GameContext.m_context.m_installedMazes.Add(GameContext.m_context.m_currentMaze);
+            // Add Maze to list of stored mazes of same difficulty
+            GameContext.m_context.m_installedMazes[(int)mazeDifficultyLevel].Add(GameContext.m_context.m_currentMaze);
 
             // Update Displayed Count of Stored Mazes
-            textCountStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
+            UpdateMazeCounts();
         }
     }
     
     public void ClearStoredMazes()
     {
         // Clear list of stored mazes
-        GameContext.m_context.m_installedMazes.Clear();
+        foreach(List<MazeStructure.Maze2D> mazes in GameContext.m_context.m_installedMazes)
+        {
+            mazes.Clear();
+        }        
 
         // Update Displayed Count of Stored Mazes
-        textCountStoredMazes.text = GameContext.m_context.m_installedMazes.Count.ToString();
-    }    
+        UpdateMazeCounts();
+    }
+
+    void UpdateMazeCounts()
+    {
+        textCountStoredEasyMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.EASY].Count.ToString();
+        textCountStoredMediumMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.MEDIUM].Count.ToString();
+        textCountStoredHardMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.HARD].Count.ToString();
+        textCountStoredEpicMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.EPIC].Count.ToString();
+    }
 }
