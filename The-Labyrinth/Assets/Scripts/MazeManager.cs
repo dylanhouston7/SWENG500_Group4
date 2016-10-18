@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+
 using System.Collections;
 using System.Collections.Generic;
 
@@ -16,7 +17,7 @@ public class MazeManager : MonoBehaviour
     {
         get
         {
-            int result = -1;
+            int result = 0;
             if (mazeInstance != null)
             {
                 result = mazeInstance.GetLength(0);
@@ -28,7 +29,7 @@ public class MazeManager : MonoBehaviour
     {
         get
         {
-            int result = -1;
+            int result = 0;
             if (mazeInstance != null)
             {
                 result = mazeInstance.GetLength(1);
@@ -37,17 +38,33 @@ public class MazeManager : MonoBehaviour
         }
     }
 
+    public int MazeSolutionSize
+    {
+        get
+        {
+            int result = 0;
+            if(mazeSolution != null)
+            {
+                result = mazeSolution.Count;
+            }
+
+            return result;
+        }
+    }        
+
     // Private Members
     private UnityAction handleEventRenderMaze;
     private UnityAction handleEventShowMazeSolution;
     private UnityAction handleEventResetMaze;
+
     private MazeCell[,] mazeInstance = null;
+    private List<MazeCell> mazeSolution = null;
 
     void Awake()
     {
         // Initialize Event Handlers
-        handleEventRenderMaze = new UnityAction(RenderMaze);
-        handleEventShowMazeSolution = new UnityAction(ShowMazeSolution);
+        handleEventRenderMaze = new UnityAction(EventHandleRenderMaze);
+        handleEventShowMazeSolution = new UnityAction(EventHandleShowMazeSolution);
         handleEventResetMaze = new UnityAction(ResetMaze);
     }
 
@@ -65,70 +82,114 @@ public class MazeManager : MonoBehaviour
         EventManager.StopListening("ResetMaze", handleEventResetMaze);
     }
 
-    // Other Methods
-    public void RenderMaze()
+    public void EventHandleRenderMaze()
     {
-        Debug.Log("MazeManager: RenderMaze Method Called!");
+        Debug.Log("MazeManager: Event Handler RenderMaze Method Called!");
 
-        // Render Maze Structure
-        mazeInstance = new MazeCell[GameContext.m_context.m_currentMaze.SizeX, GameContext.m_context.m_currentMaze.SizeZ];
-        for (int x = 0; x < GameContext.m_context.m_currentMaze.SizeX; ++x)
+        RenderMaze(GameContext.m_context.m_activeMaze);
+    }
+
+    public void EventHandleShowMazeSolution()
+    {
+        Debug.Log("MazeManager: Event Handler ShowMazeSolution Method Called!");
+
+        ShowMazeSolution();
+    }
+
+    public void EventHandleResetMaze()
+    {
+        Debug.Log("MazeManager: Event Handler ResetMaze Method Called!");
+
+        ResetMaze();
+    }
+
+    // Other Methods
+
+    /// <summary>
+    /// Renders the defined maze structure
+    /// </summary>
+    /// <param name="maze">The defined maze structure to render</param>
+    public void RenderMaze(MazeStructure.Maze2D maze)
+    {
+        if (maze != null &&
+           !maze.IsNull())
         {
-            for (int z = 0; z < GameContext.m_context.m_currentMaze.SizeZ; ++z)
+            // Ensure only one maze instance is ever rendered at a time 
+            if (mazeInstance != null)
             {
-                // Get the Cell Structure Blueprint for the Cell
-                MazeStructure.Cell2D cell = GameContext.m_context.m_currentMaze.GetCell(x, z);
+                ResetMaze();
+            }
 
-                // Build Maze Cell from the CellStructure Blueprint
-                mazeInstance[x, z] = Instantiate(cellPrefab, transform) as MazeCell;
-                if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kLeft]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kLeft); };
-                if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kRight]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kRight); };
-                if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kFront]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kFront); };
-                if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kBack]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kBack); };
-                if (cell.HasAllWalls()) { mazeInstance[x, z].BuildCellCeiling(); }
 
-                // Position the Maze Cell
-                mazeInstance[x, z].transform.localPosition = new Vector3(x, 0, z);
+            // Render Maze Structure
+            mazeInstance = new MazeCell[maze.SizeX, maze.SizeZ];
+            mazeSolution = new List<MazeCell>();
 
-                // Set Cell Properties
-                // - Cell Type
-                // - Cell is part of the maze solution
-
-                // Set Cell Type property
-                switch (cell.CellType)
+            for (int x = 0; x < maze.SizeX; ++x)
+            {
+                for (int z = 0; z < maze.SizeZ; ++z)
                 {
-                    case MazeStructure.Cell2D.CellTypeEnum.kStandardCell:
-                        {
-                            mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStandard;
-                            break;
-                        }
-                    case MazeStructure.Cell2D.CellTypeEnum.kStartCell:
-                        {
-                            // Start Cell:
-                            // - Add Start Cell Behavior to Cell
-                            // - Instantiate Player GameObject and position in Maze
+                    // Get the Cell Structure Blueprint for the Cell
+                    MazeStructure.Cell2D cell = maze.GetCell(x, z);
 
-                            mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStart;
+                    // Build Maze Cell from the CellStructure Blueprint
+                    mazeInstance[x, z] = Instantiate(cellPrefab, transform) as MazeCell;
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kLeft]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kLeft); };
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kRight]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kRight); };
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kFront]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kFront); };
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kBack]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kBack); };
+                    if (cell.HasAllWalls()) { mazeInstance[x, z].BuildCellCeiling(); }
 
-                            break;
-                        }
-                    case MazeStructure.Cell2D.CellTypeEnum.kEndCell:
-                        {
-                            // End Cell:
-                            // - Add End Cell Behavior to Cell
+                    // Position the Maze Cell
+                    mazeInstance[x, z].transform.localPosition = new Vector3(x, 0, z);
 
-                            mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kEnd;
+                    // Set Cell Properties
+                    // - Cell Type
+                    // - Cell is part of the maze solution
 
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
-                };
+                    // Set Cell Type property
+                    switch (cell.CellType)
+                    {
+                        case MazeStructure.Cell2D.CellTypeEnum.kStandardCell:
+                            {
+                                mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStandard;
+                                break;
+                            }
+                        case MazeStructure.Cell2D.CellTypeEnum.kStartCell:
+                            {
+                                // Start Cell:
+                                // - Add Start Cell Behavior to Cell
+                                // - Instantiate Player GameObject and position in Maze
 
-                // Set Cell IsSolution property
-                mazeInstance[x, z].IsSolutionCell = cell.IsSolutionCell;
+                                mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kStart;
+
+                                break;
+                            }
+                        case MazeStructure.Cell2D.CellTypeEnum.kEndCell:
+                            {
+                                // End Cell:
+                                // - Add End Cell Behavior to Cell
+
+                                mazeInstance[x, z].CellType = MazeCell.CellTypeEnum.kEnd;
+
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    };
+
+                    // Set Cell IsSolution property
+                    mazeInstance[x, z].IsSolutionCell = cell.IsSolutionCell;
+
+
+                    // Store References to the Maze Solution Cells
+                    if (mazeInstance[x, z].IsSolutionCell)
+                    {
+                        mazeSolution.Add(mazeInstance[x, z]);
+                    }
+                }
             }
         }
 
@@ -136,21 +197,47 @@ public class MazeManager : MonoBehaviour
         EventManager.TriggerEvent("RenderMazeCompleted");
     }
 
+    /// <summary>
+    /// Show the entire maze solution
+    /// </summary>
     public void ShowMazeSolution()
     {
-        Debug.Log("MazeManager: ShowMazeSolution Method Called!");
-
-        foreach(MazeStructure.Cell2D cell in GameContext.m_context.m_currentMaze.MazeSolutionPath)
+        if(mazeSolution != null)
         {
-            mazeInstance[cell.PositionX, cell.PositionZ].ShowSolutionCell();
+            foreach (MazeCell cell in mazeSolution)
+            {
+                cell.ShowSolutionCell();
+            }
         }
     }
 
+    /// <summary>
+    /// Show a specific portion of the maze solution
+    /// </summary>
+    /// <param name="startSolutionCellIndex">The start index of the maze solution to begin at inclusively</param>
+    /// <param name="endSolutionCellIndex">The end index of the maze solution to end at inclusively</param>
+    public void ShowMazeSolution(int startSolutionCellIndex, int endSolutionCellIndex)
+    {
+        if (mazeSolution != null &&
+           startSolutionCellIndex >= 0 &&
+           startSolutionCellIndex < MazeSolutionSize &&
+           endSolutionCellIndex >= 0 &&
+           endSolutionCellIndex < MazeSolutionSize)
+        {
+            for (int index = startSolutionCellIndex; index <= endSolutionCellIndex; ++index)
+            {
+                mazeSolution[index].ShowSolutionCell();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Resets the maze instance and solution destroying all maze GameObjects
+    /// </summary>
     public void ResetMaze()
     {
-        Debug.Log("MazeManager: ResetMaze Method Called!");
-
-        if(mazeInstance != null)
+        // Reset Maze Instance
+        if (mazeInstance != null)
         {
             for (int x = 0; x < MazeSizeX; ++x)
             {
@@ -161,6 +248,14 @@ public class MazeManager : MonoBehaviour
             }
 
             mazeInstance = null;
+        }
+
+        // Reset Maze Instance Solution
+        if (mazeSolution != null)
+        {
+            mazeSolution.Clear();
+
+            mazeSolution = null;
         }
     }
 }

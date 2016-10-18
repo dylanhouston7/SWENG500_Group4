@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+
 using System.Collections;
 using System.Collections.Generic;
+
 using Assets.Scripts.DifficultySettings;
 
 public class MazeGenerator : MonoBehaviour
 {
+    public MazeManager mazeManagerRef;
+
     public Camera mainCamera;
     public Slider sliderMazeSizeX;
     public Slider sliderMazeSizeZ;
@@ -21,23 +25,34 @@ public class MazeGenerator : MonoBehaviour
     public Text textCountStoredHardMazes;
     public Text textCountStoredEpicMazes;
 
-    void Start()
+    private MazeStructure.Maze2D activeMaze;
+    private List<MazeStructure.Maze2D> easyMazes;
+    private List<MazeStructure.Maze2D> mediumMazes;
+    private List<MazeStructure.Maze2D> hardMazes;
+    private List<MazeStructure.Maze2D> epicMazes;
+
+    public void Awake()
     {
-        // Update Displayed Count of Stored Mazes
-        UpdateMazeCounts();
+        activeMaze = null;
+
+        easyMazes = new List<MazeStructure.Maze2D>();
+        mediumMazes = new List<MazeStructure.Maze2D>();
+        hardMazes = new List<MazeStructure.Maze2D>();
+        epicMazes = new List<MazeStructure.Maze2D>();
     }
 
-    void OnDisable()
+    public void Start()
     {
-        GameContext.m_context.SaveMazes();
+        UpdateMazeCounts();
     }
 
     public void GenerateMaze()
     {
-        EventManager.TriggerEvent("ResetMaze");
+        // Reset Maze before Rendering the Generated Maze
+        mazeManagerRef.ResetMaze();
 
         // Create a Default Maze of defined size
-        GameContext.m_context.m_currentMaze = MazeStructure.Maze2D.GetInstance((int)sliderMazeSizeX.value, (int)sliderMazeSizeZ.value);
+        activeMaze = MazeStructure.Maze2D.GetInstance((int)sliderMazeSizeX.value, (int)sliderMazeSizeZ.value);
 
         // Run the Selected Maze Generation Algorithm on Default Maze instance
         MazeStructure.MazeGenerator.MazeGenAlgorithmEnum mazeGenAlgorithm = MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch;
@@ -58,12 +73,13 @@ public class MazeGenerator : MonoBehaviour
                     break;
                 }
         };
-        MazeStructure.MazeGenerator.Generate(mazeGenAlgorithm, GameContext.m_context.m_currentMaze);
+        MazeStructure.MazeGenerator.Generate(mazeGenAlgorithm, activeMaze);
 
         // Run Maze Solver Algorithm on Generated Maze
-        MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_currentMaze);
+        MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, activeMaze);
 
-        EventManager.TriggerEvent("RenderMaze");
+        // Render the Generated Maze Structure
+        mazeManagerRef.RenderMaze(activeMaze);
 
         // Position Camera over maze
         mainCamera.transform.position = new Vector3(sliderMazeSizeX.value / 2.0f, 30, sliderMazeSizeZ.value / 2.0f);
@@ -71,15 +87,15 @@ public class MazeGenerator : MonoBehaviour
 
     public void ViewMazeSolution()
     {
-        textMazeSolutionPathLenValue.text = GameContext.m_context.m_currentMaze.MazeSolutionPath.Count.ToString();
+        textMazeSolutionPathLenValue.text = mazeManagerRef.MazeSolutionSize.ToString();
 
-        EventManager.TriggerEvent("ShowMazeSolution");
+        mazeManagerRef.ShowMazeSolution();
     }
 
     public void StoreMaze()
     {
-        if (GameContext.m_context.m_currentMaze != null &&
-           !GameContext.m_context.m_currentMaze.IsNull())
+        if (activeMaze != null &&
+           !activeMaze.IsNull())
         {
             // Set Maze Properties:
             // - Name
@@ -87,12 +103,79 @@ public class MazeGenerator : MonoBehaviour
             // - Time to Complete
             // TODO: Implement
 
-            // Set Maze Name Property
-            GameContext.m_context.m_currentMaze.Name = inputFieldMazeName.text;
+            SetMazeNameProperty(activeMaze);
+            SetMazeDifficultyProperty(activeMaze);
+            SetMazeTimeToCompleteProperty(activeMaze);
 
+
+            // Store the maze to the maze list of like difficulty
+            switch(activeMaze.Difficulty)
+            {
+                case DifficultyEnum.EASY:
+                    {
+                        easyMazes.Add(activeMaze);
+                        break;
+                    }
+                case DifficultyEnum.MEDIUM:
+                    {
+                        mediumMazes.Add(activeMaze);
+                        break;
+                    }
+                case DifficultyEnum.HARD:
+                    {
+                        hardMazes.Add(activeMaze);
+                        break;
+                    }
+                case DifficultyEnum.EPIC:
+                    {
+                        epicMazes.Add(activeMaze);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            };
+
+            // Update Displayed Count of Stored Mazes
+            UpdateMazeCounts();
+        }
+    }
+    
+    public void SaveMazes()
+    {
+        MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/EasyMazes.dat", easyMazes);
+        MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/MediumMazes.dat", mediumMazes);
+        MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/HardMazes.dat", hardMazes);
+        MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/EpicMazes.dat", epicMazes);
+    }
+
+    public void LoadMazes()
+    {
+        MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/EasyMazes.dat", ref easyMazes);
+        MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/MediumMazes.dat", ref mediumMazes);
+        MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/HardMazes.dat", ref hardMazes);
+        MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/EpicMazes.dat", ref epicMazes);
+
+        UpdateMazeCounts();
+    }
+
+    private void SetMazeNameProperty(MazeStructure.Maze2D maze)
+    {
+        if(maze != null)
+        {
+            // Set Maze Name Property
+            activeMaze.Name = inputFieldMazeName.text;
+        }
+    }
+
+    private void SetMazeDifficultyProperty(MazeStructure.Maze2D maze)
+    {
+        if(maze != null)
+        {
             // Set Maze Difficulty Property
-            DifficultyEnum mazeDifficultyLevel;
-            switch(dropDownMazeDifficultyLevel.value)
+            DifficultyEnum mazeDifficultyLevel = DifficultyEnum.EASY;
+            switch (dropDownMazeDifficultyLevel.value)
             {
                 case 0: // Easy
                     {
@@ -116,37 +199,76 @@ public class MazeGenerator : MonoBehaviour
                     }
                 default:
                     {
-                        mazeDifficultyLevel = DifficultyEnum.EASY;
                         break;
                     }
             };
-            GameContext.m_context.m_currentMaze.Difficulty = mazeDifficultyLevel;
+            maze.Difficulty = mazeDifficultyLevel;
+        }        
+    }
 
-            // Set Maze Time to Complete Property
-            if(sliderTimeToCompleteMaze.value < 3600)
-            {
-                GameContext.m_context.m_currentMaze.TimeToCompleteMaze = (int)sliderTimeToCompleteMaze.value;
-            }
-            else
-            {
-                GameContext.m_context.m_currentMaze.TimeToCompleteMaze = -1;
-            }
-
-            // Add Maze to list of stored mazes of same difficulty
-            GameContext.m_context.m_installedMazes[(int)mazeDifficultyLevel].Add(GameContext.m_context.m_currentMaze);
-
-            // Update Displayed Count of Stored Mazes
-            UpdateMazeCounts();
+    private void SetMazeTimeToCompleteProperty(MazeStructure.Maze2D maze)
+    {
+        // Set Maze Time to Complete Property
+        if (sliderTimeToCompleteMaze.value < 3600)
+        {
+            maze.TimeToCompleteMaze = (int)sliderTimeToCompleteMaze.value;
+        }
+        else
+        {
+            maze.TimeToCompleteMaze = -1;
         }
     }
-    
+
+    public void ResetActiveMaze()
+    {
+        mazeManagerRef.ResetMaze();
+
+        textMazeSolutionPathLenValue.text = "";
+
+        activeMaze = null;
+    }
+
     public void ClearStoredMazes()
     {
-        // Clear list of stored mazes
-        foreach(List<MazeStructure.Maze2D> mazes in GameContext.m_context.m_installedMazes)
+        // Clear all Mazes
+        easyMazes.Clear();
+        mediumMazes.Clear();
+        hardMazes.Clear();
+        epicMazes.Clear();        
+
+        // Update Displayed Count of Stored Mazes
+        UpdateMazeCounts();
+    }
+
+    public void ClearStoredMazes(DifficultyEnum mazeList)
+    {
+        switch (mazeList)
         {
-            mazes.Clear();
-        }        
+            case DifficultyEnum.EASY:
+                {
+                    easyMazes.Clear();
+                    break;
+                }
+            case DifficultyEnum.MEDIUM:
+                {
+                    mediumMazes.Clear();
+                    break;
+                }
+            case DifficultyEnum.HARD:
+                {
+                    hardMazes.Clear();
+                    break;
+                }
+            case DifficultyEnum.EPIC:
+                {
+                    epicMazes.Clear();
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        };
 
         // Update Displayed Count of Stored Mazes
         UpdateMazeCounts();
@@ -154,9 +276,9 @@ public class MazeGenerator : MonoBehaviour
 
     void UpdateMazeCounts()
     {
-        textCountStoredEasyMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.EASY].Count.ToString();
-        textCountStoredMediumMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.MEDIUM].Count.ToString();
-        textCountStoredHardMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.HARD].Count.ToString();
-        textCountStoredEpicMazes.text = GameContext.m_context.m_installedMazes[(int)DifficultyEnum.EPIC].Count.ToString();
+        textCountStoredEasyMazes.text = easyMazes.Count.ToString();
+        textCountStoredMediumMazes.text = mediumMazes.Count.ToString();
+        textCountStoredHardMazes.text = hardMazes.Count.ToString();
+        textCountStoredEpicMazes.text = epicMazes.Count.ToString();
     }
 }
