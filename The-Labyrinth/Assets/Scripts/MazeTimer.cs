@@ -84,7 +84,7 @@ public class MazeTimer : MonoBehaviour
         // Create the label
         string timesUpLabel = "Time's Up!";
 
-        gameManager = GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         gameManager.textMazeTimer.text = timesUpLabel;
     }

@@ -184,6 +184,7 @@ public class GameManager : MonoBehaviour
 
             this.createPlayerCamera();
         }
+
     }
 
     private void createPlayerCamera()
@@ -204,7 +205,7 @@ public class GameManager : MonoBehaviour
         playerCam.gameObject.AddComponent<CameraController>().player = tp.gameObject;
 
         //Set initial Position
-        playerCam.transform.position = new Vector3(x, y + 2, z - 2);
+        playerCam.transform.position = new Vector3(x, y + 1, z - 0.2f);
         playerCam.gameObject.transform.Rotate(new Vector3(xCameraRotate, 0, 0));
 
         //Destroy origional camera

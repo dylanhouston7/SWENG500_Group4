@@ -423,7 +423,8 @@ MonoBehaviour:
   textCurrentMazeName: {fileID: 308380210}
   textCurrentMazeDifficultyLevel: {fileID: 402503229}
   textMazeTimer: {fileID: 1894715780}
-  playerPrefab: {fileID: 0}
+  tp: {fileID: 0}
+  xCameraRotate: 45
 --- !u!4 &664337028
 Transform:
   m_ObjectHideFlags: 0
@@ -831,7 +832,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 128.7, y: -18.6}
+  m_AnchoredPosition: {x: 128.7, y: -17.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1894715780
