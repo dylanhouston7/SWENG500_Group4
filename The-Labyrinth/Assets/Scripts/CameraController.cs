@@ -4,35 +4,42 @@ using System.Collections;
 public class CameraController : MonoBehaviour
 {
 
-    //Player Object
+    //Public Members
     public GameObject player;
-
-    private Transform target;
-
-    //Offset
-    private Vector3 offset;
-
-    new Rigidbody rigidbody;
-
     public float distance = 5.0f;
     public float xSpeed = 120.0f;
     public float ySpeed = 120.0f;
-
     public float yMinLimit = 0f;
     public float yMaxLimit = 45f;
-
     public float distanceMin = 15f;
     public float distanceMax = 90f;
 
-    float sensitivity = 10f;
+    //Private Members
+    private new Rigidbody rigidbody;
+    private Quaternion qOrg;
 
-    float x = 0.0f;
-    float y = 0.0f;
+    private float sensitivity = 10f;
+    private float x = 0.0f;
+    private float y = 0.0f;
+
+    [SerializeField]
+    private Transform target;
+
+    [SerializeField]
+    private Vector3 offsetPosition;
+
+    [SerializeField]
+    private Space offsetPositionSpace = Space.Self;
+
+    [SerializeField]
+    private bool lookAt = true;
 
     void Start()
     {
+        target = player.transform;
+
         //Set Offset
-        offset = transform.position - player.transform.position;
+        offsetPosition = transform.position - target.position;
 
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
@@ -45,26 +52,41 @@ public class CameraController : MonoBehaviour
         {
             rigidbody.freezeRotation = true;
         }
-
-        target = player.transform;
-
     }
 
     void Update()
     {
+        //Zoom in/out
         this.cameraZoom();
 
-        if(Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1))
         {
+            //Get position of camera to snap back to
+            if (qOrg.x == 0f)
+            {
+                qOrg = transform.rotation;
+            }
+
+            //Move camera with mouse
             this.moveCamera();
         }
-
+        else
+        {
+            //Moves camera with target object
+            Refresh();
+        }
+        
+        //Release of Right mouse click returns camera to origional position
+        if(Input.GetMouseButtonUp(1))
+        {
+            transform.rotation = qOrg;
+        }
     }
 
     void LateUpdate()
     { 
         //Set Position
-        transform.position = player.transform.position + offset;
+        transform.position = target.position + offsetPosition;
     }
 
     void moveCamera()
@@ -106,6 +128,23 @@ public class CameraController : MonoBehaviour
             angle += 360F;
         if (angle > 360F)
             angle -= 360F;
+
         return Mathf.Clamp(angle, min, max);
+    }
+
+    void Refresh()
+    {
+        // compute position
+        if (offsetPositionSpace == Space.Self)
+        {
+            transform.position = target.TransformPoint(offsetPosition);
+        }
+        else
+        {
+            transform.position = target.position + offsetPosition;
+        }
+
+        //Set rotation to rotation of target object
+        transform.rotation = target.rotation;
     }
 }
