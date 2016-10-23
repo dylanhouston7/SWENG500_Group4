@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+
 using System.Collections;
+using System.Collections.Generic;
+
 using Assets.Scripts.DifficultySettings;
 
 public class GameManager : MonoBehaviour
@@ -35,48 +38,11 @@ public class GameManager : MonoBehaviour
         m_handleEventCompletedMaze = new UnityAction(CompletedMaze);
 
         // Initialize GameContext Elements
-        GameContext.m_context.m_currentMaze = new MazeStructure.NullMaze();
+        GameContext.m_context.m_activeMaze = new MazeStructure.NullMaze();
     }
 
     void Update()
     {
-        // Load/Generate a Maze Level
-        if (GameContext.m_context.m_currentMaze.IsNull())
-        {
-            if(GameContext.m_context.m_nextMazeIndex < GameContext.m_context.m_installedMazes.Count)
-            {
-                Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_nextMazeIndex);
-
-                GameContext.m_context.m_currentMaze = GameContext.m_context.m_installedMazes[GameContext.m_context.m_nextMazeIndex];
-
-                ++GameContext.m_context.m_nextMazeIndex;
-            }
-            else
-            {
-                Debug.Log("GameManager: Generating Maze");
-
-                // Get a default maze structure of defined size
-                GameContext.m_context.m_currentMaze = GameContext.m_context.difficulty.GetRandomMaze();
-
-                // Modify the default maze structure with the maze generation algorithm
-                MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_currentMaze);
-
-                // Solve the generated maze with the maze solving algorithm
-                MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_currentMaze);
-
-                // Set Maze Properties:
-                GameContext.m_context.m_currentMaze.Name = "Auto Generated";
-            }
-
-            // Publish Event: RenderMaze
-            EventManager.TriggerEvent("RenderMaze");
-            textCurrentMazeName.text = GameContext.m_context.m_currentMaze.Name;
-
-            // Set the difficulty mode string
-            textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
-        }
-
-
         // *************************************************************************
         // *************************************************************************
         // TEST CODE: Shows the Maze Solution
@@ -102,6 +68,83 @@ public class GameManager : MonoBehaviour
     {
         EventManager.StartListening("CompletedMaze", m_handleEventCompletedMaze);
         EventManager.StartListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);
+
+
+        // Load Mazes
+        if(!GameContext.m_context.m_installedMazesLoaded)
+        {
+            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/EasyMazes.dat", ref GameContext.m_context.m_easyMazes);
+            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/MediumMazes.dat", ref GameContext.m_context.m_mediumMazes);
+            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/HardMazes.dat", ref GameContext.m_context.m_hardMazes);
+            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/EpicMazes.dat", ref GameContext.m_context.m_epicMazes);
+
+            GameContext.m_context.m_installedMazesLoaded = true;
+        }
+
+        // Set reference to the mazes of selected difficulty
+        List<MazeStructure.Maze2D> activeMazes = new List<MazeStructure.Maze2D>();
+        switch(GameContext.m_context.difficulty.Difficulty)
+        {
+            case DifficultyEnum.EASY:
+                {
+                    activeMazes = GameContext.m_context.m_easyMazes;
+                    break;
+                }
+            case DifficultyEnum.MEDIUM:
+                {
+                    activeMazes = GameContext.m_context.m_mediumMazes;
+                    break;
+                }
+            case DifficultyEnum.HARD:
+                {
+                    activeMazes = GameContext.m_context.m_hardMazes;
+                    break;
+                }
+            case DifficultyEnum.EPIC:
+                {
+                    activeMazes = GameContext.m_context.m_epicMazes;
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        };
+
+
+        // Load/Generate a Maze Level
+        if (GameContext.m_context.m_nextMazeIndex < activeMazes.Count)
+        {
+            Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_nextMazeIndex);
+
+            GameContext.m_context.m_activeMaze = activeMazes[GameContext.m_context.m_nextMazeIndex];
+
+            ++GameContext.m_context.m_nextMazeIndex;
+        }
+        else
+        {
+            Debug.Log("GameManager: Generating Maze");
+
+            // Get a default maze structure of defined size
+            GameContext.m_context.m_activeMaze = GameContext.m_context.difficulty.GetRandomMaze();
+
+            // Modify the default maze structure with the maze generation algorithm
+            MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_activeMaze);
+
+            // Solve the generated maze with the maze solving algorithm
+            MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_activeMaze);
+
+            // Set Maze Properties:
+            GameContext.m_context.m_activeMaze.Name = "Auto Generated";
+            GameContext.m_context.m_activeMaze.Difficulty = GameContext.m_context.difficulty.Difficulty;
+        }
+
+        // Display the Maze Properties
+        textCurrentMazeName.text = GameContext.m_context.m_activeMaze.Name;
+        textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
+
+        // Publish Event: RenderMaze
+        EventManager.TriggerEvent("RenderMaze");
     }
 
     void OnDisable()
@@ -121,7 +164,7 @@ public class GameManager : MonoBehaviour
         // - Enable the Player GameObject
 
         // Get the Maze StartCell
-        MazeStructure.Cell2D startCell = GameContext.m_context.m_currentMaze.GetStartCell();
+        MazeStructure.Cell2D startCell = GameContext.m_context.m_activeMaze.GetStartCell();
         if(!startCell.IsNull())
         {
             // TODO: Place Player GameObject at the start cell location
