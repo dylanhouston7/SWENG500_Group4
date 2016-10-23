@@ -23,5 +23,15 @@ namespace Assets
         /// Points to the difficulty menu scene
         /// </summary>
         public const string DifficultyScene = "DifficultyScene";
+
+        /// <summary>
+        /// Points to the maze complete (scoring) scene
+        /// </summary
+        public const string MazeCompleteScene = "MazeComplete";
+
+        /// <summary>
+        /// Points to the main menu scene
+        /// </summary
+        public const string MainMenuScene = "MainMenu";
     }
 }

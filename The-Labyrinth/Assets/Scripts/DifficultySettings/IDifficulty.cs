@@ -36,5 +36,10 @@ namespace Assets.Scripts.DifficultySettings
         /// The difficulty type
         /// </summary>
         Maze2D GetRandomMaze();
+
+        /// <summary>
+        /// Gets the scoring multiplier for the maze complete (scoring) screen
+        /// </summary>
+        int GetScoringMultiplier { get; }
     }
 }
