@@ -23,6 +23,10 @@ public class MazeImportManager : MonoBehaviour
 
     public void ImportMaze()
     {
+        // Reset Save Status
+        m_mazeSaveStatus.text = "";
+
+        // Import Maze
         m_mazeFilePath = EditorUtility.OpenFilePanel("Select Maze File", "", "dat");
         if(File.Exists(m_mazeFilePath))
         {
@@ -74,6 +78,7 @@ public class MazeImportManager : MonoBehaviour
 
                 // Reset
                 m_importedMazeData = null;
+                m_mazeImportStatus.text = "";
                 m_mazeNameProperty.text = "";
                 m_mazeSizeProperty.text = "";
                 m_mazeDifficultyProperty.text = "";
