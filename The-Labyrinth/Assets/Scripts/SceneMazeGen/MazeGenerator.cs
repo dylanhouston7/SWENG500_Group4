@@ -142,6 +142,18 @@ public class MazeGenerator : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Exports the active maze to maze file
+    /// </summary>
+    public void ExportMaze()
+    {
+        if (activeMaze != null &&
+            !activeMaze.IsNull())
+        {
+            MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/ExportedMaze.dat", activeMaze);
+        }
+    }
+
     public void SaveMazes()
     {
         MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/EasyMazes.dat", easyMazes);

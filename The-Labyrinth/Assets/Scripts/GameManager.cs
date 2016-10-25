@@ -70,17 +70,6 @@ public class GameManager : MonoBehaviour
         EventManager.StartListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);
 
 
-        // Load Mazes
-        if(!GameContext.m_context.m_installedMazesLoaded)
-        {
-            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/EasyMazes.dat", ref GameContext.m_context.m_easyMazes);
-            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/MediumMazes.dat", ref GameContext.m_context.m_mediumMazes);
-            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/HardMazes.dat", ref GameContext.m_context.m_hardMazes);
-            MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/EpicMazes.dat", ref GameContext.m_context.m_epicMazes);
-
-            GameContext.m_context.m_installedMazesLoaded = true;
-        }
-
         // Set reference to the mazes of selected difficulty
         List<MazeStructure.Maze2D> activeMazes = new List<MazeStructure.Maze2D>();
         switch(GameContext.m_context.difficulty.Difficulty)
