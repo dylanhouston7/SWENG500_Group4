@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Assets.Scripts.DifficultySettings;
+using Assets;
 
 public class GameManager : MonoBehaviour
 {
@@ -68,7 +69,6 @@ public class GameManager : MonoBehaviour
     {
         EventManager.StartListening("CompletedMaze", m_handleEventCompletedMaze);
         EventManager.StartListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);
-
 
         // Set reference to the mazes of selected difficulty
         List<MazeStructure.Maze2D> activeMazes = new List<MazeStructure.Maze2D>();
@@ -207,22 +207,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager: CompletedMaze Method Called!");
 
         // TODO: Calculate Player Score
-        //
+        // 10-23-2016 Dylan is working this
 
         // TODO: Store Player Score to the GameContext current Player account
-        //
 
-        // TODO: Load Maze Completion Summary Menu
-        // - Should provide the user with:
-        //  + Player's calculated score
-        //  + Option to go to next installed maze level if one exists
-        //  + Option to go to the main menu
+        UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeCompleteScene);
 
-        // *************************************************************************
-        // *************************************************************************
-        // TEMP CODE: 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-        // *************************************************************************
-        // *************************************************************************
     }
 }

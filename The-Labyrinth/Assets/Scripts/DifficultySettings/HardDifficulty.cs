@@ -67,5 +67,16 @@ namespace Assets.Scripts.DifficultySettings
         {
             return MazeStructure.Maze2D.GetInstance(15, 15);
         }
+
+        /// <summary>
+        /// Gets the scoring multiplier for the maze complete (scoring) screen
+        /// </summary>
+        public int GetScoringMultiplier
+        {
+            get
+            {
+                return 3;
+            }
+        }
     }
 }
