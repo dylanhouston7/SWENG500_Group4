@@ -11,6 +11,7 @@ public class MazeManager : MonoBehaviour
 
     // Prefabs
     public MazeCell cellPrefab;
+    public MazeHint mazeHintPrefab;
 
     // Public Members
     public int MazeSizeX
@@ -55,6 +56,7 @@ public class MazeManager : MonoBehaviour
     // Private Members
     private UnityAction handleEventRenderMaze;
     private UnityAction handleEventShowMazeSolution;
+    private UnityAction handleEventMazeHintRequest;
     private UnityAction handleEventResetMaze;
 
     private MazeCell[,] mazeInstance = null;
@@ -65,13 +67,15 @@ public class MazeManager : MonoBehaviour
         // Initialize Event Handlers
         handleEventRenderMaze = new UnityAction(EventHandleRenderMaze);
         handleEventShowMazeSolution = new UnityAction(EventHandleShowMazeSolution);
+        handleEventMazeHintRequest = new UnityAction(EventHandlerMazeHintRequest);
         handleEventResetMaze = new UnityAction(ResetMaze);
     }
 
     void OnEnable()
     {
-        EventManager.StartListening("RenderMaze", handleEventRenderMaze);
+        EventManager.StartListening("RenderMaze", handleEventRenderMaze);        
         EventManager.StartListening("ShowMazeSolution", handleEventShowMazeSolution);
+        EventManager.StartListening("MazeHintRequest", handleEventMazeHintRequest);
         EventManager.StartListening("ResetMaze", handleEventResetMaze);
     }
 
@@ -79,6 +83,7 @@ public class MazeManager : MonoBehaviour
     {
         EventManager.StopListening("RenderMaze", handleEventRenderMaze);
         EventManager.StopListening("ShowMazeSolution", handleEventShowMazeSolution);
+        EventManager.StopListening("MazeHintRequest", handleEventMazeHintRequest);
         EventManager.StopListening("ResetMaze", handleEventResetMaze);
     }
 
@@ -94,6 +99,17 @@ public class MazeManager : MonoBehaviour
         Debug.Log("MazeManager: Event Handler ShowMazeSolution Method Called!");
 
         ShowMazeSolution();
+    }
+
+    public void EventHandlerMazeHintRequest()
+    {
+        // Get the current maze cell the player is on
+        int posX = GameContext.m_context.m_currentPlayerMazePositionX;
+        int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
+
+        // Instantiate a new Maze Hint and position it over the current maze cell
+        MazeHint hint = Instantiate(mazeHintPrefab, mazeInstance[posX, posZ].transform) as MazeHint;
+        hint.transform.localPosition = new Vector3(0.0f, 0.01f, 0.0f);
     }
 
     public void EventHandleResetMaze()
@@ -121,10 +137,11 @@ public class MazeManager : MonoBehaviour
             }
 
 
-            // Render Maze Structure
+            // Initialize Maze Storage elements            
             mazeInstance = new MazeCell[maze.SizeX, maze.SizeZ];
             mazeSolution = new List<MazeCell>();
 
+            // Render Maze Structure
             for (int x = 0; x < maze.SizeX; ++x)
             {
                 for (int z = 0; z < maze.SizeZ; ++z)
@@ -236,6 +253,14 @@ public class MazeManager : MonoBehaviour
     /// </summary>
     public void ResetMaze()
     {
+        // Reset Maze Instance Solution
+        if (mazeSolution != null)
+        {
+            mazeSolution.Clear();
+
+            mazeSolution = null;
+        }
+
         // Reset Maze Instance
         if (mazeInstance != null)
         {
@@ -248,14 +273,6 @@ public class MazeManager : MonoBehaviour
             }
 
             mazeInstance = null;
-        }
-
-        // Reset Maze Instance Solution
-        if (mazeSolution != null)
-        {
-            mazeSolution.Clear();
-
-            mazeSolution = null;
-        }
+        }       
     }
 }

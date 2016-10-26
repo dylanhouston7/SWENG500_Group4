@@ -30,6 +30,12 @@ public class GameContext : MonoBehaviour
     public MazeStructure.Maze2D m_activeMaze;
 
     /// <summary>
+    /// Current Player position in the maze
+    /// </summary>
+    public int m_currentPlayerMazePositionX;
+    public int m_currentPlayerMazePositionZ;
+
+    /// <summary>
     /// Set of pre-installed mazes for each of the defined difficulty levels
     /// </summary>
     /// <remarks>

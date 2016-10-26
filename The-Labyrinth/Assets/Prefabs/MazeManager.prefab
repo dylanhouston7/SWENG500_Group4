@@ -53,3 +53,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 114000013488689578, guid: f1eaf2617b2f4684899221ac2103216e,
     type: 2}
+  mazeHintPrefab: {fileID: 114000010877482742, guid: a86527c80f09ed342bc0801fb61f80cc,
+    type: 2}

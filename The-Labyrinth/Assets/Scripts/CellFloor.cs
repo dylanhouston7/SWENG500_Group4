@@ -62,6 +62,9 @@ public class CellFloor : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        GameContext.m_context.m_currentPlayerMazePositionX = (int)this.transform.position.x;
+        GameContext.m_context.m_currentPlayerMazePositionZ = (int)this.transform.position.z;
+
         if (m_parentCell != null &&
             m_parentCell.CellType == MazeCell.CellTypeEnum.kEnd)
         {

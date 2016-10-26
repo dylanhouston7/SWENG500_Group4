@@ -54,6 +54,14 @@ public class GameManager : MonoBehaviour
             EventManager.TriggerEvent("ShowMazeSolution");
         }
 
+        // TEST CODE: Shows the Maze Hint
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.H))
+        {
+            Debug.Log("GameManager: Showing Maze Hint");
+
+            EventManager.TriggerEvent("MazeHintRequest");
+        }
+
         // TEMP CODE: For exiting maze level loop to return to main menu
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Q))
         {
