@@ -14,5 +14,29 @@ namespace Assets.Scripts.Timer
     /// </summary>
     public class CountDownTimer : ITimer
     {
+        private float _time;
+        private float _totalTimeRecorded;
+
+        public CountDownTimer(float initialTime)
+        {
+            _time = initialTime;
+            _totalTimeRecorded = 0;
+        }
+
+        public void Update(float time)
+        {
+            _time -= time;
+            _totalTimeRecorded += time;
+        }
+
+        public int GetTimeInSeconds()
+        {
+            return System.Convert.ToInt32(_time);
+        }
+
+        public int GetTotalSecondsRecorded()
+        {
+            return System.Convert.ToInt32(_totalTimeRecorded);
+        }
     }
 }

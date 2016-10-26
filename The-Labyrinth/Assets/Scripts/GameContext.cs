@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Assets.Scripts.DifficultySettings;
+using Assets.Scripts.Scoring;
 
 public class GameContext : MonoBehaviour
 {
@@ -58,6 +59,13 @@ public class GameContext : MonoBehaviour
     /// Specifies the difficulty level of the game
     /// </summary>
     public IDifficulty difficulty;
+
+    /// <summary>
+    /// Specifies the score of the last maze completed
+    /// Set by GameManager
+    /// TODO: Better way to do this??
+    /// </summary>
+    public Score score;
 
     // Unity Methods
     void Awake()

@@ -25,7 +25,7 @@ namespace Assets.Scripts.DifficultySettings
         /// <summary>
         /// The timer to use
         /// </summary>
-        ITimer timer { get;}
+        ITimer Timer { get;}
 
         /// <summary>
         /// The difficulty type

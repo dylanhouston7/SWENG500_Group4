@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using Assets.Scripts;
+using Assets.Scripts.Timer;
 
 /// <summary>
 /// A class that acts as a simple timer for a maze
 /// </summary>
 public class MazeTimer : MonoBehaviour
 {
-
     /// <summary>
     /// The font for the timer label. Provided by the Unity Editor.
     /// </summary>
@@ -23,17 +23,19 @@ public class MazeTimer : MonoBehaviour
     public GameManager gameManager;
 
     /// <summary>
-    /// Indicates how much time is allotted to complete a maze
-    /// TODO: Make this more flexible so that the GameManager can provide a time to the class.
+    /// A reference to the timer object for storing and calculating time
     /// </summary>
-    float timeRemaining = 30;
+    ITimer timer;
 
     /// <summary>
     /// Initialization method
     /// </summary>
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        // Get the timer for the difficulty level
+        timer = GameContext.m_context.difficulty.Timer;
     }
 
     /// <summary>
@@ -42,7 +44,8 @@ public class MazeTimer : MonoBehaviour
     void Update()
     {
         // For every single frame, subtract the amount of time it took to get to this frame from the time remaining.
-        timeRemaining -= Time.deltaTime;
+        //timeRemaining -= Time.deltaTime;
+        timer.Update(Time.deltaTime);
     }
 
     /// <summary>
@@ -50,7 +53,7 @@ public class MazeTimer : MonoBehaviour
     /// </summary>
     void OnGUI()
     {
-        if (timeRemaining > 0)
+        if (timer.GetTimeInSeconds() > 0)
         {
             ShowTimeLabel();
         }
@@ -67,7 +70,7 @@ public class MazeTimer : MonoBehaviour
     void ShowTimeLabel()
     {
         // Convert the time remaining into seconds
-        int seconds = System.Convert.ToInt32(timeRemaining);
+        int seconds = timer.GetTimeInSeconds();
 
         // Create the label
         string timeRemainingLabel = string.Format("{0} seconds", seconds);

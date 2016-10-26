@@ -105,10 +105,7 @@ public class DifficultyMenu : MonoBehaviour
     void OnMouseUp()
     {
         IDifficulty difficulty = GetDifficulty();
-
         GameContext.m_context.difficulty = difficulty;
-
-        // TODO: Look at logic in GameManager to reflect difficulty and to set scoring algorithm
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
     }
 }
