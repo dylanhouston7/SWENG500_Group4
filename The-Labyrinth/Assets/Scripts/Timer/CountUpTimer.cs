@@ -14,7 +14,7 @@ namespace Assets.Scripts.Timer
     /// </summary>
     public class CountUpTimer : ITimer
     {
-        private float _time = 0;
+        private float _time = 1;
 
         public void Update(float time)
         {
@@ -30,8 +30,6 @@ namespace Assets.Scripts.Timer
         public int GetTotalSecondsRecorded()
         {
             return System.Convert.ToInt32(_time);
-        }
-
-        
+        }  
     }
 }

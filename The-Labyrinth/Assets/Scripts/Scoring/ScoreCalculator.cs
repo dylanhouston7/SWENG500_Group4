@@ -16,15 +16,16 @@ namespace Assets.Scripts.Scoring
         /// </summary>
         const int bazeMazeScore = 10000;
 
-        public static Score CalculateScore(IDifficulty difficulty, int mazeCompletionTimeInSeconds, bool hintShown)
+        public static ScoreContainer CalculateScore(IDifficulty difficulty, int mazeCompletionTimeInSeconds, bool hintShown)
         {
-            Score scoreContainer = new Score();
+            ScoreContainer scoreContainer = new ScoreContainer();
 
             // Figure out how many points to deduct based on how long it took for the user to complete the maze.
-            int timeDeduction = mazeCompletionTimeInSeconds * 10;
+            int timeDeduction = mazeCompletionTimeInSeconds * 14;
 
             // Subtract the time deduction from the baze maze score
             int score = bazeMazeScore - timeDeduction;
+            scoreContainer.InitialScore = score;
 
             // Reward the user with a scoring multiplier based on difficulty level
             int scoringMultipler = difficulty.GetScoringMultiplier;
@@ -41,9 +42,9 @@ namespace Assets.Scripts.Scoring
                 score = 0;
             }
 
-            scoreContainer.score = score;
-            scoreContainer.difficulty = difficulty.DifficultyString;
-            scoreContainer.hintShown = hintShown;
+            scoreContainer.TotalScore = score;
+            scoreContainer.Difficulty = difficulty.DifficultyString;
+            scoreContainer.HintShown = hintShown;
             return scoreContainer;
         }
     }

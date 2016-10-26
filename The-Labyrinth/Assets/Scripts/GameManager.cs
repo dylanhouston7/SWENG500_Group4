@@ -24,12 +24,12 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Stores the maze score
     /// </summary>
-    public Score currentMazeScore;
+    public ScoreContainer currentMazeScore;
 
     /// <summary>
     /// Specifies whether or not the user has requested hint assistance
     /// </summary>
-    public bool hintShown;
+    public bool hintShown = false;
 
     // Public Prefab References
     public UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter tp;
@@ -161,6 +161,9 @@ public class GameManager : MonoBehaviour
         // Display the Maze Properties
         textCurrentMazeName.text = GameContext.m_context.m_activeMaze.Name;
         textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
+
+        // Reset the timer for the maze
+        GameContext.m_context.difficulty.ResetTimer();
 
         // Publish Event: RenderMaze
         EventManager.TriggerEvent("RenderMaze");

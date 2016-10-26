@@ -473,8 +473,8 @@ GameObject:
   - 23: {fileID: 828409482}
   - 102: {fileID: 828409481}
   - 114: {fileID: 828409480}
-  - 65: {fileID: 828409479}
   - 114: {fileID: 828409478}
+  - 65: {fileID: 828409479}
   m_Layer: 0
   m_Name: NextMaze
   m_TagString: Untagged
@@ -515,11 +515,11 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 828409476}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 52.600002, y: 11.572269, z: 2.597675}
-  m_Center: {x: 26.300001, y: -5.786338, z: -1.2985891}
+  m_Size: {x: 37.100002, y: 11.972655, z: 10}
+  m_Center: {x: 18.550001, y: -5.9863276, z: 8.507084e-14}
 --- !u!114 &828409480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,8 +1431,8 @@ GameObject:
   - 23: {fileID: 1960358584}
   - 102: {fileID: 1960358583}
   - 114: {fileID: 1960358582}
-  - 65: {fileID: 1960358580}
   - 114: {fileID: 1960358581}
+  - 65: {fileID: 1960358580}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -1460,10 +1460,10 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1960358578}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 38, y: 11.972656, z: 8.507084e-14}
+  m_Size: {x: 38, y: 11.972656, z: 10}
   m_Center: {x: 19, y: -5.986328, z: 4.253542e-14}
 --- !u!114 &1960358581
 MonoBehaviour:

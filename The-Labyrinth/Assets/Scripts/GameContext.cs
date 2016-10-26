@@ -71,7 +71,7 @@ public class GameContext : MonoBehaviour
     /// Set by GameManager
     /// TODO: Better way to do this??
     /// </summary>
-    public Score score;
+    public ScoreContainer score;
 
     // Unity Methods
     void Awake()

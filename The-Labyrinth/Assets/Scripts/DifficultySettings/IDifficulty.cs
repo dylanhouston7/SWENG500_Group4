@@ -28,6 +28,11 @@ namespace Assets.Scripts.DifficultySettings
         ITimer Timer { get;}
 
         /// <summary>
+        /// Resets the timer
+        /// </summary>
+        void ResetTimer();
+
+        /// <summary>
         /// The difficulty type
         /// </summary>
         string DifficultyString { get; }
