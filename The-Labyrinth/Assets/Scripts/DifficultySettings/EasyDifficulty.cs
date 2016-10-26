@@ -17,6 +17,11 @@ namespace Assets.Scripts.DifficultySettings
     public class EasyDifficulty : IDifficulty
     {
         /// <summary>
+        /// The timer object
+        /// </summary>
+        private ITimer _timer;
+
+        /// <summary>
         /// The difficulty type
         /// </summary>
         public DifficultyEnum Difficulty
@@ -41,12 +46,17 @@ namespace Assets.Scripts.DifficultySettings
         /// <summary>
         /// The timer to use for the difficulty
         /// </summary>
-        public ITimer timer
+        public ITimer Timer
         {
             get
             {
-                throw new NotImplementedException();
+                if (_timer == null)
+                {
+                    _timer = new CountUpTimer();
+                }
+                return _timer;
             }
+            set { }
         }
 
         /// <summary>

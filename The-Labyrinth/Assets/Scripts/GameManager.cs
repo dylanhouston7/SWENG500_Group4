@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 using Assets.Scripts.DifficultySettings;
 using Assets;
+using Assets.Scripts;
+using Assets.Scripts.Scoring;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +20,16 @@ public class GameManager : MonoBehaviour
     /// The maze timer for the maze
     /// </summary>
     public Text textMazeTimer;
+
+    /// <summary>
+    /// Stores the maze score
+    /// </summary>
+    public Score currentMazeScore;
+
+    /// <summary>
+    /// Specifies whether or not the user has requested hint assistance
+    /// </summary>
+    public bool hintShown;
 
     // Public Prefab References
     public UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter tp;
@@ -52,6 +64,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("GameManager: Showing Maze Solution");
 
             EventManager.TriggerEvent("ShowMazeSolution");
+
+            hintShown = true;
         }
 
         // TEST CODE: Shows the Maze Hint
@@ -71,6 +85,14 @@ public class GameManager : MonoBehaviour
         }
         // *************************************************************************
         // *************************************************************************
+
+        // TEST CODE: Allows rapid testing of the score screen
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Z))
+        {
+            Debug.Log("GameManager: Skipping to Score Screen");
+
+            EventManager.TriggerEvent("CompletedMaze");
+        }
     }
 
     void OnEnable()
@@ -214,8 +236,10 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager: CompletedMaze Method Called!");
 
-        // TODO: Calculate Player Score
-        // 10-23-2016 Dylan is working this
+        int totalCompletionTimeInSeconds = GameContext.m_context.difficulty.Timer.GetTotalSecondsRecorded();
+        GameContext.m_context.score = ScoreCalculator.CalculateScore(GameContext.m_context.difficulty, totalCompletionTimeInSeconds, hintShown);
+
+        GameContext.m_context.difficulty.GetRandomMaze();
 
         // TODO: Store Player Score to the GameContext current Player account
 

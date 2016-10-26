@@ -22,17 +22,34 @@ public class MazeComplete : MonoBehaviour
     /// </summary>
     public bool MainMenuFlag;
 
-
     // Use this for initialization
     void Start ()
     {
-	
-	}
+        TextMesh initialScore = GameObject.Find("InitialScoreNumber").GetComponent<TextMesh>();
+        TextMesh hintsNumber = GameObject.Find("HintsNumber").GetComponent<TextMesh>();
+        TextMesh difficultyMultiplier = GameObject.Find("DifficultyMultiplierNumber").GetComponent<TextMesh>();
+        TextMesh overallScoreNumber = GameObject.Find("OverallScoreNumber").GetComponent<TextMesh>();
+
+        initialScore.text = "to-do";
+
+        if (GameContext.m_context.score.hintShown)
+        {
+            // TO-DO: Add constant in here
+            hintsNumber.text = "-5000";
+        }
+
+        else
+        {
+            hintsNumber.text = "-0";
+        }
+
+        difficultyMultiplier.text = string.Format("{0} (X{1})", GameContext.m_context.difficulty.DifficultyString, GameContext.m_context.difficulty.GetScoringMultiplier);
+        overallScoreNumber.text = GameContext.m_context.score.score.ToString();
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-	
 	}
 
     /// <summary>
