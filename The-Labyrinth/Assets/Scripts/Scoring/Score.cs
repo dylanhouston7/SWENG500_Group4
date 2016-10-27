@@ -8,12 +8,14 @@ namespace Assets.Scripts.Scoring
     /// <summary>
     /// Simple class to store Score information
     /// </summary>
-    public class Score
+    public class ScoreContainer
     {
-        public int score { get; set; }
+        public int InitialScore { get; set; }
 
-        public string difficulty { get; set; }
+        public int TotalScore { get; set; }
 
-        public bool hintShown { get; set; }
+        public string Difficulty { get; set; }
+
+        public bool HintShown { get; set; }
     }
 }

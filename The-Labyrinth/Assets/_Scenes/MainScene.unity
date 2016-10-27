@@ -491,7 +491,6 @@ MonoBehaviour:
   textCurrentMazeName: {fileID: 308380210}
   textCurrentMazeDifficultyLevel: {fileID: 402503229}
   textMazeTimer: {fileID: 2141865655}
-  currentMazeScore: 0
   hintShown: 0
   tp: {fileID: 0}
 --- !u!4 &664337028
@@ -937,7 +936,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Maze Timer
+  m_Text: 
 --- !u!222 &2141865656
 CanvasRenderer:
   m_ObjectHideFlags: 0

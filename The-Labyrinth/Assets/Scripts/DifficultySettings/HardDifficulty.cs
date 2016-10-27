@@ -77,6 +77,10 @@ namespace Assets.Scripts.DifficultySettings
         {
             return MazeStructure.Maze2D.GetInstance(15, 15);
         }
+        public void ResetTimer()
+        {
+            _timer = new CountDownTimer(200);
+        }
 
         /// <summary>
         /// Gets the scoring multiplier for the maze complete (scoring) screen

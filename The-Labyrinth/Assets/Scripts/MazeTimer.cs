@@ -46,6 +46,21 @@ public class MazeTimer : MonoBehaviour
         // For every single frame, subtract the amount of time it took to get to this frame from the time remaining.
         //timeRemaining -= Time.deltaTime;
         timer.Update(Time.deltaTime);
+
+
+        // Pause Button Logic    
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            var currentTimeValue = Time.timeScale;
+            if (currentTimeValue == 1)
+            {
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
+        }
     }
 
     /// <summary>
