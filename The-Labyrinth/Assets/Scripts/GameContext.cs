@@ -31,6 +31,11 @@ public class GameContext : MonoBehaviour
     public MazeStructure.Maze2D m_activeMaze;
 
     /// <summary>
+    /// Reference to the active maze last hint solution path
+    /// </summary>
+    public List<MazeStructure.Cell2D> m_activeMazeSolutionPath;
+
+    /// <summary>
     /// Current Player position in the maze
     /// </summary>
     public int m_currentPlayerMazePositionX;

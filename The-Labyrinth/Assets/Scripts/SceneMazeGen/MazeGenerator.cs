@@ -76,7 +76,14 @@ public class MazeGenerator : MonoBehaviour
         MazeStructure.MazeGenerator.Generate(mazeGenAlgorithm, activeMaze);
 
         // Run Maze Solver Algorithm on Generated Maze
-        MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, activeMaze);
+        List<MazeStructure.Cell2D> solutionPath = new List<MazeStructure.Cell2D>();
+        MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse,
+                                       activeMaze,
+                                       activeMaze.GetStartCell(),
+                                       ref solutionPath);
+
+        // Store Solution Path
+        activeMaze.MazeSolutionPath = solutionPath;
 
         // Render the Generated Maze Structure
         mazeManagerRef.RenderMaze(activeMaze);
@@ -86,10 +93,8 @@ public class MazeGenerator : MonoBehaviour
     }
 
     public void ViewMazeSolution()
-    {
-        textMazeSolutionPathLenValue.text = mazeManagerRef.MazeSolutionSize.ToString();
-
-        mazeManagerRef.ShowMazeSolution();
+    {        
+        
     }
 
     public void StoreMaze()

@@ -18,13 +18,6 @@ public class MazeCell : MonoBehaviour
         get { return cellType; }
     }
 
-    private bool isSolutionCell = false;
-    public bool IsSolutionCell
-    {
-        set { isSolutionCell = value; }
-        get { return isSolutionCell; }
-    }
-
     private CellFloor cellFloorInstance;
     private CellWall cellLeftWallInstance;
     private CellWall cellRightWallInstance;
@@ -123,17 +116,11 @@ public class MazeCell : MonoBehaviour
 
     public void ShowSolutionCell()
     {
-        if(isSolutionCell)
-        {
-            cellFloorInstance.ShowSolution(true);
-        }        
+        cellFloorInstance.ShowSolution(true);
     }
 
     public void HideSolutionCell()
     {
-        if (isSolutionCell)
-        {
-            cellFloorInstance.ShowSolution(false);
-        }
+        cellFloorInstance.ShowSolution(false);
     }
 }

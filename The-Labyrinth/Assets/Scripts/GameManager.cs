@@ -63,17 +63,35 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("GameManager: Showing Maze Solution");
 
-            EventManager.TriggerEvent("ShowMazeSolution");
+            // Maze solution path based on the maze start cell
+            GameContext.m_context.m_activeMazeSolutionPath = GameContext.m_context.m_activeMaze.MazeSolutionPath;
 
-            hintShown = true;
+            EventManager.TriggerEvent("ShowMazeSolution");
         }
 
-        // TEST CODE: Shows the Maze Hint
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("GameManager: Hiding Maze Solution");
+
+            EventManager.TriggerEvent("HideMazeSolution");
+        }
+
+        // TEST CODE: Shows the Maze Solution Based on the current Player position in the maze
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.H))
         {
             Debug.Log("GameManager: Showing Maze Hint");
 
-            EventManager.TriggerEvent("MazeHintRequest");
+            // Determine the current maze solution path based on the player's current position in the maze
+            MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse,
+                                           GameContext.m_context.m_activeMaze,
+                                           GameContext.m_context.m_activeMaze.GetCell(GameContext.m_context.m_currentPlayerMazePositionX, GameContext.m_context.m_currentPlayerMazePositionZ),
+                                           ref GameContext.m_context.m_activeMazeSolutionPath);
+
+            if (GameContext.m_context.m_activeMazeSolutionPath.Count >= 2)
+            {
+                EventManager.TriggerEvent("ShowMazeSolution");
+                EventManager.TriggerEvent("ShowMazeHint");
+            }
         }
 
         // TEMP CODE: For exiting maze level loop to return to main menu
@@ -144,18 +162,25 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("GameManager: Generating Maze");
 
-            // Get a default maze structure of defined size
+            // Get a default maze structure based on the defined difficulty level
             GameContext.m_context.m_activeMaze = GameContext.m_context.difficulty.GetRandomMaze();
+
+            // Set Maze Properties:
+            GameContext.m_context.m_activeMaze.Name = "Auto Generated";
+            GameContext.m_context.m_activeMaze.Difficulty = GameContext.m_context.difficulty.Difficulty;
 
             // Modify the default maze structure with the maze generation algorithm
             MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_activeMaze);
 
             // Solve the generated maze with the maze solving algorithm
-            MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, GameContext.m_context.m_activeMaze);
+            List<MazeStructure.Cell2D> solutionPath = new List<MazeStructure.Cell2D>();
+            MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, 
+                                           GameContext.m_context.m_activeMaze,
+                                           GameContext.m_context.m_activeMaze.GetStartCell(),
+                                           ref solutionPath);
 
-            // Set Maze Properties:
-            GameContext.m_context.m_activeMaze.Name = "Auto Generated";
-            GameContext.m_context.m_activeMaze.Difficulty = GameContext.m_context.difficulty.Difficulty;
+            // Store Solution Path
+            GameContext.m_context.m_activeMaze.MazeSolutionPath = solutionPath;
         }
 
         // Display the Maze Properties

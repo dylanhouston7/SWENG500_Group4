@@ -12,10 +12,13 @@ public class CellFloor : MonoBehaviour
             m_hasCellParentChanged = true;
         }
     }
+
     private bool m_hasCellParentChanged;
 
-    bool m_hasShowSolutionChanged;
-    bool m_showSolution;
+    private bool m_hasShowSolutionChanged;
+    private bool m_showSolution;
+
+    private Color m_initialColor;
 
     void Awake()
     {
@@ -25,6 +28,8 @@ public class CellFloor : MonoBehaviour
 
         m_hasShowSolutionChanged = false;
         m_showSolution = false;
+
+        m_initialColor = this.GetComponent<Renderer>().material.color;
     }
 
     void Update()
@@ -53,7 +58,7 @@ public class CellFloor : MonoBehaviour
             }
             else
             {
-                this.GetComponent<Renderer>().material.color = Color.black;
+                this.GetComponent<Renderer>().material.color = m_initialColor;
             }
 
             m_hasShowSolutionChanged = false;

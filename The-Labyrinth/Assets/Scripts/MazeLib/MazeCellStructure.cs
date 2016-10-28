@@ -176,6 +176,45 @@ namespace MazeStructure
             return result;
         }
 
+        public virtual CellWallEnum DirectionToCell(Cell2D cell)
+        {
+            CellWallEnum result = CellWallEnum.kSize;
+
+            if (IsAdjacentCell(cell))
+            {
+                // Determine directional Vector to other Cell
+                int delta_x = PositionX - cell.PositionX;
+                int delta_z = PositionZ - cell.PositionZ;
+
+                if (delta_z == -1)
+                {
+                    // Vector Direction = Front
+                    result = CellWallEnum.kFront;
+                }
+                else if (delta_z == 1)
+                {
+                    // Vector Direction = Back
+                    result = CellWallEnum.kBack;
+                }
+                else if (delta_x == -1)
+                {
+                    // Vector Direction = Right
+                    result = CellWallEnum.kRight;
+                }
+                else if (delta_x == 1)
+                {
+                    // Vector Direction = Left
+                    result = CellWallEnum.kLeft;
+                }
+                else
+                {
+                    // TODO: Throw Exception
+                }
+            }
+
+            return result;
+        }
+
         public virtual bool IsAdjacentCell(Cell2D cell)
         {
             bool result = false;
