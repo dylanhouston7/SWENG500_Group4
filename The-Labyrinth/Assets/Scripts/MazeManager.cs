@@ -10,7 +10,7 @@ public class MazeManager : MonoBehaviour
     //
 
     // Prefabs
-    public MazeCell cellPrefab;    
+    public MazeCell cellPrefab;
 
     // Public Members
     public int MazeSizeX
@@ -39,11 +39,11 @@ public class MazeManager : MonoBehaviour
     }
 
     // Private Members
-    private UnityAction handleEventRenderMaze;
-    private UnityAction handleEventShowMazeSolution;
-    private UnityAction handleEventHideMazeSolution;
-    private UnityAction handleEventShowMazeHint;
-    private UnityAction handleEventResetMaze;
+    private UnityAction handleEventRenderMaze = null;
+    private UnityAction handleEventShowMazeSolution = null;
+    private UnityAction handleEventHideMazeSolution = null;
+    private UnityAction handleEventShowMazeHint = null;
+    private UnityAction handleEventResetMaze = null;
 
     private MazeCell[,] mazeInstance = null;
 
@@ -156,7 +156,6 @@ public class MazeManager : MonoBehaviour
 
                     // Set Cell Properties
                     // - Cell Type
-                    // - Cell is part of the maze solution
 
                     // Set Cell Type property
                     switch (cell.CellType)
@@ -214,9 +213,15 @@ public class MazeManager : MonoBehaviour
     /// </summary>
     public void HideMazeSolution()
     {
-        foreach (MazeStructure.Cell2D cell in GameContext.m_context.m_activeMazeSolutionPath)
+        if(mazeInstance != null)
         {
-            mazeInstance[cell.PositionX, cell.PositionZ].HideSolutionCell();
+            for (int x = 0; x < MazeSizeX; ++x)
+            {
+                for (int z = 0; z < MazeSizeZ; ++z)
+                {
+                    mazeInstance[x, z].HideSolutionCell();
+                }
+            }
         }
     }
 
