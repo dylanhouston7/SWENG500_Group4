@@ -55,3 +55,5 @@ MonoBehaviour:
     type: 2}
   cellWallPrefab: {fileID: 114000013146514832, guid: 65943507f03353a46bcd1abf6d571758,
     type: 2}
+  mazeHintPrefab: {fileID: 114000010877482742, guid: a86527c80f09ed342bc0801fb61f80cc,
+    type: 2}

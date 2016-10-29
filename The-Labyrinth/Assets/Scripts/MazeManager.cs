@@ -10,8 +10,7 @@ public class MazeManager : MonoBehaviour
     //
 
     // Prefabs
-    public MazeCell cellPrefab;
-    public MazeHint mazeHintPrefab;
+    public MazeCell cellPrefab;    
 
     // Public Members
     public int MazeSizeX
@@ -100,42 +99,12 @@ public class MazeManager : MonoBehaviour
     public void EventHandlerShowMazeHint()
     {
         int posX = GameContext.m_context.m_currentPlayerMazePositionX;
-        int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
-
-        // Instantiate a new Maze Hint and position it over the current maze cell
-        MazeHint hint = Instantiate(mazeHintPrefab, mazeInstance[posX, posZ].transform) as MazeHint;
-        hint.transform.localPosition = new Vector3(0.0f, 0.01f, 0.0f);
-
+        int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;        
+        
         // Determine the hint direction based on the first two hint solution path cells
-        MazeStructure.Cell2D.CellWallEnum direction = GameContext.m_context.m_activeMazeSolutionPath[0].DirectionToCell(GameContext.m_context.m_activeMazeSolutionPath[1]);
+        MazeStructure.Cell2D.CellDirectionEnum direction = GameContext.m_context.m_activeMazeSolutionPath[0].DirectionToCell(GameContext.m_context.m_activeMazeSolutionPath[1]);
 
-        switch(direction)
-        {
-            case MazeStructure.Cell2D.CellWallEnum.kFront:
-                {
-                    hint.transform.localEulerAngles = new Vector3(90.0f, 180.0f, 0.0f);
-                    break;
-                }
-            case MazeStructure.Cell2D.CellWallEnum.kBack:
-                {
-                    hint.transform.localEulerAngles = new Vector3(90.0f, 0.0f, 0.0f);
-                    break;
-                }
-            case MazeStructure.Cell2D.CellWallEnum.kLeft:
-                {
-                    hint.transform.localEulerAngles = new Vector3(90.0f, 90.0f, 0.0f);
-                    break;
-                }
-            case MazeStructure.Cell2D.CellWallEnum.kRight:
-                {
-                    hint.transform.localEulerAngles = new Vector3(90.0f, 270.0f, 0.0f);
-                    break;
-                }
-            default:
-                {
-                    break;
-                }
-        };
+        mazeInstance[posX, posZ].ShowCellHint(direction);
     }
 
     public void EventHandleResetMaze()
@@ -176,10 +145,10 @@ public class MazeManager : MonoBehaviour
 
                     // Build Maze Cell from the CellStructure Blueprint
                     mazeInstance[x, z] = Instantiate(cellPrefab, transform) as MazeCell;
-                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kLeft]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kLeft); };
-                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kRight]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kRight); };
-                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kFront]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kFront); };
-                    if (cell.Walls[(int)MazeStructure.Cell2D.CellWallEnum.kBack]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellWallEnum.kBack); };
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellDirectionEnum.kLeft]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellDirectionEnum.kLeft); };
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellDirectionEnum.kRight]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellDirectionEnum.kRight); };
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellDirectionEnum.kFront]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellDirectionEnum.kFront); };
+                    if (cell.Walls[(int)MazeStructure.Cell2D.CellDirectionEnum.kBack]) { mazeInstance[x, z].BuildCellWall(MazeStructure.Cell2D.CellDirectionEnum.kBack); };
                     if (cell.HasAllWalls()) { mazeInstance[x, z].BuildCellCeiling(); }
 
                     // Position the Maze Cell
@@ -230,7 +199,7 @@ public class MazeManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Show the entire maze solution path
+    /// Show the maze solution path defined in the GameContext
     /// </summary>
     public void ShowMazeSolution()
     {

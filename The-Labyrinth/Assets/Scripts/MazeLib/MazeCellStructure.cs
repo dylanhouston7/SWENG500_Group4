@@ -21,7 +21,7 @@ namespace MazeStructure
             get { return m_position_z; }
         }
 
-        public enum CellWallEnum { kRight = 0, kLeft, kFront, kBack, kSize};
+        public enum CellDirectionEnum { kRight = 0, kLeft, kFront, kBack, kSize};
         List<bool> m_walls = null;
         public List<bool> Walls
         {
@@ -63,11 +63,11 @@ namespace MazeStructure
 
         protected Cell2D()
         {
-            m_walls = new List<bool>((int)CellWallEnum.kSize);
-            m_walls.Insert((int)CellWallEnum.kRight, true);
-            m_walls.Insert((int)CellWallEnum.kLeft, true);
-            m_walls.Insert((int)CellWallEnum.kFront, true);
-            m_walls.Insert((int)CellWallEnum.kBack, true);
+            m_walls = new List<bool>((int)CellDirectionEnum.kSize);
+            m_walls.Insert((int)CellDirectionEnum.kRight, true);
+            m_walls.Insert((int)CellDirectionEnum.kLeft, true);
+            m_walls.Insert((int)CellDirectionEnum.kFront, true);
+            m_walls.Insert((int)CellDirectionEnum.kBack, true);
 
             m_adjacent_cells = new List<Cell2D>();
 
@@ -138,7 +138,7 @@ namespace MazeStructure
                 if (delta_z == -1)
                 {
                     // Vector Direction = Front
-                    if(!Walls[(int)CellWallEnum.kFront] && !cell.Walls[(int)CellWallEnum.kBack])
+                    if(!Walls[(int)CellDirectionEnum.kFront] && !cell.Walls[(int)CellDirectionEnum.kBack])
                     {
                         result = true;
                     }
@@ -146,7 +146,7 @@ namespace MazeStructure
                 else if (delta_z == 1)
                 {
                     // Vector Direction = Back
-                    if (!Walls[(int)CellWallEnum.kBack] && !cell.Walls[(int)CellWallEnum.kFront])
+                    if (!Walls[(int)CellDirectionEnum.kBack] && !cell.Walls[(int)CellDirectionEnum.kFront])
                     {
                         result = true;
                     }
@@ -154,7 +154,7 @@ namespace MazeStructure
                 else if (delta_x == -1)
                 {
                     // Vector Direction = Right
-                    if (!Walls[(int)CellWallEnum.kRight] && !cell.Walls[(int)CellWallEnum.kLeft])
+                    if (!Walls[(int)CellDirectionEnum.kRight] && !cell.Walls[(int)CellDirectionEnum.kLeft])
                     {
                         result = true;
                     }
@@ -162,7 +162,7 @@ namespace MazeStructure
                 else if (delta_x == 1)
                 {
                     // Vector Direction = Left
-                    if (!Walls[(int)CellWallEnum.kLeft] && !cell.Walls[(int)CellWallEnum.kRight])
+                    if (!Walls[(int)CellDirectionEnum.kLeft] && !cell.Walls[(int)CellDirectionEnum.kRight])
                     {
                         result = true;
                     }
@@ -176,9 +176,9 @@ namespace MazeStructure
             return result;
         }
 
-        public virtual CellWallEnum DirectionToCell(Cell2D cell)
+        public virtual CellDirectionEnum DirectionToCell(Cell2D cell)
         {
-            CellWallEnum result = CellWallEnum.kSize;
+            CellDirectionEnum result = CellDirectionEnum.kSize;
 
             if (IsAdjacentCell(cell))
             {
@@ -189,22 +189,22 @@ namespace MazeStructure
                 if (delta_z == -1)
                 {
                     // Vector Direction = Front
-                    result = CellWallEnum.kFront;
+                    result = CellDirectionEnum.kFront;
                 }
                 else if (delta_z == 1)
                 {
                     // Vector Direction = Back
-                    result = CellWallEnum.kBack;
+                    result = CellDirectionEnum.kBack;
                 }
                 else if (delta_x == -1)
                 {
                     // Vector Direction = Right
-                    result = CellWallEnum.kRight;
+                    result = CellDirectionEnum.kRight;
                 }
                 else if (delta_x == 1)
                 {
                     // Vector Direction = Left
-                    result = CellWallEnum.kLeft;
+                    result = CellDirectionEnum.kLeft;
                 }
                 else
                 {
@@ -231,7 +231,7 @@ namespace MazeStructure
             return result;
         }
 
-        public virtual void RemoveWall(CellWallEnum wall)
+        public virtual void RemoveWall(CellDirectionEnum wall)
         {
             m_walls[(int)wall] = false;
         }
@@ -249,23 +249,23 @@ namespace MazeStructure
 
                 if (delta_z == -1)
                 {
-                    RemoveWall(CellWallEnum.kFront);
-                    cell.RemoveWall(CellWallEnum.kBack);
+                    RemoveWall(CellDirectionEnum.kFront);
+                    cell.RemoveWall(CellDirectionEnum.kBack);
                 }
                 else if (delta_z == 1)
                 {
-                    RemoveWall(CellWallEnum.kBack);
-                    cell.RemoveWall(CellWallEnum.kFront);
+                    RemoveWall(CellDirectionEnum.kBack);
+                    cell.RemoveWall(CellDirectionEnum.kFront);
                 }
                 else if (delta_x == -1)
                 {
-                    RemoveWall(CellWallEnum.kRight);
-                    cell.RemoveWall(CellWallEnum.kLeft);
+                    RemoveWall(CellDirectionEnum.kRight);
+                    cell.RemoveWall(CellDirectionEnum.kLeft);
                 }
                 else if(delta_x == 1)
                 {
-                    RemoveWall(CellWallEnum.kLeft);
-                    cell.RemoveWall(CellWallEnum.kRight);
+                    RemoveWall(CellDirectionEnum.kLeft);
+                    cell.RemoveWall(CellDirectionEnum.kRight);
                 }
                 else
                 {

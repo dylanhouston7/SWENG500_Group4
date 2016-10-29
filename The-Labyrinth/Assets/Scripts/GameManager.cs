@@ -89,7 +89,6 @@ public class GameManager : MonoBehaviour
 
             if (GameContext.m_context.m_activeMazeSolutionPath.Count >= 2)
             {
-                EventManager.TriggerEvent("ShowMazeSolution");
                 EventManager.TriggerEvent("ShowMazeHint");
             }
         }
