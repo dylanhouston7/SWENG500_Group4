@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
             EventManager.TriggerEvent("ShowMazeSolution");
         }
 
+        // TEST CODE: Shows the Maze Solution
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.S))
         {
             Debug.Log("GameManager: Hiding Maze Solution");
@@ -76,7 +77,8 @@ public class GameManager : MonoBehaviour
             EventManager.TriggerEvent("HideMazeSolution");
         }
 
-        // TEST CODE: Shows the Maze Solution Based on the current Player position in the maze
+        // TEMP CODE: Shows the Maze Solution Based on the current Player position in the maze
+        // Should replace this with an in game UI element; such as a button
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.H))
         {
             Debug.Log("GameManager: Showing Maze Hint");
@@ -90,10 +92,17 @@ public class GameManager : MonoBehaviour
             if (GameContext.m_context.m_activeMazeSolutionPath.Count >= 2)
             {
                 EventManager.TriggerEvent("ShowMazeHint");
+
+                // ******************************************************************************
+                // ******************************************************************************
+                // TODO: Increment the number of hints taken for calculating the Players score
+                // ******************************************************************************
+                // ******************************************************************************
             }
         }
 
         // TEMP CODE: For exiting maze level loop to return to main menu
+        // Should replace this with an in game UI element; such as a button
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("GameManager: Exiting to Main Menu");
