@@ -82,8 +82,11 @@ public class MazeGenerator : MonoBehaviour
                                        activeMaze.GetStartCell(),
                                        ref solutionPath);
 
-        // Store Solution Path
+        // Store Solution Path in the Maze
         activeMaze.MazeSolutionPath = solutionPath;
+
+        // Store the Solution Path in the GameContext for Rendering
+        GameContext.m_context.m_activeMazeSolutionPath = solutionPath;
 
         // Render the Generated Maze Structure
         mazeManagerRef.RenderMaze(activeMaze);
@@ -93,8 +96,10 @@ public class MazeGenerator : MonoBehaviour
     }
 
     public void ViewMazeSolution()
-    {        
-        
+    {
+        textMazeSolutionPathLenValue.text = activeMaze.MazeSolutionPath.Count.ToString();
+
+        mazeManagerRef.ShowMazeSolution();
     }
 
     public void StoreMaze()
