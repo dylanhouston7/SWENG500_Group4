@@ -11,6 +11,7 @@ public class CellFloor : MonoBehaviour
             m_parentCell = value;
             m_hasCellParentChanged = true;
         }
+        get { return m_parentCell; }
     }
 
     private bool m_hasCellParentChanged;
@@ -29,7 +30,7 @@ public class CellFloor : MonoBehaviour
         m_hasShowSolutionChanged = false;
         m_showSolution = false;
 
-        m_initialColor = this.GetComponent<Renderer>().material.color;
+        m_initialColor = GetComponent<Renderer>().material.color;
     }
 
     void Update()
@@ -39,12 +40,12 @@ public class CellFloor : MonoBehaviour
             if (m_parentCell != null && 
                 m_parentCell.CellType == MazeCell.CellTypeEnum.kStart)
             {
-                this.GetComponent<Renderer>().material.color = Color.red;
+                GetComponent<Renderer>().material.color = Color.red;
             }
             else if (m_parentCell != null &&
                      m_parentCell.CellType == MazeCell.CellTypeEnum.kEnd)
             {
-                this.GetComponent<Renderer>().material.color = Color.green;
+                GetComponent<Renderer>().material.color = Color.green;
             }
 
             m_hasCellParentChanged = false;
@@ -54,11 +55,11 @@ public class CellFloor : MonoBehaviour
         {
             if (m_showSolution)
             {
-                this.GetComponent<Renderer>().material.color = Color.magenta;
+                GetComponent<Renderer>().material.color = Color.magenta;
             }
             else
             {
-                this.GetComponent<Renderer>().material.color = m_initialColor;
+                GetComponent<Renderer>().material.color = m_initialColor;
             }
 
             m_hasShowSolutionChanged = false;
@@ -67,8 +68,8 @@ public class CellFloor : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        GameContext.m_context.m_currentPlayerMazePositionX = (int)this.transform.position.x;
-        GameContext.m_context.m_currentPlayerMazePositionZ = (int)this.transform.position.z;
+        GameContext.m_context.m_currentPlayerMazePositionX = (int)transform.position.x;
+        GameContext.m_context.m_currentPlayerMazePositionZ = (int)transform.position.z;
 
         if (m_parentCell != null &&
             m_parentCell.CellType == MazeCell.CellTypeEnum.kEnd)

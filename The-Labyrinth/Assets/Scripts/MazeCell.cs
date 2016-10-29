@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MazeCell : MonoBehaviour
 {
-    // Prefabs
+    // Public Prefab References
     public CellFloor cellFloorPrefab;
     public CellWall cellWallPrefab;
     public MazeHint mazeHintPrefab;
@@ -19,24 +19,22 @@ public class MazeCell : MonoBehaviour
         get { return cellType; }
     }
 
-    private CellFloor cellFloorInstance;
-    private CellWall cellLeftWallInstance;
-    private CellWall cellRightWallInstance;
-    private CellWall cellFrontWallInstance;
-    private CellWall cellBackWallInstance;
-    private CellWall cellCeilingInstance;
-
-    private MazeHint cellMazeHintInstance;
+    // Private Prefab Instances
+    private CellFloor cellFloorInstance = null;
+    private CellWall cellLeftWallInstance = null;
+    private CellWall cellRightWallInstance = null;
+    private CellWall cellFrontWallInstance = null;
+    private CellWall cellBackWallInstance = null;
+    private CellWall cellCeilingInstance = null;
+    private MazeHint cellMazeHintInstance = null;
 
     // Unity Methods
     void Awake()
     {
-        // Create Cell Floor
+        // Instantiate the Cell Floor
         cellFloorInstance = Instantiate(cellFloorPrefab, transform) as CellFloor;
         cellFloorInstance.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
         cellFloorInstance.ParentCell = this;
-
-        cellMazeHintInstance = null;
     }
 
     // Other Methods
@@ -48,18 +46,21 @@ public class MazeCell : MonoBehaviour
         {
             case MazeStructure.Cell2D.CellDirectionEnum.kLeft:
                 {
+                    ResetCellWallInstance(ref cellLeftWallInstance);
                     cellLeftWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellLeftWallInstance.transform.localPosition = new Vector3(-0.5f, 0.5f, 0.0f);
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kRight:
                 {
+                    ResetCellWallInstance(ref cellRightWallInstance);
                     cellRightWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellRightWallInstance.transform.localPosition = new Vector3(0.5f, 0.5f, 0.0f);
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kFront:
                 {
+                    ResetCellWallInstance(ref cellFrontWallInstance);
                     cellFrontWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellFrontWallInstance.transform.Rotate(0.0f, 90.0f, 0.0f);
                     cellFrontWallInstance.transform.localPosition = new Vector3(0.0f, 0.5f, 0.5f);
@@ -67,9 +68,15 @@ public class MazeCell : MonoBehaviour
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kBack:
                 {
+                    ResetCellWallInstance(ref cellBackWallInstance);
                     cellBackWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellBackWallInstance.transform.Rotate(0.0f, 90.0f, 0.0f);
                     cellBackWallInstance.transform.localPosition = new Vector3(0.0f, 0.5f, -0.5f);
+                    break;
+                }
+            default:
+                {
+                    // No Op
                     break;
                 }
         };
@@ -77,6 +84,12 @@ public class MazeCell : MonoBehaviour
 
     public void BuildCellCeiling()
     {
+        if(cellCeilingInstance != null)
+        {
+            DestroyImmediate(cellCeilingInstance.gameObject);
+            cellCeilingInstance = null;
+        }
+
         cellCeilingInstance = Instantiate(cellWallPrefab, transform) as CellWall;
         cellCeilingInstance.transform.Rotate(0.0f, 0.0f, 90.0f);
         cellCeilingInstance.transform.localPosition = new Vector3(0.0f, 1.0f, 0.0f);
@@ -91,22 +104,27 @@ public class MazeCell : MonoBehaviour
         {
             case MazeStructure.Cell2D.CellDirectionEnum.kLeft:
                 {
-                    Destroy(cellLeftWallInstance.gameObject, timeDelay);
+                    if(cellLeftWallInstance != null) { Destroy(cellLeftWallInstance.gameObject, timeDelay); cellLeftWallInstance = null; }
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kRight:
                 {
-                    Destroy(cellRightWallInstance.gameObject, timeDelay);
+                    if (cellRightWallInstance != null) { Destroy(cellRightWallInstance.gameObject, timeDelay); cellRightWallInstance = null; }
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kFront:
                 {
-                    Destroy(cellFrontWallInstance.gameObject, timeDelay);
+                    if (cellFrontWallInstance != null) { Destroy(cellFrontWallInstance.gameObject, timeDelay); cellFrontWallInstance = null; }
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kBack:
                 {
-                    Destroy(cellBackWallInstance.gameObject, timeDelay);
+                    if (cellBackWallInstance != null) { Destroy(cellBackWallInstance.gameObject, timeDelay); cellBackWallInstance = null; }
+                    break;
+                }
+            default:
+                {
+                    // No Op
                     break;
                 }
         };
@@ -116,7 +134,7 @@ public class MazeCell : MonoBehaviour
         float timeDelay = 0.0f
         )
     {
-        Destroy(cellCeilingInstance, timeDelay);
+        if (cellCeilingInstance != null) { Destroy(cellCeilingInstance.gameObject, timeDelay); cellCeilingInstance = null; }
     }
 
     public void ShowSolutionCell()
@@ -173,5 +191,14 @@ public class MazeCell : MonoBehaviour
                     break;
                 }
         };
+    }
+
+    private void ResetCellWallInstance(ref CellWall cellwall)
+    {
+        if(cellwall != null)
+        {
+            DestroyImmediate(cellwall.gameObject);
+            cellwall = null;
+        }
     }
 }
