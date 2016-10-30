@@ -1,150 +1,133 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//From CamaraJugador script
 public class CameraController : MonoBehaviour
 {
-
-    //Public Members
     public GameObject player;
-    public float distance = 5.0f;
-    public float xSpeed = 120.0f;
-    public float ySpeed = 120.0f;
-    public float yMinLimit = 0f;
-    public float yMaxLimit = 45f;
-    public float distanceMin = 15f;
-    public float distanceMax = 90f;
-
-    //Private Members
-    private new Rigidbody rigidbody;
-    private Quaternion qOrg;
-
-    private float sensitivity = 10f;
+    public Transform CameraTarget;
     private float x = 0.0f;
     private float y = 0.0f;
 
-    [SerializeField]
-    private Transform target;
+    private float sensitivity = 2f;
 
-    [SerializeField]
-    private Vector3 offsetPosition;
+    private int mouseXSpeedMod = 5;
+    private int mouseYSpeedMod = 5;
 
-    [SerializeField]
-    private Space offsetPositionSpace = Space.Self;
+    public float MaxViewDistance = 15f;
+    public float MinViewDistance = 1f;
+    public int ZoomRate = 20;
+    private int lerpRate = 5;
+    private float distance = 3f;
+    private float desireDistance;
+    private float correctedDistance;
+    private float currentDistance;
 
-    [SerializeField]
-    private bool lookAt = true;
+    public float cameraTargetHeight = 1.0f;
 
+    //checks if first person mode is on
+    private bool click = false;
+    //stores cameras distance from player
+    private float curDist = 0;
+
+    // Use this for initialization
     void Start()
     {
-        target = player.transform;
+        CameraTarget = player.transform;
 
-        //Set Offset
-        offsetPosition = transform.position - target.position;
-
-        Vector3 angles = transform.eulerAngles;
-        x = angles.y;
-        y = angles.x;
-
-        rigidbody = GetComponent<Rigidbody>();
-
-        // Make the rigid body not change rotation
-        if (rigidbody != null)
-        {
-            rigidbody.freezeRotation = true;
-        }
+        Vector3 Angles = transform.eulerAngles;
+        x = Angles.x;
+        y = Angles.y;
+        currentDistance = distance;
+        desireDistance = distance;
+        correctedDistance = distance;
     }
 
-    void Update()
-    {
-        //Zoom in/out
-        this.cameraZoom();
-
-        if (Input.GetMouseButton(1))
-        {
-            //Get position of camera to snap back to
-            if (qOrg.x == 0f)
-            {
-                qOrg = transform.rotation;
-            }
-
-            //Move camera with mouse
-            this.moveCamera();
-        }
-        else
-        {
-            //Moves camera with target object
-            Refresh();
-        }
-        
-        //Release of Right mouse click returns camera to origional position
-        if(Input.GetMouseButtonUp(1))
-        {
-            transform.rotation = qOrg;
-        }
-    }
-
+    // Update is called once per frame
     void LateUpdate()
-    { 
-        //Set Position
-        transform.position = target.position + offsetPosition;
-    }
-
-    void moveCamera()
     {
-        x += Input.GetAxis("Mouse X") * xSpeed * distance * Time.deltaTime;
-        y -= Input.GetAxis("Mouse Y") * ySpeed * Time.deltaTime;
-
-        y = ClampAngle(y, yMinLimit, yMaxLimit);
-
-        Quaternion rotation = Quaternion.Euler(y, x, 0);
-
-        distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
-
-        RaycastHit hit;
-        if (Physics.Linecast(target.position, transform.position, out hit))
+        if (Input.GetMouseButton(1))
+        {/*0 mouse btn izq, 1 mouse btn der*/
+            x += Input.GetAxis("Mouse X") * mouseXSpeedMod;
+            y += Input.GetAxis("Mouse Y") * mouseYSpeedMod;
+        }
+        else if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
         {
-            distance -= hit.distance;
+            float targetRotantionAngle = CameraTarget.eulerAngles.y;
+            float cameraRotationAngle = transform.eulerAngles.y;
+            x = Mathf.LerpAngle(cameraRotationAngle, targetRotantionAngle, lerpRate * Time.deltaTime);
         }
 
-        Vector3 negDistance = new Vector3(0f, 0f, -distance);
-        Vector3 position = rotation * negDistance + target.position;
+        y = ClampAngle(y, -15, 25);
+        Quaternion rotation = Quaternion.Euler(y + 15, x, 0);
+
+        desireDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * ZoomRate * Mathf.Abs(desireDistance);
+        desireDistance = Mathf.Clamp(desireDistance, MinViewDistance, MaxViewDistance);
+        correctedDistance = desireDistance;
+
+        Vector3 position = CameraTarget.position - (rotation * Vector3.forward * desireDistance);
+
+        RaycastHit collisionHit;
+        Vector3 cameraTargetPosition = new Vector3(CameraTarget.position.x, CameraTarget.position.y + cameraTargetHeight, CameraTarget.position.z);
+
+        bool isCorrected = false;
+        if (Physics.Linecast(cameraTargetPosition, position, out collisionHit))
+        {
+            position = collisionHit.point;
+            correctedDistance = Vector3.Distance(cameraTargetPosition, position);
+            isCorrected = true;
+        }
+
+        //?
+        //condicion ? first_expresion : second_expresion;
+        //(input > 0) ? isPositive : isNegative;
+
+        currentDistance = !isCorrected || correctedDistance > currentDistance ? Mathf.Lerp(currentDistance, correctedDistance, Time.deltaTime * ZoomRate) : correctedDistance;
+
+        position = CameraTarget.position - (rotation * Vector3.forward * currentDistance + new Vector3(0, -cameraTargetHeight, 0));
 
         transform.rotation = rotation;
         transform.position = position;
+
+        //CameraTarget.rotation = rotation;
+
+        float cameraX = transform.rotation.x;
+        //checks if right mouse button is pushed
+        if (Input.GetMouseButton(1))
+        {
+            //sets CHARACTERS x rotation to match cameras x rotation
+            CameraTarget.eulerAngles = new Vector3(cameraX, transform.eulerAngles.y, transform.eulerAngles.z);
+        }
+        //checks if middle mouse button is pushed down
+        if (Input.GetMouseButtonDown(2))
+        {
+            //if middle mouse button is pressed 1st time set click to true and camera in front of player and save cameras position before mmb.
+            //if mmb is pressed again set camera back to it's position before we clicked mmb 1st time and set click to false
+            if (click == false)
+            {
+                click = true;
+                curDist = distance;
+                distance = distance - distance - 1;
+            }
+            else
+            {
+                distance = curDist;
+                click = false;
+            }
+        }
+
     }
 
-    void cameraZoom()
+    private static float ClampAngle(float angle, float min, float max)
     {
-        //Zoom Field of View
-        float fov = Camera.main.fieldOfView;
-        fov += Input.GetAxis("Mouse ScrollWheel") * sensitivity;
-        fov = Mathf.Clamp(fov, distanceMin, distanceMax);
-        Camera.main.fieldOfView = fov;
-    }
-
-    public static float ClampAngle(float angle, float min, float max)
-    {
-        if (angle < -360F)
-            angle += 360F;
-        if (angle > 360F)
-            angle -= 360F;
-
+        if (angle < -360)
+        {
+            angle += 360;
+        }
+        if (angle > 360)
+        {
+            angle -= 360;
+        }
         return Mathf.Clamp(angle, min, max);
-    }
-
-    void Refresh()
-    {
-        // compute position
-        if (offsetPositionSpace == Space.Self)
-        {
-            transform.position = target.TransformPoint(offsetPosition);
-        }
-        else
-        {
-            transform.position = target.position + offsetPosition;
-        }
-
-        //Set rotation to rotation of target object
-        transform.rotation = target.rotation;
     }
 }

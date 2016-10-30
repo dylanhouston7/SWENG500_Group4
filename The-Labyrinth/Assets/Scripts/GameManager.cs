@@ -257,10 +257,6 @@ public class GameManager : MonoBehaviour
         //Attach Camera Controller to player camera object
         playerCam.gameObject.AddComponent<CameraController>().player = tp.gameObject;
 
-        //Set initial Position
-        playerCam.transform.position = new Vector3(x, y + .7f, z - 0.4f);
-        playerCam.nearClipPlane = 0.1f;
-
         //Destroy origional camera
         GameObject.DestroyObject(original);
 
