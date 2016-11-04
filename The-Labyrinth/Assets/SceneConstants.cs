@@ -25,6 +25,11 @@ namespace Assets
         public const string DifficultyScene = "DifficultyScene";
 
         /// <summary>
+        /// Points to the maze level scene
+        /// </summary
+        public const string MazeLevelScene = "MazeLevelScene";
+
+        /// <summary>
         /// Points to the maze complete (scoring) scene
         /// </summary
         public const string MazeCompleteScene = "MazeComplete";

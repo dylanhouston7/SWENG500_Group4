@@ -106,6 +106,6 @@ public class DifficultyMenu : MonoBehaviour
     {
         IDifficulty difficulty = GetDifficulty();
         GameContext.m_context.difficulty = difficulty;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeLevelScene);
     }
 }
