@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("GameManager: Showing Maze Solution");
 
             // Maze solution path based on the maze start cell
-            GameContext.m_context.m_activeMazeSolutionPath = GameContext.m_context.m_activeMaze.MazeSolutionPath;
+            GameContext.m_context.m_activeMazeHintSolutionPath = GameContext.m_context.m_activeMaze.MazeSolutionPath;
 
             EventManager.TriggerEvent("ShowMazeSolution");
         }
@@ -87,9 +87,9 @@ public class GameManager : MonoBehaviour
             MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse,
                                            GameContext.m_context.m_activeMaze,
                                            GameContext.m_context.m_activeMaze.GetCell(GameContext.m_context.m_currentPlayerMazePositionX, GameContext.m_context.m_currentPlayerMazePositionZ),
-                                           ref GameContext.m_context.m_activeMazeSolutionPath);
+                                           ref GameContext.m_context.m_activeMazeHintSolutionPath);
 
-            if (GameContext.m_context.m_activeMazeSolutionPath.Count >= 2)
+            if (GameContext.m_context.m_activeMazeHintSolutionPath.Count >= 2)
             {
                 EventManager.TriggerEvent("ShowMazeHint");
 
@@ -157,49 +157,32 @@ public class GameManager : MonoBehaviour
         };
 
 
-        // Load/Generate a Maze Level
-        if (GameContext.m_context.m_nextMazeIndex < activeMazes.Count)
+        // Load the Active Maze Index
+        if (GameContext.m_context.m_activeMazeIndex >= 0 &&
+            GameContext.m_context.m_activeMazeIndex < activeMazes.Count)
         {
-            Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_nextMazeIndex);
+            Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_activeMazeIndex);
 
-            GameContext.m_context.m_activeMaze = activeMazes[GameContext.m_context.m_nextMazeIndex];
+            // Set the GameContext to the Active Maze Reference
+            GameContext.m_context.m_activeMaze = activeMazes[GameContext.m_context.m_activeMazeIndex];
 
-            ++GameContext.m_context.m_nextMazeIndex;
+            // Display the Active Maze Properties
+            textCurrentMazeName.text = GameContext.m_context.m_activeMaze.Name;
+            textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
+
+            // Reset Maze Timer
+            GameContext.m_context.difficulty.ResetTimer();
+
+            
+            // Publish Event: RenderMaze
+            EventManager.TriggerEvent("RenderMaze");
         }
         else
         {
-            Debug.Log("GameManager: Generating Maze");
+            Debug.Log("GameManager: Invalid Maze Index " + GameContext.m_context.m_activeMazeIndex);
 
-            // Get a default maze structure based on the defined difficulty level
-            GameContext.m_context.m_activeMaze = GameContext.m_context.difficulty.GetRandomMaze();
-
-            // Set Maze Properties:
-            GameContext.m_context.m_activeMaze.Name = "Auto Generated";
-            GameContext.m_context.m_activeMaze.Difficulty = GameContext.m_context.difficulty.Difficulty;
-
-            // Modify the default maze structure with the maze generation algorithm
-            MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, GameContext.m_context.m_activeMaze);
-
-            // Solve the generated maze with the maze solving algorithm
-            List<MazeStructure.Cell2D> solutionPath = new List<MazeStructure.Cell2D>();
-            MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, 
-                                           GameContext.m_context.m_activeMaze,
-                                           GameContext.m_context.m_activeMaze.GetStartCell(),
-                                           ref solutionPath);
-
-            // Store Solution Path
-            GameContext.m_context.m_activeMaze.MazeSolutionPath = solutionPath;
-        }
-
-        // Display the Maze Properties
-        textCurrentMazeName.text = GameContext.m_context.m_activeMaze.Name;
-        textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
-
-        // Reset the timer for the maze
-        GameContext.m_context.difficulty.ResetTimer();
-
-        // Publish Event: RenderMaze
-        EventManager.TriggerEvent("RenderMaze");
+            // TODO: Display Error Message and Return to the Maze Level Scene
+        }       
     }
 
     void OnDisable()
@@ -240,7 +223,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void createPlayerCamera()
+    void createPlayerCamera()
     {
         // Find the 'main' camera object.
         var original = GameObject.FindWithTag("MainCamera");
@@ -276,6 +259,5 @@ public class GameManager : MonoBehaviour
         // TODO: Store Player Score to the GameContext current Player account
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeCompleteScene);
-
     }
 }

@@ -40,7 +40,7 @@ public class MazeComplete : MonoBehaviour
     {
         if (NextMazeFlag)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeLevelScene);
         }
 
         else if (MainMenuFlag)

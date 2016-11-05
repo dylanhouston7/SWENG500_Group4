@@ -12,23 +12,32 @@ public class MazeLevelGrid : MonoBehaviour
     // Private GameObject References
     private List<MazeLevelRowElement> mazeLevelRowElementInstances;
 
+    // ********************************************
+    // Unity Methods
+    // ********************************************
+
+    /// <summary>
+    /// Unity Method for initialization of GameObject called first
+    /// </summary>
+    /// <remarks>
+    /// Called once
+    /// </remarks>
     void Awake()
     {
         mazeLevelRowElementInstances = new List<MazeLevelRowElement>();
     }
 
-    void Start()
-    {
-        mazeLevelRowElementInstances.Clear();
-    }
+    // ********************************************
+    // Public Methods
+    // ********************************************
 
-    public void AddMazeLevelRowElement(MazeStructure.Maze2D maze)
+    public void AddMazeLevelRowElement(int mazeIndex, MazeStructure.Maze2D maze)
     {
         // Instantiate New Row Element
         MazeLevelRowElement rowElement = Instantiate(mazeLevelRowElementPrefab, transform) as MazeLevelRowElement;
 
         // Initialize New Row Element
-        rowElement.Initialize(maze);
+        rowElement.Initialize(mazeIndex, maze);
 
         // Add New Row Element to Managed List of Row Elements
         mazeLevelRowElementInstances.Add(rowElement);

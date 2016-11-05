@@ -86,7 +86,7 @@ public class MazeGenerator : MonoBehaviour
         activeMaze.MazeSolutionPath = solutionPath;
 
         // Store the Solution Path in the GameContext for Rendering
-        GameContext.m_context.m_activeMazeSolutionPath = solutionPath;
+        GameContext.m_context.m_activeMazeHintSolutionPath = solutionPath;
 
         // Render the Generated Maze Structure
         mazeManagerRef.RenderMaze(activeMaze);

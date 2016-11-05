@@ -1,15 +1,71 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-using System.Collections;
+using System.Collections.Generic;
+
+using Assets;
 
 public class MazeLevelRowElement : MonoBehaviour
 {
-    // GameObject References
-    public Text textMazeName;
+    // Public GameObject References
+    public Text m_textMazeName;
 
-    public void Initialize(MazeStructure.Maze2D mazeRef)
+    // Private Variables
+    int m_mazeRefIndex;
+
+
+    // ********************************************
+    // Unity Methods
+    // ********************************************
+
+    /// <summary>
+    /// Unity Method for initialization of GameObject called first
+    /// </summary>
+    /// <remarks>
+    /// Called once
+    /// </remarks>
+    void Awake()
     {
-        textMazeName.text = mazeRef.Name;
+        m_textMazeName.text = "";
+
+        m_mazeRefIndex = -1;
+    }
+
+    // ********************************************
+    // Public Methods
+    // ********************************************
+
+    /// <summary>
+    /// Method used to initialize the maze level row element
+    /// </summary>
+    /// <param name="mazeRefIndex">Index in the GameContext maze set that the reference maze is stored</param>
+    /// <param name="mazeRef">Reference maze that the maze level row element represents</param>
+    public void Initialize(int mazeRefIndex, MazeStructure.Maze2D mazeRef)
+    {
+        // Set the Maze Reference Index
+        m_mazeRefIndex = mazeRefIndex;
+
+        // Set the Maze Name
+        m_textMazeName.text = mazeRef.Name;
+    }
+
+    // ********************************************
+    // Public EventSystem Handler Methods
+    // ********************************************
+
+    /// <summary>
+    /// Method used to start the referenced GameContext maze
+    /// </summary>
+    public void StartMaze()
+    {
+        if(m_mazeRefIndex >= 0)
+        {
+            // Set the GameContext Active Maze Index to the maze referenced by this maze level row element
+            GameContext.m_context.m_activeMazeIndex = m_mazeRefIndex;
+
+            // Load the Main Scene
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
+        }
     }
 }

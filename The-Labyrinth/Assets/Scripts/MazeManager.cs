@@ -102,7 +102,7 @@ public class MazeManager : MonoBehaviour
         int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;        
         
         // Determine the hint direction based on the first two hint solution path cells
-        MazeStructure.Cell2D.CellDirectionEnum direction = GameContext.m_context.m_activeMazeSolutionPath[0].DirectionToCell(GameContext.m_context.m_activeMazeSolutionPath[1]);
+        MazeStructure.Cell2D.CellDirectionEnum direction = GameContext.m_context.m_activeMazeHintSolutionPath[0].DirectionToCell(GameContext.m_context.m_activeMazeHintSolutionPath[1]);
 
         mazeInstance[posX, posZ].ShowCellHint(direction);
     }
@@ -202,7 +202,7 @@ public class MazeManager : MonoBehaviour
     /// </summary>
     public void ShowMazeSolution()
     {
-        foreach(MazeStructure.Cell2D cell in GameContext.m_context.m_activeMazeSolutionPath)
+        foreach(MazeStructure.Cell2D cell in GameContext.m_context.m_activeMazeHintSolutionPath)
         {
             mazeInstance[cell.PositionX, cell.PositionZ].ShowSolutionCell();
         }

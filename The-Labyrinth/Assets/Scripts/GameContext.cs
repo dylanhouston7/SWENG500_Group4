@@ -23,7 +23,7 @@ public class GameContext : MonoBehaviour
     /// <summary>
     /// Index of the next maze structure to load from the selected set of mazes
     /// </summary>
-    public int m_nextMazeIndex;
+    public int m_activeMazeIndex;
 
     /// <summary>
     /// Reference to the active maze
@@ -33,7 +33,7 @@ public class GameContext : MonoBehaviour
     /// <summary>
     /// Reference to the active maze last hint solution path
     /// </summary>
-    public List<MazeStructure.Cell2D> m_activeMazeSolutionPath;
+    public List<MazeStructure.Cell2D> m_activeMazeHintSolutionPath;
 
     /// <summary>
     /// Current Player position in the maze
@@ -100,7 +100,6 @@ public class GameContext : MonoBehaviour
     {
         m_installedMazesLoaded = false;
 
-        m_nextMazeIndex = 0;
         m_activeMaze = new MazeStructure.NullMaze();
         m_easyMazes = new List<MazeStructure.Maze2D>();
         m_mediumMazes = new List<MazeStructure.Maze2D>();
