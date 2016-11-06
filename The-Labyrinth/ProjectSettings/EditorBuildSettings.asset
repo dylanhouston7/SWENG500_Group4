@@ -15,3 +15,5 @@ EditorBuildSettings:
     path: Assets/_Scenes/MazeComplete.unity
   - enabled: 1
     path: Assets/_Scenes/MazeLevelScene.unity
+  - enabled: 1
+    path: Assets/_Scenes/MazeGen.unity

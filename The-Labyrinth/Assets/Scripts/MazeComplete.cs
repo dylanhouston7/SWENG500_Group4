@@ -49,6 +49,9 @@ public class MazeComplete : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates all the score labels with information pertaining to the just completed maze.
+    /// </summary>
     void UpdateScoreLabels()
     {
         TextMesh initialScore = GameObject.Find("InitialScoreNumber").GetComponent<TextMesh>();
@@ -56,10 +59,9 @@ public class MazeComplete : MonoBehaviour
         TextMesh difficultyMultiplier = GameObject.Find("DifficultyMultiplierNumber").GetComponent<TextMesh>();
         TextMesh overallScoreNumber = GameObject.Find("OverallScoreNumber").GetComponent<TextMesh>();
 
-        if (GameContext.m_context.score.HintShown)
+        if (GameContext.m_context.score.HintCount > 0)
         {
-            // TO-DO: Add constant in here
-            hintsNumber.text = "-5000";
+            hintsNumber.text = string.Format("-{0}", GameContext.m_context.score.HintPenalty);
         }
 
         else

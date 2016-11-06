@@ -38,5 +38,10 @@ namespace Assets
         /// Points to the main menu scene
         /// </summary
         public const string MainMenuScene = "MainMenu";
+
+        /// <summary>
+        /// Points to the maze generator scene
+        /// </summary
+        public const string MazeGeneratorScene = "MazeGen";
     }
 }
