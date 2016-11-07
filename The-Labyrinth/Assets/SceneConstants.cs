@@ -43,5 +43,10 @@ namespace Assets
         /// Points to the maze generator scene
         /// </summary
         public const string MazeGeneratorScene = "MazeGen";
+
+        /// <summary>
+        /// Points to the import maze scene
+        /// </summary
+        public const string MazeImportScene = "ImportMazeScene";
     }
 }
