@@ -60,7 +60,7 @@ public class MazeImportManager : MonoBehaviour
         {
             // Step 1: Check that imported maze does not already exist in the set of installed imported mazes
             bool mazeExists = false;
-            foreach (MazeStructure.Maze2D maze in GameContext.m_context.m_importedMazes)
+            foreach (MazeStructure.Maze2D maze in GameContext.m_context.m_mazeChallengeMazes)
             {
                 if (maze.GUID == m_importedMazeData.GUID)
                 {
@@ -72,7 +72,7 @@ public class MazeImportManager : MonoBehaviour
             // Step 2: If imported mazes does not exist add it to the set of imported mazes
             if (!mazeExists)
             {
-                GameContext.m_context.m_importedMazes.Add(m_importedMazeData);
+                GameContext.m_context.m_mazeChallengeMazes.Add(m_importedMazeData);
 
                 m_mazeSaveStatus.text = "Save Completed";
 

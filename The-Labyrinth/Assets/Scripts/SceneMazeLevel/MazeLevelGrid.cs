@@ -6,11 +6,13 @@ using System.Collections.Generic;
 public class MazeLevelGrid : MonoBehaviour
 {
     // Prefab References
-    public MazeLevelRowElement mazeLevelRowElementPrefab;
+    public MazeLevelRowElement m_mazeLevelRowElementPrefab;
+    public MazeChallengeRowElement m_mazeChallengeRowElementPrefab;
 
 
     // Private GameObject References
-    private List<MazeLevelRowElement> mazeLevelRowElementInstances;
+    private List<MazeLevelRowElement> m_mazeLevelRowElementInstances;
+    private List<MazeChallengeRowElement> m_mazeChallengeRowElementInstances;
 
     // ********************************************
     // Unity Methods
@@ -24,7 +26,8 @@ public class MazeLevelGrid : MonoBehaviour
     /// </remarks>
     void Awake()
     {
-        mazeLevelRowElementInstances = new List<MazeLevelRowElement>();
+        m_mazeLevelRowElementInstances = new List<MazeLevelRowElement>();
+        m_mazeChallengeRowElementInstances = new List<MazeChallengeRowElement>();
     }
 
     // ********************************************
@@ -34,12 +37,56 @@ public class MazeLevelGrid : MonoBehaviour
     public void AddMazeLevelRowElement(int mazeIndex, MazeStructure.Maze2D maze)
     {
         // Instantiate New Row Element
-        MazeLevelRowElement rowElement = Instantiate(mazeLevelRowElementPrefab, transform) as MazeLevelRowElement;
+        MazeLevelRowElement rowElement = Instantiate(m_mazeLevelRowElementPrefab, transform) as MazeLevelRowElement;
 
         // Initialize New Row Element
         rowElement.Initialize(mazeIndex, maze);
 
         // Add New Row Element to Managed List of Row Elements
-        mazeLevelRowElementInstances.Add(rowElement);
+        m_mazeLevelRowElementInstances.Add(rowElement);
+    }
+
+    public void AddMazeChallengeRowElement(int mazeIndex, MazeStructure.Maze2D maze)
+    {
+        // Instantiate New Row Element
+        MazeChallengeRowElement rowElement = Instantiate(m_mazeChallengeRowElementPrefab, transform) as MazeChallengeRowElement;
+
+        // Initialize New Row Element
+        rowElement.Initialize(mazeIndex, maze);
+
+        // Add New Row Element to Managed List of Row Elements
+        m_mazeChallengeRowElementInstances.Add(rowElement);
+    }
+
+    public void HideMazeLevelRows()
+    {
+        foreach(MazeLevelRowElement mazeRow in m_mazeLevelRowElementInstances)
+        {
+            mazeRow.Hide();
+        }
+    }
+
+    public void ShowMazeLevelRows()
+    {
+        foreach (MazeLevelRowElement mazeRow in m_mazeLevelRowElementInstances)
+        {
+            mazeRow.Show();
+        }
+    }
+
+    public void HideMazeChallengeRows()
+    {
+        foreach (MazeChallengeRowElement mazeRow in m_mazeChallengeRowElementInstances)
+        {
+            mazeRow.Hide();
+        }
+    }
+
+    public void ShowMazeChallengeRows()
+    {
+        foreach (MazeChallengeRowElement mazeRow in m_mazeChallengeRowElementInstances)
+        {
+            mazeRow.Show();
+        }
     }
 }

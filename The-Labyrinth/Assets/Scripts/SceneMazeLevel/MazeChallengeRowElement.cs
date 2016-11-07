@@ -6,10 +6,9 @@ using System.Collections.Generic;
 
 using Assets;
 
-public class MazeLevelRowElement : MonoBehaviour
-{   
+public class MazeChallengeRowElement : MonoBehaviour
+{
     // Public GameObject References
-    public GameObject m_parentRowElement;
     public Text m_textMazeName;
 
     // Private Variables
@@ -38,10 +37,10 @@ public class MazeLevelRowElement : MonoBehaviour
     // ********************************************
 
     /// <summary>
-    /// Method used to initialize the maze level row element
+    /// Method used to initialize the maze challenge row element
     /// </summary>
     /// <param name="mazeRefIndex">Index in the GameContext maze set that the reference maze is stored</param>
-    /// <param name="mazeRef">Reference maze that the maze level row element represents</param>
+    /// <param name="mazeRef">Reference maze that the maze challenge row element represents</param>
     public void Initialize(int mazeRefIndex, MazeStructure.Maze2D mazeRef)
     {
         // Set the Maze Reference Index
@@ -70,7 +69,7 @@ public class MazeLevelRowElement : MonoBehaviour
     /// </summary>
     public void StartMaze()
     {
-        if(m_mazeRefIndex >= 0)
+        if (m_mazeRefIndex >= 0)
         {
             // Set the GameContext Active Maze Index to the maze referenced by this maze level row element
             GameContext.m_context.m_activeMazeIndex = m_mazeRefIndex;
@@ -80,3 +79,4 @@ public class MazeLevelRowElement : MonoBehaviour
         }
     }
 }
+
