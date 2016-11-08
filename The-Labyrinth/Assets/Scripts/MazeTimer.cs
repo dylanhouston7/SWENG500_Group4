@@ -61,8 +61,8 @@ public class MazeTimer : MonoBehaviour
         }
         else
         {
-
             ShowTimeUpLabel();
+            EventManager.TriggerEvent("GameOver");
         }
     }
 

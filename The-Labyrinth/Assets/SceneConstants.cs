@@ -48,5 +48,15 @@ namespace Assets
         /// Points to the import maze scene
         /// </summary
         public const string MazeImportScene = "ImportMazeScene";
+
+        /// <summary>
+        /// Points to the game over scene
+        /// </summary
+        public const string GameOverScene = "GameOver";
+
+        /// <summary>
+        /// Points to the credits scene
+        /// </summary
+        public const string CreditsScene = "Credits";
     }
 }
