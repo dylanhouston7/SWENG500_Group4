@@ -10,9 +10,10 @@ public class MazeLevelMenuManager : MonoBehaviour
 {
     // GameObject References
     public Text m_textMenuTitleRef;
-    public Button m_buttonViewInstalledMazes;
-    public Button m_buttonViewChallengeMazes;
+    public Button m_buttonViewInstalledMazesRef;
+    public Button m_buttonViewChallengeMazesRef;
     public MazeLevelGrid m_mazeLevelGridRef;
+    public Scrollbar m_scrollbarMazeListRef;
 
 
 
@@ -90,8 +91,10 @@ public class MazeLevelMenuManager : MonoBehaviour
 
     public void ViewInstalledMazes()
     {
-        m_buttonViewInstalledMazes.interactable = false;
-        m_buttonViewChallengeMazes.interactable = true;
+        m_buttonViewInstalledMazesRef.interactable = false;
+        m_buttonViewChallengeMazesRef.interactable = true;
+        m_scrollbarMazeListRef.value = 1;
+
 
         m_mazeLevelGridRef.HideMazeChallengeRows();
         m_mazeLevelGridRef.ShowMazeLevelRows();
@@ -99,8 +102,9 @@ public class MazeLevelMenuManager : MonoBehaviour
 
     public void ViewChallengeMazes()
     {
-        m_buttonViewInstalledMazes.interactable = true;
-        m_buttonViewChallengeMazes.interactable = false;
+        m_buttonViewInstalledMazesRef.interactable = true;
+        m_buttonViewChallengeMazesRef.interactable = false;
+        m_scrollbarMazeListRef.value = 1;
 
         m_mazeLevelGridRef.HideMazeLevelRows();
         m_mazeLevelGridRef.ShowMazeChallengeRows();
@@ -109,9 +113,25 @@ public class MazeLevelMenuManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public void LoadNewMazeChallenge()
+    public void StartNewMazeChallenge()
     {
+        // Generate a New Maze Challenge Maze
+        MazeStructure.Maze2D mazeChallenge = GameContext.m_context.difficulty.GetRandomMaze();
 
+        // Set Maze Properties
+        mazeChallenge.Name = "Maze Challenge";
+
+        // Store the New Maze Challenge Maze
+        GameContext.m_context.m_mazeChallengeMazes.Add(mazeChallenge);
+        GameContext.m_context.m_mazeChallengeMazesChanged = true;
+
+        // Set the GameContext Active Maze Index to the new maze challenge maze
+        GameContext.m_context.m_activeMazeIndex = GameContext.m_context.m_mazeChallengeMazes.Count - 1;
+
+        GameContext.m_context.m_isActiveMazeChallenge = true;
+
+        // Load the Main Scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
     }
 
     /// <summary>

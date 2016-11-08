@@ -126,42 +126,49 @@ public class GameManager : MonoBehaviour
         EventManager.StartListening("CompletedMaze", m_handleEventCompletedMaze);
         EventManager.StartListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);
 
-        // Set reference to the mazes of selected difficulty
+        // Set reference to the maze set
         List<MazeStructure.Maze2D> activeMazes = new List<MazeStructure.Maze2D>();
-        switch(GameContext.m_context.difficulty.Difficulty)
+        if (!GameContext.m_context.m_isActiveMazeChallenge)
+        {            
+            switch (GameContext.m_context.difficulty.Difficulty)
+            {
+                case DifficultyEnum.EASY:
+                    {
+                        activeMazes = GameContext.m_context.m_easyMazes;
+                        break;
+                    }
+                case DifficultyEnum.MEDIUM:
+                    {
+                        activeMazes = GameContext.m_context.m_mediumMazes;
+                        break;
+                    }
+                case DifficultyEnum.HARD:
+                    {
+                        activeMazes = GameContext.m_context.m_hardMazes;
+                        break;
+                    }
+                case DifficultyEnum.EPIC:
+                    {
+                        activeMazes = GameContext.m_context.m_epicMazes;
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            };
+        }
+        else
         {
-            case DifficultyEnum.EASY:
-                {
-                    activeMazes = GameContext.m_context.m_easyMazes;
-                    break;
-                }
-            case DifficultyEnum.MEDIUM:
-                {
-                    activeMazes = GameContext.m_context.m_mediumMazes;
-                    break;
-                }
-            case DifficultyEnum.HARD:
-                {
-                    activeMazes = GameContext.m_context.m_hardMazes;
-                    break;
-                }
-            case DifficultyEnum.EPIC:
-                {
-                    activeMazes = GameContext.m_context.m_epicMazes;
-                    break;
-                }
-            default:
-                {
-                    break;
-                }
-        };
+            activeMazes = GameContext.m_context.m_mazeChallengeMazes;
+        }
 
 
         // Load the Active Maze Index
         if (GameContext.m_context.m_activeMazeIndex >= 0 &&
             GameContext.m_context.m_activeMazeIndex < activeMazes.Count)
         {
-            Debug.Log("GameManager: Loading Installed Maze Index " + GameContext.m_context.m_activeMazeIndex);
+            Debug.Log("GameManager: Loading Maze Index " + GameContext.m_context.m_activeMazeIndex);
 
             // Set the GameContext to the Active Maze Reference
             GameContext.m_context.m_activeMaze = activeMazes[GameContext.m_context.m_activeMazeIndex];

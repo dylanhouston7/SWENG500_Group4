@@ -74,6 +74,8 @@ public class MazeChallengeRowElement : MonoBehaviour
             // Set the GameContext Active Maze Index to the maze referenced by this maze level row element
             GameContext.m_context.m_activeMazeIndex = m_mazeRefIndex;
 
+            GameContext.m_context.m_isActiveMazeChallenge = true;
+
             // Load the Main Scene
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
         }

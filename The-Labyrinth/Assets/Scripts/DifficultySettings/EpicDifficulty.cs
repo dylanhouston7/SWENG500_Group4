@@ -76,7 +76,23 @@ namespace Assets.Scripts.DifficultySettings
         /// </summary>
         public Maze2D GetRandomMaze()
         {
-            return Maze2D.GetInstance(20, 20);
+            // Build Default Maze
+            MazeStructure.Maze2D maze = MazeStructure.Maze2D.GetInstance(25, 25);
+
+            // Set Basic Maze Properties
+            maze.Difficulty = DifficultyEnum.EPIC;
+
+
+            // Run Maze Gen on Default Maze
+            MazeStructure.MazeGenerator.Generate(MazeStructure.MazeGenerator.MazeGenAlgorithmEnum.kDepthFirstSearch, maze);
+
+            // Solve Generated Maze
+            List<MazeStructure.Cell2D> maze_solution = new List<Cell2D>();
+            MazeStructure.MazeSolver.Solve(MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse, maze, maze.GetStartCell(), ref maze_solution);
+            maze.MazeSolutionPath = maze_solution;
+
+
+            return maze;
         }
 
         public void ResetTimer()

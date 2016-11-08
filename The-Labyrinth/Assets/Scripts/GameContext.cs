@@ -25,6 +25,9 @@ public class GameContext : MonoBehaviour
     /// </summary>
     public int m_activeMazeIndex;
 
+
+    public bool m_isActiveMazeChallenge;
+
     /// <summary>
     /// Reference to the active maze
     /// </summary>
@@ -59,7 +62,7 @@ public class GameContext : MonoBehaviour
     /// A change to the set of maze challenge mazes should result in the set of mazes being saved
     /// to the maze challenge maze data file
     /// </remarks>
-    bool m_mazeChallengeMazesChanged;
+    public bool m_mazeChallengeMazesChanged;
 
     /// <summary>
     /// Set of maze challenge mazes
@@ -100,7 +103,10 @@ public class GameContext : MonoBehaviour
     {
         m_installedMazesLoaded = false;
 
+        m_activeMazeIndex = 0;
+        m_isActiveMazeChallenge = false;
         m_activeMaze = new MazeStructure.NullMaze();
+
         m_easyMazes = new List<MazeStructure.Maze2D>();
         m_mediumMazes = new List<MazeStructure.Maze2D>();
         m_hardMazes = new List<MazeStructure.Maze2D>();
