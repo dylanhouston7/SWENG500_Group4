@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44692534, g: 0.49678737, b: 0.57508594, a: 1}
+  m_IndirectSpecularColor: {r: 0.44692492, g: 0.4967869, b: 0.57508546, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -264,7 +264,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 277702304}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -11.5, y: -3.38, z: -0.586}
+  m_LocalPosition: {x: -7.83, y: -3.38, z: 0.18}
   m_LocalScale: {x: 0.1, y: 0.10000009, z: 0.10000009}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children: []
@@ -296,6 +296,8 @@ MonoBehaviour:
   StartFlag: 0
   AchievementFlag: 0
   CreditFlag: 0
+  CreateMazeFlag: 1
+  ImportMazeFlag: 0
 --- !u!114 &277702308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,7 +329,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 62db925d825c9d84b9194a6aa668ca34, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4288190616
+    rgba: 4294967295
 --- !u!23 &277702310
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -617,8 +619,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 52.600002, y: 11.572269, z: 2.597675}
-  m_Center: {x: 26.300001, y: -5.786338, z: -1.2985891}
+  m_Size: {x: 52.600002, y: 11.572267, z: 4751351.5}
+  m_Center: {x: 26.300001, y: -6.0937443, z: -2375682}
 --- !u!114 &684051175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,6 +635,8 @@ MonoBehaviour:
   StartFlag: 0
   AchievementFlag: 0
   CreditFlag: 1
+  CreateMazeFlag: 0
+  ImportMazeFlag: 0
 --- !u!114 &684051176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,6 +757,8 @@ MonoBehaviour:
   StartFlag: 0
   AchievementFlag: 0
   CreditFlag: 0
+  CreateMazeFlag: 0
+  ImportMazeFlag: 0
 --- !u!114 &776633854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +797,128 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 776633850}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 62db925d825c9d84b9194a6aa668ca34, type: 3}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!1 &975375712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 975375713}
+  - 23: {fileID: 975375718}
+  - 102: {fileID: 975375717}
+  - 114: {fileID: 975375716}
+  - 114: {fileID: 975375715}
+  - 65: {fileID: 975375714}
+  m_Layer: 0
+  m_Name: ImportMaze
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &975375713
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975375712}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -7.83, y: -3.38, z: -0.22}
+  m_LocalScale: {x: 0.1, y: 0.10000027, z: 0.10000027}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 1506724402}
+  m_RootOrder: 7
+--- !u!65 &975375714
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975375712}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 52.600002, y: 11.572269, z: 2.597675}
+  m_Center: {x: 26.300001, y: -5.786338, z: -1.2985891}
+--- !u!114 &975375715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975375712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a552469fd077d31499e711d1a122a64c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartFlag: 0
+  AchievementFlag: 0
+  CreditFlag: 0
+  CreateMazeFlag: 0
+  ImportMazeFlag: 1
+--- !u!114 &975375716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975375712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5f6f4ebcebe42469905bde79512867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!102 &975375717
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975375712}
+  m_Text: IMPORT MAZE
+  m_OffsetZ: 0
+  m_CharacterSize: 1
+  m_LineSpacing: 1
+  m_Anchor: 0
+  m_Alignment: 1
+  m_TabSize: 4
+  m_FontSize: 40
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 12800000, guid: 62db925d825c9d84b9194a6aa668ca34, type: 3}
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+--- !u!23 &975375718
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975375712}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -1013,6 +1141,8 @@ MonoBehaviour:
   StartFlag: 1
   AchievementFlag: 0
   CreditFlag: 0
+  CreateMazeFlag: 0
+  ImportMazeFlag: 0
 --- !u!1 &1506724401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,6 +1176,7 @@ Transform:
   - {fileID: 2052055535}
   - {fileID: 277702305}
   - {fileID: 776633851}
+  - {fileID: 975375713}
   m_Father: {fileID: 0}
   m_RootOrder: 5
 --- !u!1 &1958442084
@@ -1075,7 +1206,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1958442084}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -3.86, y: -3.38, z: -1.04}
+  m_LocalPosition: {x: -5.3, y: -3.38, z: -1.2}
   m_LocalScale: {x: 0.1, y: 0.10000018, z: 0.10000018}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children: []
@@ -1107,6 +1238,8 @@ MonoBehaviour:
   StartFlag: 0
   AchievementFlag: 0
   CreditFlag: 1
+  CreateMazeFlag: 0
+  ImportMazeFlag: 0
 --- !u!114 &1958442088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1214,6 +1347,8 @@ MonoBehaviour:
   StartFlag: 0
   AchievementFlag: 1
   CreditFlag: 0
+  CreateMazeFlag: 0
+  ImportMazeFlag: 0
 --- !u!114 &2052055532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1282,7 +1417,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2052055529}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -7.83, y: -3.38, z: -0.22}
+  m_LocalPosition: {x: -11.5, y: -3.38, z: -0.586}
   m_LocalScale: {x: 0.1, y: 0.10000018, z: 0.10000018}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children: []

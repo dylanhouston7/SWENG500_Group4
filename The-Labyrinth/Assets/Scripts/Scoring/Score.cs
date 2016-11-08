@@ -16,6 +16,8 @@ namespace Assets.Scripts.Scoring
 
         public string Difficulty { get; set; }
 
-        public bool HintShown { get; set; }
+        public int HintCount { get; set; }
+
+        public int HintPenalty { get; set; }
     }
 }

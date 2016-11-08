@@ -27,9 +27,9 @@ public class GameManager : MonoBehaviour
     public ScoreContainer currentMazeScore;
 
     /// <summary>
-    /// Specifies whether or not the user has requested hint assistance
+    /// Specifies whether the number of hints that the user requested
     /// </summary>
-    public bool hintShown = false;
+    public int hintCount = 0;
 
     // Public Prefab References
     public UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter tp;
@@ -93,11 +93,8 @@ public class GameManager : MonoBehaviour
             {
                 EventManager.TriggerEvent("ShowMazeHint");
 
-                // ******************************************************************************
-                // ******************************************************************************
-                // TODO: Increment the number of hints taken for calculating the Players score
-                // ******************************************************************************
-                // ******************************************************************************
+                // Increment hint counter
+                ++hintCount;
             }
         }
 
@@ -259,7 +256,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager: CompletedMaze Method Called!");
 
         int totalCompletionTimeInSeconds = GameContext.m_context.difficulty.Timer.GetTotalSecondsRecorded();
-        GameContext.m_context.score = ScoreCalculator.CalculateScore(GameContext.m_context.difficulty, totalCompletionTimeInSeconds, hintShown);
+        GameContext.m_context.score = ScoreCalculator.CalculateScore(GameContext.m_context.difficulty, totalCompletionTimeInSeconds, hintCount);
 
         GameContext.m_context.difficulty.GetRandomMaze();
 

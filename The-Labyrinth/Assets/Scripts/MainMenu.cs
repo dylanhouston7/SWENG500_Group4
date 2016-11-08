@@ -24,6 +24,16 @@ public class MainMenu : MonoBehaviour {
     public bool CreditFlag;
 
     /// <summary>
+    /// Indicates whether or not the menu item specifies to show the maze generator
+    /// </summary>
+    public bool CreateMazeFlag;
+
+    /// <summary>
+    /// Indicates whether or not the menu item specifies to show the import maze screen
+    /// </summary>
+    public bool ImportMazeFlag;
+
+    /// <summary>
     /// Use this for initialization
     /// </summary>
     void Start () {
@@ -38,6 +48,16 @@ public class MainMenu : MonoBehaviour {
         if (StartFlag)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.DifficultyScene);
+        }
+
+        else if (CreateMazeFlag)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeGeneratorScene);
+        }
+
+        else if (ImportMazeFlag)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeImportScene);
         }
     }
 
