@@ -59,6 +59,11 @@ public class MainMenu : MonoBehaviour {
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeImportScene);
         }
+
+        else if (CreditFlag)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.CreditsScene);
+        }
     }
 
     /// <summary>

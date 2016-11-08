@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 using System.Collections;
 using System.Collections.Generic;
+using Assets;
 
 public class MazeManager : MonoBehaviour
 {
@@ -52,8 +53,18 @@ public class MazeManager : MonoBehaviour
         
     {
 
-            // Screen Shot
-            if (Input.GetKeyDown(KeyCode.M))
+
+
+        
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.GameOverScene);
+        }
+
+
+
+        // Screen Shot
+        if (Input.GetKeyDown(KeyCode.M))
         {
                 var dayTime = DateTime.Now.ToString("M-d-y h-mm-ss tt");
                 Debug.Log(dayTime);
