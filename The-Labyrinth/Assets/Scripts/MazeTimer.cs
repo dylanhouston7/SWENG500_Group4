@@ -48,19 +48,6 @@ public class MazeTimer : MonoBehaviour
         timer.Update(Time.deltaTime);
 
 
-        // Pause Button Logic    
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            var currentTimeValue = Time.timeScale;
-            if (currentTimeValue == 1)
-            {
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Time.timeScale = 1;
-            }
-        }
     }
 
     /// <summary>
