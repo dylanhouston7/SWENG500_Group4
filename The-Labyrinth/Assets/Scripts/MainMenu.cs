@@ -47,7 +47,7 @@ public class MainMenu : MonoBehaviour {
     {
         if (StartFlag)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.DifficultyScene);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.DifficultyScene); 
         }
 
         else if (CreateMazeFlag)

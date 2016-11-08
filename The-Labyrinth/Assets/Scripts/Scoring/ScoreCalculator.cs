@@ -34,14 +34,13 @@ namespace Assets.Scripts.Scoring
             int score = bazeMazeScore - timeDeduction;
             scoreContainer.InitialScore = score;
 
+            // Severely punish the user if they used the hint system...
+            int scorePenalty = 5000 * hintCount;
+            score = score - scorePenalty;
+
             // Reward the user with a scoring multiplier based on difficulty level
             int scoringMultipler = difficulty.GetScoringMultiplier;
             score = score * scoringMultipler;
-
-            // Severely punish the user if they used the hint system...
-            int scorePenalty = 5000 * hintCount;
-            score = score - hintCount;
-            
 
             if (score < 0)
             {
