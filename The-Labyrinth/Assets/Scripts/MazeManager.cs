@@ -49,62 +49,6 @@ public class MazeManager : MonoBehaviour
 
     private MazeCell[,] mazeInstance = null;
 
-    void Update()
-        
-    {
-
-
-
-        
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.GameOverScene);
-        }
-
-
-
-        // Screen Shot
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-                var dayTime = DateTime.Now.ToString("M-d-y h-mm-ss tt");
-                Debug.Log(dayTime);
-                Debug.Log("saved screen shot");
-                Application.CaptureScreenshot(dayTime + ".png");
-
-            }
-
-            // Pause Button Logic    
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                var currentTimeValue = Time.timeScale;
-                if (currentTimeValue == 1)
-                {
-                    Time.timeScale = 0;
-                }
-                else
-                {
-                    Time.timeScale = 1;
-                }
-                Debug.Log("Game Paused");
-
-            }
-            // Save game
-            if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
-            {
-
-                var mazeGen = new MazeGenerator();
-                mazeGen.SaveMazes();
-                mazeGen.StoreMaze();
-                mazeGen.ExportMaze();
-
-                // save player location
-                int posX = GameContext.m_context.m_currentPlayerMazePositionX;
-                int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
-
-            }
-
-        }
-
     void Awake()
     {
         // Initialize Event Handlers
@@ -117,7 +61,7 @@ public class MazeManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.StartListening("RenderMaze", handleEventRenderMaze);        
+        EventManager.StartListening("RenderMaze", handleEventRenderMaze);
         EventManager.StartListening("ShowMazeSolution", handleEventShowMazeSolution);
         EventManager.StartListening("HideMazeSolution", handleEventHideMazeSolution);
         EventManager.StartListening("ShowMazeHint", handleEventShowMazeHint);
@@ -157,8 +101,8 @@ public class MazeManager : MonoBehaviour
     public void EventHandlerShowMazeHint()
     {
         int posX = GameContext.m_context.m_currentPlayerMazePositionX;
-        int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;        
-        
+        int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
+
         // Determine the hint direction based on the first two hint solution path cells
         MazeStructure.Cell2D.CellDirectionEnum direction = GameContext.m_context.m_activeMazeHintSolutionPath[0].DirectionToCell(GameContext.m_context.m_activeMazeHintSolutionPath[1]);
 
@@ -260,7 +204,7 @@ public class MazeManager : MonoBehaviour
     /// </summary>
     public void ShowMazeSolution()
     {
-        foreach(MazeStructure.Cell2D cell in GameContext.m_context.m_activeMazeHintSolutionPath)
+        foreach (MazeStructure.Cell2D cell in GameContext.m_context.m_activeMazeHintSolutionPath)
         {
             mazeInstance[cell.PositionX, cell.PositionZ].ShowSolutionCell();
         }
@@ -271,7 +215,7 @@ public class MazeManager : MonoBehaviour
     /// </summary>
     public void HideMazeSolution()
     {
-        if(mazeInstance != null)
+        if (mazeInstance != null)
         {
             for (int x = 0; x < MazeSizeX; ++x)
             {
@@ -300,6 +244,6 @@ public class MazeManager : MonoBehaviour
             }
 
             mazeInstance = null;
-        }       
+        }
     }
 }

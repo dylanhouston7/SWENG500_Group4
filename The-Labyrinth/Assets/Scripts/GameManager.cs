@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -56,6 +57,55 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+
+            // Testing allows you to end game as if time ran out
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.GameOverScene);
+            }
+
+            // Screen Shot
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                var dayTime = DateTime.Now.ToString("M-d-y h-mm-ss tt");
+                Debug.Log(dayTime);
+                Debug.Log("saved screen shot");
+                Application.CaptureScreenshot(dayTime + ".png");
+
+            }
+
+            // Pause Button Logic    
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                var currentTimeValue = Time.timeScale;
+                if (currentTimeValue == 1)
+                {
+                    Time.timeScale = 0;
+                }
+                else
+                {
+                    Time.timeScale = 1;
+                }
+                Debug.Log("Game Paused");
+
+            }
+            // Save game
+            if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
+            {
+
+                var mazeGen = new MazeGenerator();
+                mazeGen.SaveMazes();
+                mazeGen.StoreMaze();
+                mazeGen.ExportMaze();
+
+                // save player location
+                int posX = GameContext.m_context.m_currentPlayerMazePositionX;
+                int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
+
+            }
+
+        
+
         // *************************************************************************
         // *************************************************************************
         // TEST CODE: Shows the Maze Solution
