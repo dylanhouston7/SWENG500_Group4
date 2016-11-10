@@ -29,7 +29,7 @@ public class MazeImportManager : MonoBehaviour
         m_mazeSaveStatus.text = "";
 
         // Import Maze
-        OpenFileDialogPlugin.OpenFile(out m_mazeFilePath);
+        FileDialogs.OpenFile(out m_mazeFilePath);
         if (m_mazeFilePath != null &&
             File.Exists(m_mazeFilePath))
         {
@@ -76,6 +76,7 @@ public class MazeImportManager : MonoBehaviour
             if (!mazeExists)
             {
                 GameContext.m_context.m_mazeChallengeMazes.Add(m_importedMazeData);
+                GameContext.m_context.m_mazeChallengeMazesChanged = true;
 
                 m_mazeSaveStatus.text = "Save Completed";
 

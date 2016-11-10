@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 using Assets;
+using Plugins;
 
 public class MazeChallengeRowElement : MonoBehaviour
 {
@@ -78,6 +79,17 @@ public class MazeChallengeRowElement : MonoBehaviour
 
             // Load the Main Scene
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
+        }
+    }
+
+    public void ExportMaze()
+    {
+        if (m_mazeRefIndex >= 0)
+        {
+            string file_path;
+            FileDialogs.SaveFile(out file_path, "C:\\", "(*.dat)|*.dat");
+
+            MazeDataSaveLoad.SaveMazeData(file_path, GameContext.m_context.m_mazeChallengeMazes[m_mazeRefIndex]);
         }
     }
 }

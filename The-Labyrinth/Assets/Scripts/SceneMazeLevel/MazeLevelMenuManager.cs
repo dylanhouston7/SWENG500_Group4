@@ -118,12 +118,12 @@ public class MazeLevelMenuManager : MonoBehaviour
         // Generate a New Maze Challenge Maze
         MazeStructure.Maze2D mazeChallenge = GameContext.m_context.difficulty.GetRandomMaze();
 
-        // Set Maze Properties
-        mazeChallenge.Name = "Maze Challenge";
-
         // Store the New Maze Challenge Maze
         GameContext.m_context.m_mazeChallengeMazes.Add(mazeChallenge);
         GameContext.m_context.m_mazeChallengeMazesChanged = true;
+
+        // Set Maze Properties
+        mazeChallenge.Name = "Challenge " + GameContext.m_context.m_mazeChallengeMazes.Count.ToString();
 
         // Set the GameContext Active Maze Index to the new maze challenge maze
         GameContext.m_context.m_activeMazeIndex = GameContext.m_context.m_mazeChallengeMazes.Count - 1;
