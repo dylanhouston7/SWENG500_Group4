@@ -4,8 +4,10 @@ using UnityEngine.UI;
 
 using System.Collections;
 using System.IO;
+using System.Runtime.InteropServices;
 
 using Assets.Scripts.DifficultySettings;
+using Plugins;
 
 public class MazeImportManager : MonoBehaviour
 {
@@ -27,8 +29,9 @@ public class MazeImportManager : MonoBehaviour
         m_mazeSaveStatus.text = "";
 
         // Import Maze
-        m_mazeFilePath = EditorUtility.OpenFilePanel("Select Maze File", "", "dat");
-        if(File.Exists(m_mazeFilePath))
+        OpenFileDialogPlugin.OpenFile(out m_mazeFilePath);
+        if (m_mazeFilePath != null &&
+            File.Exists(m_mazeFilePath))
         {
             MazeDataSaveLoad.LoadMazeData(m_mazeFilePath, ref m_importedMazeData);
 
