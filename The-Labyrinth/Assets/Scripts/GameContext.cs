@@ -45,6 +45,16 @@ public class GameContext : MonoBehaviour
     public int m_currentPlayerMazePositionZ;
 
     /// <summary>
+    /// Reference to the active user
+    /// </summary>
+    public Account.AccountData m_activeUser;
+
+    /// <summary>
+    /// Flag indicating that the user is loaded
+    /// </summary>
+    public bool m_accountLoaded;
+
+    /// <summary>
     /// Set of pre-installed mazes for each of the defined difficulty levels
     /// </summary>
     /// <remarks>
@@ -114,6 +124,8 @@ public class GameContext : MonoBehaviour
 
         m_mazeChallengeMazesChanged = false;
         m_mazeChallengeMazes = new List<MazeStructure.Maze2D>();
+
+        m_activeUser = new Account.AccountData.NullUser();
     }
 
     void OnEnable()
@@ -130,6 +142,11 @@ public class GameContext : MonoBehaviour
             MazeDataSaveLoad.LoadMazeData(Application.persistentDataPath + "/ChallengeMazes.dat", ref m_mazeChallengeMazes);
 
             m_installedMazesLoaded = true;
+        }
+
+        if(!m_accountLoaded)
+        {
+            Account.AccountDataSaveLoad.LoadAccountData(Application.persistentDataPath + "/Account.dat", ref m_activeUser);
         }
     }
 
