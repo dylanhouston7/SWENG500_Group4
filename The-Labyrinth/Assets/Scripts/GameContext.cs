@@ -4,8 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Assets;
 using Assets.Scripts.DifficultySettings;
 using Assets.Scripts.Scoring;
+using Assets.Scripts.MaterialsRegistry;
 
 public class GameContext : MonoBehaviour
 {
@@ -91,6 +93,14 @@ public class GameContext : MonoBehaviour
     /// </summary>
     public ScoreContainer score;
 
+    /// <summary>
+    /// Defines a reference to the materials registry Singleton
+    /// </summary>
+    /// <remarks>
+    /// Provided for convenience
+    /// </remarks>
+    public MaterialsRegistry m_materialRegistry;
+
     // Unity Methods
     void Awake()
     {
@@ -126,6 +136,45 @@ public class GameContext : MonoBehaviour
         m_mazeChallengeMazes = new List<MazeStructure.Maze2D>();
 
         m_activeUser = new Account.AccountData.NullUser();
+
+        // Initializes the Materials Registry
+        InitializeMaterialsRegistry();
+    }
+
+    /// <summary>
+    /// Initialization Method for initialization of the Materials Registry
+    /// </summary>
+    /// <remarks>
+    /// Method will load all material resources defined in the SceneConstants source file into the
+    /// Materials Registry
+    /// </remarks>
+    void InitializeMaterialsRegistry()
+    {
+        // Sets the reference to the Materials Registry Singleton
+        m_materialRegistry = MaterialsRegistry.GetInstance();
+
+        // Load all defined Materials into the Materials Registry
+        IList<MaterialResources.MaterialResource> mat_resources = MaterialResources.GetMaterialResources();
+        for (int index = 0; index < mat_resources.Count; ++index)
+        {
+            // Reference to the indexed resource
+            MaterialResources.MaterialResource resource = mat_resources[index];
+
+            // Try to load the material resource
+            Material material = Resources.Load(resource.path) as Material;
+
+            // If material was loaded successfully add it to the registry
+            if (material != null)
+            {
+                m_materialRegistry.AddMaterialEntry(new MaterialsRegistry.MaterialEntry(resource.name, material));
+
+                Debug.Log("GameContext: Successfully Loaded Material Resource <" + resource.name + "> at path <" + resource.path + ">");
+            }
+            else
+            {
+                Debug.Log("GameContext: Failed to Load Material Resource <" + resource.name + "> at path <" + resource.path + ">");
+            }
+        }
     }
 
     void OnEnable()

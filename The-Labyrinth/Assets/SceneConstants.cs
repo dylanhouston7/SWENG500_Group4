@@ -59,4 +59,45 @@ namespace Assets
         /// </summary
         public const string CreditsScene = "Credits";
     }
+
+    public class MaterialResources
+    {
+        public class MaterialResource
+        {
+            public String name;
+            public String path;
+
+            public enum MaterialTypeEnum
+            {
+                kGround = 0,
+                kConcrete,
+                kPavement,
+                kStone,
+                kArchitecture
+            };
+            public MaterialTypeEnum type;
+
+            public MaterialResource(String resName, String resPath, MaterialTypeEnum resType)
+            {
+                name = resName;
+                path = resPath;
+                type = resType;
+            }
+        }
+
+        private static List<MaterialResource> m_material_resources = new List<MaterialResource>
+        {
+            new MaterialResource("BricksGrey", "Materials/Architecture/Bricks grey Mat", MaterialResource.MaterialTypeEnum.kArchitecture),
+            new MaterialResource("BricksRedRough", "Materials/Architecture/Bricks red rough Mat", MaterialResource.MaterialTypeEnum.kArchitecture),
+            new MaterialResource("BricksRedSmooth", "Materials/Architecture/Bricks red smooth Mat", MaterialResource.MaterialTypeEnum.kArchitecture),
+            new MaterialResource("BricksRough", "Materials/Architecture/Bricks rough Mat", MaterialResource.MaterialTypeEnum.kArchitecture),
+            new MaterialResource("BricksWeathered", "Materials/Architecture/Bricks weathered Mat", MaterialResource.MaterialTypeEnum.kArchitecture),
+            new MaterialResource("GibionWall", "Materials/Architecture/Gibion wall Mat", MaterialResource.MaterialTypeEnum.kArchitecture)
+        };
+
+        public static IList<MaterialResource> GetMaterialResources()
+        {
+            return m_material_resources.AsReadOnly();
+        }
+    }
 }
