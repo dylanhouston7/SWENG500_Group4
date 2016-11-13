@@ -138,9 +138,9 @@ public class MazeManager : MonoBehaviour
             mazeInstance = new MazeCell[maze.SizeX, maze.SizeZ];
 
             // Render Maze Structure
-            for (int x = 0; x < maze.SizeX; ++x)
+            for (int x = 0; x < MazeSizeX; ++x)
             {
-                for (int z = 0; z < maze.SizeZ; ++z)
+                for (int z = 0; z < MazeSizeZ; ++z)
                 {
                     // Get the Cell Structure Blueprint for the Cell
                     MazeStructure.Cell2D cell = maze.GetCell(x, z);
@@ -197,6 +197,28 @@ public class MazeManager : MonoBehaviour
 
         // Publish Event: RenderMazeCompleted
         EventManager.TriggerEvent("RenderMazeCompleted");
+    }
+
+    public void SetMazeFloorMaterial(Material floorMaterial)
+    {
+        for (int x = 0; x < MazeSizeX; ++x)
+        {
+            for (int z = 0; z < MazeSizeZ; ++z)
+            {
+                mazeInstance[x, z].SetFloorMaterial(floorMaterial);
+            }
+        }
+    }
+
+    public void SetMazeWallMaterial(Material wallMaterial)
+    {
+        for (int x = 0; x < MazeSizeX; ++x)
+        {
+            for (int z = 0; z < MazeSizeZ; ++z)
+            {
+                mazeInstance[x, z].SetWallMaterial(wallMaterial);
+            }
+        }
     }
 
     /// <summary>

@@ -15,20 +15,46 @@ public class MazeCell : MonoBehaviour
     private CellTypeEnum cellType = CellTypeEnum.kStandard;
     public CellTypeEnum CellType
     {
-        set { cellType = value; }
+        set
+        {
+            cellType = value;
+            if (CellType == CellTypeEnum.kStart)
+            {
+                cellFloorInstance.SetColor(Color.red);
+            }
+            else if (CellType == CellTypeEnum.kEnd)
+            {
+                cellFloorInstance.SetColor(Color.green);
+            }
+            else
+            {
+                cellFloorInstance.ResetColor();
+            }
+        }
         get { return cellType; }
     }
 
     // Private Prefab Instances
     private CellFloor cellFloorInstance = null;
+
     private CellWall cellLeftWallInstance = null;
     private CellWall cellRightWallInstance = null;
     private CellWall cellFrontWallInstance = null;
     private CellWall cellBackWallInstance = null;
     private CellWall cellCeilingInstance = null;
+
     private MazeHint cellMazeHintInstance = null;
 
+    // ********************************************
     // Unity Methods
+    // ********************************************
+
+    /// <summary>
+    /// Unity Method for initialization of GameObject called first
+    /// </summary>
+    /// <remarks>
+    /// Called once
+    /// </remarks>
     void Awake()
     {
         // Instantiate the Cell Floor
@@ -37,7 +63,11 @@ public class MazeCell : MonoBehaviour
         cellFloorInstance.ParentCell = this;
     }
 
-    // Other Methods
+
+    // ********************************************
+    // Public Methods
+    // ********************************************
+
     public void BuildCellWall(
         MazeStructure.Cell2D.CellDirectionEnum wall
         )
@@ -49,6 +79,7 @@ public class MazeCell : MonoBehaviour
                     ResetCellWallInstance(ref cellLeftWallInstance);
                     cellLeftWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellLeftWallInstance.transform.localPosition = new Vector3(-0.5f, 0.5f, 0.0f);
+                    cellLeftWallInstance.ParentCell = this;
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kRight:
@@ -56,6 +87,7 @@ public class MazeCell : MonoBehaviour
                     ResetCellWallInstance(ref cellRightWallInstance);
                     cellRightWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellRightWallInstance.transform.localPosition = new Vector3(0.5f, 0.5f, 0.0f);
+                    cellRightWallInstance.ParentCell = this;
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kFront:
@@ -64,6 +96,7 @@ public class MazeCell : MonoBehaviour
                     cellFrontWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellFrontWallInstance.transform.Rotate(0.0f, 90.0f, 0.0f);
                     cellFrontWallInstance.transform.localPosition = new Vector3(0.0f, 0.5f, 0.5f);
+                    cellFrontWallInstance.ParentCell = this;
                     break;
                 }
             case MazeStructure.Cell2D.CellDirectionEnum.kBack:
@@ -72,6 +105,7 @@ public class MazeCell : MonoBehaviour
                     cellBackWallInstance = Instantiate(cellWallPrefab, transform) as CellWall;
                     cellBackWallInstance.transform.Rotate(0.0f, 90.0f, 0.0f);
                     cellBackWallInstance.transform.localPosition = new Vector3(0.0f, 0.5f, -0.5f);
+                    cellBackWallInstance.ParentCell = this;
                     break;
                 }
             default:
@@ -80,6 +114,15 @@ public class MazeCell : MonoBehaviour
                     break;
                 }
         };
+    }
+
+    private void ResetCellWallInstance(ref CellWall cellwall)
+    {
+        if (cellwall != null)
+        {
+            DestroyImmediate(cellwall.gameObject);
+            cellwall = null;
+        }
     }
 
     public void BuildCellCeiling()
@@ -137,15 +180,20 @@ public class MazeCell : MonoBehaviour
         if (cellCeilingInstance != null) { Destroy(cellCeilingInstance.gameObject, timeDelay); cellCeilingInstance = null; }
     }
 
+
     public void ShowSolutionCell()
     {
-        cellFloorInstance.ShowSolution(true);
+        if (CellType != CellTypeEnum.kStart || CellType != CellTypeEnum.kEnd)
+        {
+            cellFloorInstance.SetColor(Color.magenta);
+        }
     }
 
     public void HideSolutionCell()
     {
-        cellFloorInstance.ShowSolution(false);
+        cellFloorInstance.ResetColor();
     }
+
 
     public void ShowCellHint(MazeStructure.Cell2D.CellDirectionEnum direction)
     {
@@ -188,17 +236,46 @@ public class MazeCell : MonoBehaviour
                 }
             default:
                 {
+                    // No Op
                     break;
                 }
         };
     }
 
-    private void ResetCellWallInstance(ref CellWall cellwall)
+
+    public void SetFloorMaterial(Material floorMaterial)
     {
-        if(cellwall != null)
+        if(cellFloorInstance != null)
         {
-            DestroyImmediate(cellwall.gameObject);
-            cellwall = null;
+            cellFloorInstance.SetMaterial(floorMaterial);
+        }        
+    }
+
+    public void SetWallMaterial(Material wallMaterial)
+    {
+        if(cellLeftWallInstance != null)
+        {
+            cellLeftWallInstance.SetMaterial(wallMaterial);
+        }
+
+        if (cellRightWallInstance != null)
+        {
+            cellRightWallInstance.SetMaterial(wallMaterial);
+        }
+
+        if (cellFrontWallInstance != null)
+        {
+            cellFrontWallInstance.SetMaterial(wallMaterial);
+        }
+
+        if (cellBackWallInstance != null)
+        {
+            cellBackWallInstance.SetMaterial(wallMaterial);
+        }
+
+        if (cellCeilingInstance != null)
+        {
+            cellCeilingInstance.SetMaterial(wallMaterial);
         }
     }
 }

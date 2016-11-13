@@ -2,67 +2,51 @@
 using System.Collections;
 
 public class CellFloor : MonoBehaviour
-{      
+{
     private MazeCell m_parentCell;
     public MazeCell ParentCell
     {
-        set
-        {
-            m_parentCell = value;
-            m_hasCellParentChanged = true;
-        }
+        set { m_parentCell = value; }
         get { return m_parentCell; }
     }
 
-    private bool m_hasCellParentChanged;
-
-    private bool m_hasShowSolutionChanged;
-    private bool m_showSolution;
+    private Material m_initialMaterial;
+    private Material m_updatedMaterial;
+    private bool m_hasMaterialChanged;
 
     private Color m_initialColor;
+    private Color m_updatedColor;
+    private bool m_hasColorChanged;
 
     void Awake()
     {
         // Initialize Member Variables
+
         m_parentCell = null;
-        m_hasCellParentChanged = false;
 
-        m_hasShowSolutionChanged = false;
-        m_showSolution = false;
-
+        // Initialize the Cell Floor Material
+        m_initialMaterial = GetComponent<Renderer>().material;
+        m_updatedMaterial = m_initialMaterial;
+        m_hasMaterialChanged = false;
+        
+        // Initialize the Cell Floor Color
         m_initialColor = GetComponent<Renderer>().material.color;
+        m_updatedColor = m_initialColor;
+        m_hasColorChanged = false;
     }
 
     void Update()
     {
-        if(m_hasCellParentChanged)
+        if(m_hasMaterialChanged)
         {
-            if (m_parentCell != null && 
-                m_parentCell.CellType == MazeCell.CellTypeEnum.kStart)
-            {
-                GetComponent<Renderer>().material.color = Color.red;
-            }
-            else if (m_parentCell != null &&
-                     m_parentCell.CellType == MazeCell.CellTypeEnum.kEnd)
-            {
-                GetComponent<Renderer>().material.color = Color.green;
-            }
-
-            m_hasCellParentChanged = false;
+            GetComponent<Renderer>().material = m_updatedMaterial;
+            m_hasMaterialChanged = false;
         }
 
-        if (m_hasShowSolutionChanged)
+        if (m_hasColorChanged)
         {
-            if (m_showSolution)
-            {
-                GetComponent<Renderer>().material.color = Color.magenta;
-            }
-            else
-            {
-                GetComponent<Renderer>().material.color = m_initialColor;
-            }
-
-            m_hasShowSolutionChanged = false;
+            GetComponent<Renderer>().material.color = m_updatedColor;
+            m_hasColorChanged = false;
         }
     }
 
@@ -91,14 +75,27 @@ public class CellFloor : MonoBehaviour
         }
     }
 
-    public void ShowSolution(bool showSolution)
+    public void SetColor(Color floorColor)
     {
-        if(m_parentCell != null &&
-           m_parentCell.CellType != MazeCell.CellTypeEnum.kStart &&
-           m_parentCell.CellType != MazeCell.CellTypeEnum.kEnd)
-        {
-            m_showSolution = showSolution;
-            m_hasShowSolutionChanged = true;
-        }
+        m_updatedColor = floorColor;
+        m_hasColorChanged = true;
+    }
+
+    public void ResetColor()
+    {
+        m_updatedColor = m_initialColor;
+        m_hasColorChanged = true;
+    }
+
+    public void SetMaterial(Material floorMaterial)
+    {
+        m_updatedMaterial = floorMaterial;
+        m_hasMaterialChanged = true;
+    }
+
+    public void ResetMaterial()
+    {
+        m_updatedMaterial = m_initialMaterial;
+        m_hasMaterialChanged = true;
     }
 }
