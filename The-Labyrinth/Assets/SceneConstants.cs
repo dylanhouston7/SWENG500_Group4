@@ -58,6 +58,11 @@ namespace Assets
         /// Points to the credits scene
         /// </summary
         public const string CreditsScene = "Credits";
+
+        /// <summary>
+        /// Points to the settings scene
+        /// </summary
+        public const string SettingsScene = "Settings";
     }
 
     public class MaterialResources

@@ -34,6 +34,11 @@ public class MainMenu : MonoBehaviour {
     public bool ImportMazeFlag;
 
     /// <summary>
+    /// Indicates whether or not the menu item specifies to show the import settings screen
+    /// </summary>
+    public bool SettingsFlag;
+
+    /// <summary>
     /// Use this for initialization
     /// </summary>
     void Start () {
@@ -63,6 +68,11 @@ public class MainMenu : MonoBehaviour {
         else if (CreditFlag)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.CreditsScene);
+        }
+
+        else if (SettingsFlag)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.SettingsScene);
         }
     }
 
