@@ -47,6 +47,12 @@ namespace Assets.Scripts.MaterialsRegistry
                 MaterialName = name;
                 MaterialData = new Material(material);
             }
+
+            public MaterialEntry()
+            {
+                MaterialName = "";
+                MaterialData = null;
+            }
         }
 
         // Singleton Instance Object

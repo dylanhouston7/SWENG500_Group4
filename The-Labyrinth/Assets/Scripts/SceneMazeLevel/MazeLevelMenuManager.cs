@@ -118,6 +118,14 @@ public class MazeLevelMenuManager : MonoBehaviour
         // Generate a New Maze Challenge Maze
         MazeStructure.Maze2D mazeChallenge = GameContext.m_context.difficulty.GetRandomMaze();
 
+        // Set a Random Maze Cell Floor Material
+        // TODO: Implement
+        mazeChallenge.CellFloorMaterialKey = "GroundDryEarthPattern";
+
+        // Set a Random Maze Cell Wall Material
+        // TODO: Implement
+        mazeChallenge.CellWallMaterialKey = "PavementPattern14";
+
         // Store the New Maze Challenge Maze
         GameContext.m_context.m_mazeChallengeMazes.Add(mazeChallenge);
         GameContext.m_context.m_mazeChallengeMazesChanged = true;

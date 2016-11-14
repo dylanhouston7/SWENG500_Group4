@@ -4,7 +4,9 @@ using UnityEngine.Events;
 
 using System.Collections;
 using System.Collections.Generic;
+
 using Assets;
+using Assets.Scripts.MaterialsRegistry;
 
 public class MazeManager : MonoBehaviour
 {
@@ -158,6 +160,8 @@ public class MazeManager : MonoBehaviour
 
                     // Set Cell Properties
                     // - Cell Type
+                    // - Cell Floor Material
+                    // - Cell Wall Material
 
                     // Set Cell Type property
                     switch (cell.CellType)
@@ -191,6 +195,24 @@ public class MazeManager : MonoBehaviour
                                 break;
                             }
                     };
+
+                    // Set Cell Floor Material
+                    MaterialsRegistry.MaterialEntry floor_material = new MaterialsRegistry.MaterialEntry();
+                    floor_material.MaterialName = maze.CellFloorMaterialKey;
+
+                    if(GameContext.m_context.m_materialRegistry.GetMaterialEntry(ref floor_material))
+                    {
+                        mazeInstance[x, z].SetFloorMaterial(floor_material.MaterialData);
+                    }
+
+                    // Set Cell Wall Material
+                    MaterialsRegistry.MaterialEntry wall_material = new MaterialsRegistry.MaterialEntry();
+                    wall_material.MaterialName = maze.CellWallMaterialKey;
+
+                    if (GameContext.m_context.m_materialRegistry.GetMaterialEntry(ref wall_material))
+                    {
+                        mazeInstance[x, z].SetWallMaterial(wall_material.MaterialData);
+                    }
                 }
             }
         }

@@ -8,7 +8,7 @@ namespace MazeStructure
     [Serializable]
     public class Maze2D
     {
-        Guid m_guid;
+        private Guid m_guid;
         public Guid GUID
         {
             get { return m_guid; }
@@ -62,6 +62,20 @@ namespace MazeStructure
 
                 return result;
             }
+        }
+
+        private String m_cellWallMaterialKey = null;
+        public String CellWallMaterialKey
+        {
+            set { m_cellWallMaterialKey = value; }
+            get { return m_cellWallMaterialKey; }
+        }
+
+        private String m_cellFloorMaterialKey = null;
+        public String CellFloorMaterialKey
+        {
+            set { m_cellFloorMaterialKey = value; }
+            get { return m_cellFloorMaterialKey; }
         }
 
         private List<Cell2D> m_maze_solution_path = null;

@@ -167,12 +167,10 @@ public class GameContext : MonoBehaviour
             if (material != null)
             {
                 m_materialRegistry.AddMaterialEntry(new MaterialsRegistry.MaterialEntry(resource.name, material));
-
-                Debug.Log("GameContext: Successfully Loaded Material Resource <" + resource.name + "> at path <" + resource.path + ">");
             }
             else
             {
-                Debug.Log("GameContext: Failed to Load Material Resource <" + resource.name + "> at path <" + resource.path + ">");
+                Debug.LogError("GameContext: Failed to Load Material Resource <" + resource.name + "> at path <" + resource.path + ">");
             }
         }
     }
