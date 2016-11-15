@@ -139,6 +139,18 @@ public class MazeManager : MonoBehaviour
             // Initialize Maze Storage elements            
             mazeInstance = new MazeCell[maze.SizeX, maze.SizeZ];
 
+
+            // Get the Cell Floor Material
+            MaterialsRegistry.MaterialEntry floor_material = new MaterialsRegistry.MaterialEntry();
+            floor_material.MaterialName = maze.CellFloorMaterialKey;
+            GameContext.m_context.m_materialRegistry.GetMaterialEntry(ref floor_material);
+
+            // Get the Cell Wall Material
+            MaterialsRegistry.MaterialEntry wall_material = new MaterialsRegistry.MaterialEntry();
+            wall_material.MaterialName = maze.CellWallMaterialKey;
+            GameContext.m_context.m_materialRegistry.GetMaterialEntry(ref wall_material);            
+
+
             // Render Maze Structure
             for (int x = 0; x < MazeSizeX; ++x)
             {
@@ -197,19 +209,15 @@ public class MazeManager : MonoBehaviour
                     };
 
                     // Set Cell Floor Material
-                    MaterialsRegistry.MaterialEntry floor_material = new MaterialsRegistry.MaterialEntry();
-                    floor_material.MaterialName = maze.CellFloorMaterialKey;
-
-                    if(GameContext.m_context.m_materialRegistry.GetMaterialEntry(ref floor_material))
+                    // - Use default floor material if material not found
+                    if(floor_material.MaterialData != null)
                     {
                         mazeInstance[x, z].SetFloorMaterial(floor_material.MaterialData);
                     }
 
                     // Set Cell Wall Material
-                    MaterialsRegistry.MaterialEntry wall_material = new MaterialsRegistry.MaterialEntry();
-                    wall_material.MaterialName = maze.CellWallMaterialKey;
-
-                    if (GameContext.m_context.m_materialRegistry.GetMaterialEntry(ref wall_material))
+                    // - Use default wall material if material not found
+                    if (wall_material.MaterialData != null)
                     {
                         mazeInstance[x, z].SetWallMaterial(wall_material.MaterialData);
                     }
