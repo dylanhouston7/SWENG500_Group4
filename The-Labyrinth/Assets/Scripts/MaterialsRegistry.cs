@@ -163,7 +163,7 @@ namespace Assets.Scripts.MaterialsRegistry
 
                 if(result)
                 {
-                    materialEntry = matEntry;
+                    materialEntry.MaterialData = new Material(matEntry.MaterialData);
                 }
                 else
                 {
