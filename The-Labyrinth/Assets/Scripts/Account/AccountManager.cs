@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Assets;
+using System;
 
 using System.Collections.Generic;
 
@@ -67,13 +68,5 @@ namespace Account
                 }
             }
         }
-
-        /*public void SaveMazes()
-        {
-            MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/EasyMazes.dat", easyMazes);
-            MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/MediumMazes.dat", mediumMazes);
-            MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/HardMazes.dat", hardMazes);
-            MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/EpicMazes.dat", epicMazes);
-        }*/
     }
 }
