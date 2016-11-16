@@ -63,6 +63,11 @@ namespace Assets
         /// Points to the settings scene
         /// </summary
         public const string SettingsScene = "Settings";
+
+        /// <summary>
+        /// Points to the Account Registration scene
+        /// </summary
+        public const string RegisterScene = "AccountRegister";
     }
 
     public class MaterialResources
