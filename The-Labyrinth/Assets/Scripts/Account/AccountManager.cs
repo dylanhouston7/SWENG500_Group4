@@ -28,7 +28,18 @@ namespace Account
 
         public void registerUser()
         {
-            activeUser = AccountData.GetInstance();
+            //Check to see if there is an active user. This is done so that if a user registers after completing mazes 
+            //(And before exit) they don't lose their completed maze history
+
+            if(GameContext.m_context.m_activeUser != null)
+            {
+                activeUser = GameContext.m_context.m_activeUser;
+            }
+            else
+            { 
+                activeUser = AccountData.GetInstance();
+            }
+
 
             if (activeUser != null && !activeUser.IsNull())
             {
@@ -39,6 +50,11 @@ namespace Account
 
             AccountDataSaveLoad.SaveAccountData(Application.persistentDataPath + "/Account.dat", activeUser);
 
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainMenuScene);
+        }
+
+        public void cancel()
+        {
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainMenuScene);
         }
 
