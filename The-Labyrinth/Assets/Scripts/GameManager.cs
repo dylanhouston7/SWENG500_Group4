@@ -318,15 +318,17 @@ public class GameManager : MonoBehaviour
         mazeCompleted.points = GameContext.m_context.score.TotalScore;
         mazeCompleted.maze_guid = GameContext.m_context.m_activeMaze.GUID;
 
-        GameContext.m_context.m_activeUser.gamerTag = GameContext.m_context.m_activeUser.gamerTag;
-
         if (GameContext.m_context.m_activeUser.completedMazes == null)
         {
             GameContext.m_context.m_activeUser.completedMazes = new List<Account.AccountCompletedMaze>();
         }
 
         GameContext.m_context.m_activeUser.completedMazes.Add(mazeCompleted);
-        Account.AccountDataSaveLoad.SaveAccountData(Application.persistentDataPath + "/Account.dat", GameContext.m_context.m_activeUser);
+
+        if (GameContext.m_context.m_registered)
+        {
+            Account.AccountDataSaveLoad.SaveAccountData(Application.persistentDataPath + "/Account.dat", GameContext.m_context.m_activeUser);
+        }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeCompleteScene);
     }

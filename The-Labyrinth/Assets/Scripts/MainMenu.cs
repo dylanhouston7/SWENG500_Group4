@@ -39,6 +39,11 @@ public class MainMenu : MonoBehaviour {
     public bool SettingsFlag;
 
     /// <summary>
+    /// Indicates whether or not the menu item specifies to show the register user screen
+    /// </summary>
+    public bool registerFlag;
+
+    /// <summary>
     /// Use this for initialization
     /// </summary>
     void Start () {
@@ -73,6 +78,11 @@ public class MainMenu : MonoBehaviour {
         else if (SettingsFlag)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.SettingsScene);
+        }
+
+        else if (registerFlag)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.RegisterScene);
         }
     }
 
