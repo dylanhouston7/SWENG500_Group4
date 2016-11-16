@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-
-using System.Collections.Generic;
-
+using System;
+using System.Collections;
 using Assets;
 
 public class MazeLevelRowElement : MonoBehaviour
@@ -11,6 +9,8 @@ public class MazeLevelRowElement : MonoBehaviour
     // Public GameObject References
     public GameObject m_parentRowElement;
     public Text m_textMazeName;
+	public Text m_textDateCompleted;
+	public Text m_textScore;
 
     // Private Variables
     int m_mazeRefIndex;
@@ -29,6 +29,8 @@ public class MazeLevelRowElement : MonoBehaviour
     void Awake()
     {
         m_textMazeName.text = "";
+		m_textDateCompleted.text = "";
+		m_textScore.text = "";
 
         m_mazeRefIndex = -1;
     }
@@ -49,6 +51,9 @@ public class MazeLevelRowElement : MonoBehaviour
 
         // Set the Maze Name
         m_textMazeName.text = mazeRef.Name;
+
+        //Get Completed Maze Data
+        checkIfCompleted(mazeRef.GUID);
     }
 
     public void Hide()
@@ -79,6 +84,24 @@ public class MazeLevelRowElement : MonoBehaviour
 
             // Load the Main Scene
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainScene);
+        }
+    }
+
+    private void checkIfCompleted(Guid guid)
+    {
+        if(GameContext.m_context.m_activeUser.completedMazes != null)
+        {
+            foreach(Account.AccountCompletedMaze maze in GameContext.m_context.m_activeUser.completedMazes)
+            {
+                if(maze.maze_guid == guid)
+                {
+                    // Set the Maze Date
+                    m_textDateCompleted.text = "COMPLETED: " + maze.dateAchieved.ToShortDateString();
+
+                    //Set Completed Maze Score
+                    m_textScore.text = "SCORE: " + maze.points.ToString();
+                }
+            }
         }
     }
 }
