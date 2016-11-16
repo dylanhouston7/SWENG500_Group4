@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using UnityEngine.Audio;
 
 using System.Collections;
 using System.Collections.Generic;
@@ -55,8 +54,6 @@ public class GameManager : MonoBehaviour
         // Initialize GameContext Elements
         GameContext.m_context.m_activeMaze = new MazeStructure.NullMaze();
         //GameContext.m_context.m_activeUser = GameContext.m_context.m_activeUser;
-
-        
     }
 
     void Update()
@@ -250,9 +247,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-    
-
     // Event Subscribers
     void RenderMazeCompleted()
     {
@@ -336,5 +330,4 @@ public class GameManager : MonoBehaviour
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeCompleteScene);
     }
-    
 }
