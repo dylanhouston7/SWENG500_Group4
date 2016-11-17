@@ -534,7 +534,7 @@ PlayerSettings:
   XboxOne::VR::enabledDevices: []
   iOS::VR::enabledDevices: []
   tvOS::VR::enabledDevices: []
-  cloudProjectId: f4e71d4b-87e7-4176-bd6e-701e64510e37
-  projectName: The Labyrinth
-  organizationId: dylanhouston7
+  cloudProjectId: c16df643-e38e-44db-a898-0409ddf1cc28
+  projectName: PennStateSWENG500
+  organizationId: eschramm
   cloudEnabled: 0
