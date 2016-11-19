@@ -41,7 +41,16 @@ public class GameManager : MonoBehaviour
 
     private Camera playerCam;
 
+    // ********************************************
     // Unity Methods
+    // ********************************************
+
+    /// <summary>
+    /// Unity Method for initialization of GameObject called first
+    /// </summary>
+    /// <remarks>
+    /// Called once
+    /// </remarks>
     void Awake()
     {
         // Initialize Member Variables
@@ -56,56 +65,149 @@ public class GameManager : MonoBehaviour
         //GameContext.m_context.m_activeUser = GameContext.m_context.m_activeUser;
     }
 
+    /// <summary>
+    /// Unity Method for initialization of GameObject called after Awake()
+    /// </summary>
+    /// <remarks>
+    /// Called each time the GameObject is enabled
+    /// </remarks>
+    void OnEnable()
+    {
+        EventManager.StartListening("CompletedMaze", m_handleEventCompletedMaze);
+        EventManager.StartListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);            
+    }
+
+    /// <summary>
+    /// Unity Method for initialization of GameObject called after OnEnable()
+    /// </summary>
+    /// <remarks>
+    /// Called once
+    /// </remarks>
+    void Start()
+    {
+        // Set reference to the maze set
+        List<MazeStructure.Maze2D> activeMazes = new List<MazeStructure.Maze2D>();
+        if (!GameContext.m_context.m_isActiveMazeChallenge)
+        {
+            switch (GameContext.m_context.difficulty.Difficulty)
+            {
+                case DifficultyEnum.EASY:
+                    {
+                        activeMazes = GameContext.m_context.m_easyMazes;
+                        break;
+                    }
+                case DifficultyEnum.MEDIUM:
+                    {
+                        activeMazes = GameContext.m_context.m_mediumMazes;
+                        break;
+                    }
+                case DifficultyEnum.HARD:
+                    {
+                        activeMazes = GameContext.m_context.m_hardMazes;
+                        break;
+                    }
+                case DifficultyEnum.EPIC:
+                    {
+                        activeMazes = GameContext.m_context.m_epicMazes;
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            };
+        }
+        else
+        {
+            activeMazes = GameContext.m_context.m_mazeChallengeMazes;
+        }
+
+
+        // Load the Active Maze Index
+        if (GameContext.m_context.m_activeMazeIndex >= 0 &&
+            GameContext.m_context.m_activeMazeIndex < activeMazes.Count)
+        {
+            Debug.Log("GameManager: Loading Maze Index " + GameContext.m_context.m_activeMazeIndex);
+
+            // Set the GameContext to the Active Maze Reference
+            GameContext.m_context.m_activeMaze = activeMazes[GameContext.m_context.m_activeMazeIndex];
+
+            // Display the Active Maze Properties
+            textCurrentMazeName.text = GameContext.m_context.m_activeMaze.Name;
+            textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
+
+            // Reset Maze Timer
+            GameContext.m_context.difficulty.ResetTimer();
+
+
+            // Publish Event: RenderMaze
+            EventManager.TriggerEvent("RenderMaze");
+        }
+        else
+        {
+            Debug.Log("GameManager: Invalid Maze Index " + GameContext.m_context.m_activeMazeIndex);
+
+            // TODO: Display Error Message and Return to the Maze Level Scene
+        }
+    }
+
+    /// <summary>
+    /// Unity Method called each frame if the behavior is enabled
+    /// </summary>
+    /// <remarks>
+    /// The rate this method is called is not deterministic. For deterministic updates
+    /// use the Unity FixedUpdate Methode instead
+    /// </remarks>
     void Update()
     {
 
-            // Testing allows you to end game as if time ran out
-            if (Input.GetKeyDown(KeyCode.G))
+        // Testing allows you to end game as if time ran out
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.GameOverScene);
+        }
+
+        // Screen Shot
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            var dayTime = DateTime.Now.ToString("M-d-y h-mm-ss tt");
+            Debug.Log(dayTime);
+            Debug.Log("saved screen shot");
+            Application.CaptureScreenshot(dayTime + ".png");
+
+        }
+
+        // Pause Button Logic    
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            var currentTimeValue = Time.timeScale;
+            if (currentTimeValue == 1)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.GameOverScene);
+                Time.timeScale = 0;
             }
-
-            // Screen Shot
-            if (Input.GetKeyDown(KeyCode.M))
+            else
             {
-                var dayTime = DateTime.Now.ToString("M-d-y h-mm-ss tt");
-                Debug.Log(dayTime);
-                Debug.Log("saved screen shot");
-                Application.CaptureScreenshot(dayTime + ".png");
-
+                Time.timeScale = 1;
             }
+            Debug.Log("Game Paused");
 
-            // Pause Button Logic    
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                var currentTimeValue = Time.timeScale;
-                if (currentTimeValue == 1)
-                {
-                    Time.timeScale = 0;
-                }
-                else
-                {
-                    Time.timeScale = 1;
-                }
-                Debug.Log("Game Paused");
+        }
+        // Save game
+        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
+        {
 
-            }
-            // Save game
-            if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
-            {
+            var mazeGen = new MazeGenerator();
+            mazeGen.SaveMazes();
+            mazeGen.StoreMaze();
+            mazeGen.ExportMaze();
 
-                var mazeGen = new MazeGenerator();
-                mazeGen.SaveMazes();
-                mazeGen.StoreMaze();
-                mazeGen.ExportMaze();
+            // save player location
+            int posX = GameContext.m_context.m_currentPlayerMazePositionX;
+            int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
 
-                // save player location
-                int posX = GameContext.m_context.m_currentPlayerMazePositionX;
-                int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
+        }
 
-            }
 
-        
 
         // *************************************************************************
         // *************************************************************************
@@ -169,83 +271,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        EventManager.StartListening("CompletedMaze", m_handleEventCompletedMaze);
-        EventManager.StartListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);
-
-        // Set reference to the maze set
-        List<MazeStructure.Maze2D> activeMazes = new List<MazeStructure.Maze2D>();
-        if (!GameContext.m_context.m_isActiveMazeChallenge)
-        {            
-            switch (GameContext.m_context.difficulty.Difficulty)
-            {
-                case DifficultyEnum.EASY:
-                    {
-                        activeMazes = GameContext.m_context.m_easyMazes;
-                        break;
-                    }
-                case DifficultyEnum.MEDIUM:
-                    {
-                        activeMazes = GameContext.m_context.m_mediumMazes;
-                        break;
-                    }
-                case DifficultyEnum.HARD:
-                    {
-                        activeMazes = GameContext.m_context.m_hardMazes;
-                        break;
-                    }
-                case DifficultyEnum.EPIC:
-                    {
-                        activeMazes = GameContext.m_context.m_epicMazes;
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            };
-        }
-        else
-        {
-            activeMazes = GameContext.m_context.m_mazeChallengeMazes;
-        }
-
-
-        // Load the Active Maze Index
-        if (GameContext.m_context.m_activeMazeIndex >= 0 &&
-            GameContext.m_context.m_activeMazeIndex < activeMazes.Count)
-        {
-            Debug.Log("GameManager: Loading Maze Index " + GameContext.m_context.m_activeMazeIndex);
-
-            // Set the GameContext to the Active Maze Reference
-            GameContext.m_context.m_activeMaze = activeMazes[GameContext.m_context.m_activeMazeIndex];
-
-            // Display the Active Maze Properties
-            textCurrentMazeName.text = GameContext.m_context.m_activeMaze.Name;
-            textCurrentMazeDifficultyLevel.text = GameContext.m_context.difficulty.DifficultyString;
-
-            // Reset Maze Timer
-            GameContext.m_context.difficulty.ResetTimer();
-
-            
-            // Publish Event: RenderMaze
-            EventManager.TriggerEvent("RenderMaze");
-        }
-        else
-        {
-            Debug.Log("GameManager: Invalid Maze Index " + GameContext.m_context.m_activeMazeIndex);
-
-            // TODO: Display Error Message and Return to the Maze Level Scene
-        }       
-    }
-
+    /// <summary>
+    /// Unity Method called when the behavior is disabled or inactive
+    /// </summary>
+    /// <remarks>
+    /// Called each time the GameObject is disabled
+    /// </remarks>
     void OnDisable()
     {
         EventManager.StopListening("CompletedMaze", m_handleEventCompletedMaze);
         EventManager.StopListening("RenderMazeCompleted", m_handleEventRenderMazeCompleted);
     }
-
 
     // Event Subscribers
     void RenderMazeCompleted()
@@ -260,6 +296,8 @@ public class GameManager : MonoBehaviour
         MazeStructure.Cell2D startCell = GameContext.m_context.m_activeMaze.GetStartCell();
         if(!startCell.IsNull())
         {
+            Debug.Log("GameManager: Positioning Player GameObject at Maze Start Cell");
+
             // TODO: Place Player GameObject at the start cell location
             // startCell.PositionX
             // startCell.PositionZ

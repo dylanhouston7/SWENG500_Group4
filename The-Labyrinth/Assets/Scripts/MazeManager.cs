@@ -51,6 +51,16 @@ public class MazeManager : MonoBehaviour
 
     private MazeCell[,] mazeInstance = null;
 
+    // ********************************************
+    // Unity Methods
+    // ********************************************
+
+    /// <summary>
+    /// Unity Method for initialization of GameObject called first
+    /// </summary>
+    /// <remarks>
+    /// Called once
+    /// </remarks>
     void Awake()
     {
         // Initialize Event Handlers
@@ -61,6 +71,12 @@ public class MazeManager : MonoBehaviour
         handleEventResetMaze = new UnityAction(ResetMaze);
     }
 
+    /// <summary>
+    /// Unity Method for initialization of GameObject called after Awake()
+    /// </summary>
+    /// <remarks>
+    /// Called each time the GameObject is enabled
+    /// </remarks>
     void OnEnable()
     {
         EventManager.StartListening("RenderMaze", handleEventRenderMaze);
@@ -70,6 +86,23 @@ public class MazeManager : MonoBehaviour
         EventManager.StartListening("ResetMaze", handleEventResetMaze);
     }
 
+    /// <summary>
+    /// Unity Method for initialization of GameObject called after OnEnable()
+    /// </summary>
+    /// <remarks>
+    /// Called once
+    /// </remarks>
+    void Start()
+    {
+
+    }
+
+    /// <summary>
+    /// Unity Method called when the behavior is disabled or inactive
+    /// </summary>
+    /// <remarks>
+    /// Called each time the GameObject is disabled
+    /// </remarks>
     void OnDisable()
     {
         EventManager.StopListening("RenderMaze", handleEventRenderMaze);
@@ -129,6 +162,8 @@ public class MazeManager : MonoBehaviour
         if (maze != null &&
            !maze.IsNull())
         {
+            Debug.Log("MazeManager: Rendering Maze");
+
             // Ensure only one maze instance is ever rendered at a time 
             if (mazeInstance != null)
             {
@@ -224,6 +259,11 @@ public class MazeManager : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            Debug.Log("MazeManager: Rendering Maze Aborted");
+        }
+
 
         // Publish Event: RenderMazeCompleted
         EventManager.TriggerEvent("RenderMazeCompleted");
