@@ -5,10 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Assets.Scripts.DifficultySettings;
+using Assets.Scripts.MaterialsRegistry;
 
 public class MazeGenerator : MonoBehaviour
 {
     public MazeManager mazeManagerRef;
+
+    public Slider zoom;
 
     public Camera mainCamera;
     public Slider sliderMazeSizeX;
@@ -24,6 +27,13 @@ public class MazeGenerator : MonoBehaviour
     public Text textCountStoredMediumMazes;
     public Text textCountStoredHardMazes;
     public Text textCountStoredEpicMazes;
+
+    public Text textTextureMazeWalls;
+    public Slider textureMazeWalls;
+    public Text textTextureMazeFloors;
+    public Slider textureMazeFloors;
+
+    private List<MaterialsRegistry.MaterialEntry> materialEntries;
 
     private MazeStructure.Maze2D activeMaze;
     private List<MazeStructure.Maze2D> easyMazes;
@@ -44,6 +54,15 @@ public class MazeGenerator : MonoBehaviour
     public void Start()
     {
         UpdateMazeCounts();
+
+        // Get the collection of Materials from the materials registry
+        GameContext.m_context.m_materialRegistry.GetMaterialEntries(out materialEntries);
+
+        // Set the Slider max values
+        textureMazeWalls.minValue = 0;
+        textureMazeWalls.maxValue = materialEntries.Count - 1;
+        textureMazeFloors.minValue = 0;
+        textureMazeFloors.maxValue = materialEntries.Count - 1;
     }
 
     public void GenerateMaze()
@@ -91,8 +110,13 @@ public class MazeGenerator : MonoBehaviour
         // Render the Generated Maze Structure
         mazeManagerRef.RenderMaze(activeMaze);
 
+        // Update Textures
+        ChangeCellWallTexture();
+        ChangeCellFloorTexture();
+
         // Position Camera over maze
-        mainCamera.transform.position = new Vector3(sliderMazeSizeX.value / 2.0f, 30, sliderMazeSizeZ.value / 2.0f);
+        mainCamera.transform.position = new Vector3(sliderMazeSizeX.value / 2.0f, 0.0f, sliderMazeSizeZ.value / 2.0f);
+        this.Zoom();
     }
 
     public void ViewMazeSolution()
@@ -111,15 +135,16 @@ public class MazeGenerator : MonoBehaviour
             // - Name
             // - Difficulty Level
             // - Time to Complete
-            // TODO: Implement
+            // - Maze Floor and Wall Materials
 
             SetMazeNameProperty(activeMaze);
             SetMazeDifficultyProperty(activeMaze);
             SetMazeTimeToCompleteProperty(activeMaze);
+            SetMazeMaterials(activeMaze);
 
 
             // Store the maze to the maze list of like difficulty
-            switch(activeMaze.Difficulty)
+            switch (activeMaze.Difficulty)
             {
                 case DifficultyEnum.EASY:
                     {
@@ -241,6 +266,15 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+    private void SetMazeMaterials(MazeStructure.Maze2D maze)
+    {
+        MaterialsRegistry.MaterialEntry matWallEntry = materialEntries[(int)textureMazeWalls.value];
+        MaterialsRegistry.MaterialEntry matFloorEntry = materialEntries[(int)textureMazeFloors.value];
+
+        maze.CellWallMaterialKey = matWallEntry.MaterialName;
+        maze.CellFloorMaterialKey = matFloorEntry.MaterialName;
+    }
+
     public void ResetActiveMaze()
     {
         mazeManagerRef.ResetMaze();
@@ -302,5 +336,31 @@ public class MazeGenerator : MonoBehaviour
         textCountStoredMediumMazes.text = mediumMazes.Count.ToString();
         textCountStoredHardMazes.text = hardMazes.Count.ToString();
         textCountStoredEpicMazes.text = epicMazes.Count.ToString();
+    }
+
+    public void Zoom()
+    {
+        mainCamera.transform.position =
+            new Vector3(
+                mainCamera.transform.position.x,
+                zoom.value,
+                mainCamera.transform.position.z
+            );
+    }
+
+    public void ChangeCellWallTexture()
+    {
+        MaterialsRegistry.MaterialEntry matEntry = materialEntries[(int)textureMazeWalls.value];
+
+        textTextureMazeWalls.text = "Walls: " + matEntry.MaterialName;
+        mazeManagerRef.SetMazeWallMaterial(matEntry.MaterialData);
+    }
+
+    public void ChangeCellFloorTexture()
+    {
+        MaterialsRegistry.MaterialEntry matEntry = materialEntries[(int)textureMazeFloors.value];
+
+        textTextureMazeFloors.text = "Floors: " + matEntry.MaterialName;
+        mazeManagerRef.SetMazeFloorMaterial(matEntry.MaterialData);
     }
 }
