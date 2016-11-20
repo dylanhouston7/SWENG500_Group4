@@ -21,10 +21,12 @@ public class MazeCell : MonoBehaviour
             if (CellType == CellTypeEnum.kStart)
             {
                 cellFloorInstance.SetColor(Color.red);
+                cellFloorInstance.ActivateParticleSystemForStartOrEndCell(true);
             }
             else if (CellType == CellTypeEnum.kEnd)
             {
                 cellFloorInstance.SetColor(Color.green);
+                cellFloorInstance.ActivateParticleSystemForStartOrEndCell(false);
             }
             else
             {
@@ -32,6 +34,15 @@ public class MazeCell : MonoBehaviour
             }
         }
         get { return cellType; }
+    }
+
+    /// <summary>
+    /// Retrieves the cell floor instance
+    /// </summary>
+    /// <returns>The cell floor instance of the Maze cell</returns>
+    public CellFloor GetCellFloorInstance()
+    {
+        return cellFloorInstance;
     }
 
     // Private Prefab Instances

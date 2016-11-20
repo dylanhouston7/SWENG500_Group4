@@ -156,6 +156,22 @@ namespace MazeStructure
 
             return startCell;
         }
+
+        public Cell2D GetEndCell()
+        {
+            Cell2D endCell = new MazeStructure.NullCell();
+
+            foreach (Cell2D cell in m_cells)
+            {
+                if (cell.CellType == Cell2D.CellTypeEnum.kEndCell)
+                {
+                    endCell = cell;
+                    break;
+                }
+            }
+
+            return endCell;
+        }
     }
 
     public class NullMaze : Maze2D

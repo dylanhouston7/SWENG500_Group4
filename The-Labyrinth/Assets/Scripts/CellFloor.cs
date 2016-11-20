@@ -98,4 +98,35 @@ public class CellFloor : MonoBehaviour
         m_updatedMaterial = m_initialMaterial;
         m_hasMaterialChanged = true;
     }
+
+    /// <summary>
+    /// Activates a particle system for this cell floor
+    /// </summary>
+    /// <param name="start">Specifies whether or not it is a start cell. If not, it is assumed that the cell is an end cell.</param>
+    public void ActivateParticleSystemForStartOrEndCell(bool start)
+    {
+        // Dynamically add a particle system to the floor of the cell
+        ParentCell.GetCellFloorInstance().gameObject.AddComponent<ParticleSystem>();
+
+        // Retrieve the particle system
+        ParticleSystem particleSystem = ParentCell.GetCellFloorInstance().GetComponent<ParticleSystem>();
+
+        // Set start color
+        if (start)
+        {
+            particleSystem.startColor = Color.red;
+        }
+        // Set end color
+        else
+        {
+            particleSystem.startColor = Color.green;
+        }
+
+        particleSystem.gravityModifier = -1;
+        particleSystem.maxParticles = 500;
+
+        // Set size and speed of particles
+        particleSystem.startSize = 0.50f;
+        particleSystem.startSpeed = 0.10f;
+    }
 }
