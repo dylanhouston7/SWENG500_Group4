@@ -15,6 +15,7 @@ public class MazeChallengeRowElement : MonoBehaviour
     public Text m_textMazeName;
     public Text m_textDateCompleted;
     public Text m_textScore;
+    public Button m_buttonStart;
 
     // Private Variables
     int m_mazeRefIndex;
@@ -115,6 +116,9 @@ public class MazeChallengeRowElement : MonoBehaviour
 
                     //Set Completed Maze Score
                     m_textScore.text = "SCORE: " + maze.points.ToString();
+
+                    // Disable the Start Button
+                    m_buttonStart.gameObject.SetActive(false);
                 }
             }
         }

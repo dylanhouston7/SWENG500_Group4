@@ -300,6 +300,7 @@ MonoBehaviour:
   m_textMazeName: {fileID: 114000012214894786}
   m_textDateCompleted: {fileID: 114000012875344442}
   m_textScore: {fileID: 114000012091624734}
+  m_buttonStart: {fileID: 114000010986167010}
 --- !u!114 &114000012973006074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -478,7 +479,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 280, y: 30}
+  m_AnchoredPosition: {x: 379, y: 30}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224000013827174394
@@ -496,7 +497,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 280, y: -5}
+  m_AnchoredPosition: {x: 379, y: -5}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224000013919347428
