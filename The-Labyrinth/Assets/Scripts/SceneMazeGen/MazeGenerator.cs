@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿#define BUILD_RELEASE
+//#undef BUILD_RELEASE
+//#define DEV_RELEASE
+#undef DEV_RELEASE
+
+using UnityEngine;
 using UnityEngine.UI;
 
 using System.Collections;
@@ -7,11 +12,15 @@ using System.Collections.Generic;
 using Assets.Scripts.DifficultySettings;
 using Assets.Scripts.MaterialsRegistry;
 
+using Plugins;
+
 public class MazeGenerator : MonoBehaviour
 {
     public MazeManager mazeManagerRef;
 
     public Slider zoom;
+
+    public GameObject panelMazeStorage;
 
     public Camera mainCamera;
     public Slider sliderMazeSizeX;
@@ -51,12 +60,19 @@ public class MazeGenerator : MonoBehaviour
         epicMazes = new List<MazeStructure.Maze2D>();
     }
 
-    public void Start()
+    public void OnEnable()
     {
         UpdateMazeCounts();
+    }
 
+    public void Start()
+    {
         // Get the collection of Materials from the materials registry
         GameContext.m_context.m_materialRegistry.GetMaterialEntries(out materialEntries);
+
+#if (BUILD_RELEASE)
+        panelMazeStorage.SetActive(false);
+#endif
 
         // Set the Slider max values
         textureMazeWalls.minValue = 0;
@@ -182,10 +198,15 @@ public class MazeGenerator : MonoBehaviour
     /// </summary>
     public void ExportMaze()
     {
+        StoreMaze();
+
+        string export_path;
+        FileDialogs.SaveFile(out export_path, "C:\\", "(*.dat)|*.dat");
+
         if (activeMaze != null &&
             !activeMaze.IsNull())
         {
-            MazeDataSaveLoad.SaveMazeData(Application.persistentDataPath + "/ExportedMaze.dat", activeMaze);
+            MazeDataSaveLoad.SaveMazeData(export_path, activeMaze);
         }
     }
 
@@ -362,5 +383,10 @@ public class MazeGenerator : MonoBehaviour
 
         textTextureMazeFloors.text = "Floors: " + matEntry.MaterialName;
         mazeManagerRef.SetMazeFloorMaterial(matEntry.MaterialData);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 }
