@@ -1,7 +1,5 @@
 ﻿#define BUILD_RELEASE
 //#undef BUILD_RELEASE
-//#define DEV_RELEASE
-#undef DEV_RELEASE
 
 using UnityEngine;
 using UnityEngine.UI;
