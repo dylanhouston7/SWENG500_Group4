@@ -125,29 +125,26 @@ public class CellFloor : MonoBehaviour
         particleSystem.maxParticles = 2000;
 
         // We do this so the particles go upwards
-        particleSystem.gravityModifier = -.5f;
+        particleSystem.gravityModifier = -.4f;
 
         // Set size and speed of particles
-        particleSystem.startSize = .05f;
-        particleSystem.startLifetime = .5f;
-        particleSystem.startSpeed = .05f;
+        particleSystem.startSize = .1f;
+        particleSystem.startLifetime = .6f;
+        particleSystem.startSpeed = .01f;
 
         // How many particles to emit?
-        particleSystem.emissionRate = 100;
-
+        particleSystem.emissionRate = 105;
+        
         // Get the shape of the particle system so we can modify it
         ParticleSystem.ShapeModule shape = particleSystem.shape;
 
         // size of the baze
-        shape.radius = .5f;
+        shape.radius = .55f;
 
         // how wide do the particles disberse?
         shape.angle = 15;
 
         shape.shapeType = ParticleSystemShapeType.Cone;
-        
-        shape.box = new Vector3(.20f, 1.20f, .20f);
-
         // Great reference Dylan found: https://www.raywenderlich.com/113049/introduction-unity-particle-systems
     }
 }
