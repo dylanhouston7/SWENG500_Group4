@@ -144,12 +144,12 @@ public class CellFloor : MonoBehaviour
         ParticleSystem.ShapeModule shape = particleSystem.shape;
 
         // size of the baze
-        shape.radius = .55f;
+        shape.radius = .35f;
 
         // how wide do the particles disberse?
         shape.angle = 15;
 
-        shape.shapeType = ParticleSystemShapeType.Cone;
+        shape.shapeType = ParticleSystemShapeType.Sphere;
         // Great reference Dylan found: https://www.raywenderlich.com/113049/introduction-unity-particle-systems
     }
 }
