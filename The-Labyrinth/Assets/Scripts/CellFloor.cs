@@ -108,8 +108,13 @@ public class CellFloor : MonoBehaviour
         // Dynamically add a particle system to the floor of the cell
         ParentCell.GetCellFloorInstance().gameObject.AddComponent<ParticleSystem>();
 
-        // Retrieve the particle system
+        // Retrieve the particle system 
         ParticleSystem particleSystem = ParentCell.GetCellFloorInstance().GetComponent<ParticleSystem>();
+
+        // The material of the particle system MUST be set explicitly -- otherwise, the build will not pick up on the material and it will be a bunch of pink boxes
+        Material newMat = Resources.Load("Materials/ParticleFirecloud", typeof(Material)) as Material;;
+        ParticleSystemRenderer renderer = gameObject.GetComponent<ParticleSystemRenderer>();
+        gameObject.GetComponent<ParticleSystemRenderer>().material = newMat;
 
         // Set start color
         if (start)
@@ -133,7 +138,7 @@ public class CellFloor : MonoBehaviour
         particleSystem.startSpeed = .01f;
 
         // How many particles to emit?
-        particleSystem.emissionRate = 105;
+        particleSystem.emissionRate = 60;
         
         // Get the shape of the particle system so we can modify it
         ParticleSystem.ShapeModule shape = particleSystem.shape;
