@@ -487,131 +487,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!1 &616466206
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 616466212}
-  - 23: {fileID: 616466211}
-  - 102: {fileID: 616466210}
-  - 114: {fileID: 616466209}
-  - 114: {fileID: 616466208}
-  - 65: {fileID: 616466207}
-  m_Layer: 0
-  m_Name: Credits
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &616466207
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 616466206}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 52.600002, y: 11.572267, z: 4751351.5}
-  m_Center: {x: 26.300001, y: -6.0937443, z: -2375682}
---- !u!114 &616466208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 616466206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a552469fd077d31499e711d1a122a64c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartFlag: 0
-  AchievementFlag: 0
-  CreditFlag: 0
-  CreateMazeFlag: 0
-  ImportMazeFlag: 0
-  SettingsFlag: 0
-  registerFlag: 0
-  exitFlag: 1
---- !u!114 &616466209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 616466206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f5f6f4ebcebe42469905bde79512867, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!102 &616466210
-TextMesh:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 616466206}
-  m_Text: Exit
-  m_OffsetZ: 0
-  m_CharacterSize: 1
-  m_LineSpacing: 1
-  m_Anchor: 0
-  m_Alignment: 0
-  m_TabSize: 4
-  m_FontSize: 40
-  m_FontStyle: 0
-  m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 62db925d825c9d84b9194a6aa668ca34, type: 3}
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
---- !u!23 &616466211
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 616466206}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 62db925d825c9d84b9194a6aa668ca34, type: 3}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!4 &616466212
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 616466206}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.17000008, y: -0, z: -0.784}
-  m_LocalScale: {x: 0.1, y: 0.10000012, z: 0.10000012}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
 --- !u!1 &663648951
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,7 +1283,7 @@ GameObject:
   - 114: {fileID: 1958442087}
   - 65: {fileID: 1958442086}
   m_Layer: 0
-  m_Name: Version
+  m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1421,7 +1296,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1958442084}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -5.3, y: -3.38, z: -1.2}
+  m_LocalPosition: {x: -5.19, y: -3.38, z: 2.68}
   m_LocalScale: {x: 0.1, y: 0.10000018, z: 0.10000018}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children: []
@@ -1437,8 +1312,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 52.600002, y: 11.572269, z: 2.597675}
-  m_Center: {x: 26.300001, y: -5.786338, z: -1.2985891}
+  m_Size: {x: 4.1, y: 2.3999999, z: 3.4106053e-14}
+  m_Center: {x: 2.05, y: -1.1999999, z: 1.7053026e-14}
 --- !u!114 &1958442087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1452,12 +1327,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartFlag: 0
   AchievementFlag: 0
-  CreditFlag: 1
+  CreditFlag: 0
   CreateMazeFlag: 0
   ImportMazeFlag: 0
   SettingsFlag: 0
   registerFlag: 0
-  exitFlag: 0
+  exitFlag: 1
 --- !u!114 &1958442088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1476,7 +1351,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1958442084}
-  m_Text: V 0.1
+  m_Text: EXIT
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -1489,7 +1364,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 62db925d825c9d84b9194a6aa668ca34, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4288190616
+    rgba: 4279289154
 --- !u!23 &1958442090
 MeshRenderer:
   m_ObjectHideFlags: 0
