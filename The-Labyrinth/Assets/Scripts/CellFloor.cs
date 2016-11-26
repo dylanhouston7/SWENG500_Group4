@@ -133,12 +133,12 @@ public class CellFloor : MonoBehaviour
         particleSystem.gravityModifier = -.4f;
 
         // Set size and speed of particles
-        particleSystem.startSize = .1f;
+        particleSystem.startSize = .3f;
         particleSystem.startLifetime = .6f;
         particleSystem.startSpeed = .01f;
 
         // How many particles to emit?
-        particleSystem.emissionRate = 60;
+        particleSystem.emissionRate = 200;
         
         // Get the shape of the particle system so we can modify it
         ParticleSystem.ShapeModule shape = particleSystem.shape;
