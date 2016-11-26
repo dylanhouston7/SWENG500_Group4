@@ -112,7 +112,7 @@ public class CellFloor : MonoBehaviour
         ParticleSystem particleSystem = ParentCell.GetCellFloorInstance().GetComponent<ParticleSystem>();
 
         // The material of the particle system MUST be set explicitly -- otherwise, the build will not pick up on the material and it will be a bunch of pink boxes
-        Material newMat = Resources.Load("Materials/ParticleFirecloud", typeof(Material)) as Material;;
+        Material newMat = Resources.Load("Materials/ParticleFirework", typeof(Material)) as Material;;
         ParticleSystemRenderer renderer = gameObject.GetComponent<ParticleSystemRenderer>();
         gameObject.GetComponent<ParticleSystemRenderer>().material = newMat;
 
