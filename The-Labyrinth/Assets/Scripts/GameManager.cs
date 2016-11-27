@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public Text textCurrentMazeName;
     public Text textCurrentMazeDifficultyLevel;
 
+    public Text textMazeHintsCount;
+
     /// <summary>
     /// The maze timer for the maze
     /// </summary>
@@ -85,6 +87,8 @@ public class GameManager : MonoBehaviour
     /// </remarks>
     void Start()
     {
+        textMazeHintsCount.text = hintCount.ToString();
+
         // Set reference to the maze set
         List<MazeStructure.Maze2D> activeMazes = new List<MazeStructure.Maze2D>();
         if (!GameContext.m_context.m_isActiveMazeChallenge)
@@ -196,45 +200,24 @@ public class GameManager : MonoBehaviour
 
         // *************************************************************************
         // *************************************************************************
-        // TEST CODE: Shows the Maze Solution
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("GameManager: Showing Maze Solution");
+        //// TEST CODE: Shows the Maze Solution
+        //if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
+        //{
+        //    Debug.Log("GameManager: Showing Maze Solution");
 
-            // Maze solution path based on the maze start cell
-            GameContext.m_context.m_activeMazeHintSolutionPath = GameContext.m_context.m_activeMaze.MazeSolutionPath;
+        //    // Maze solution path based on the maze start cell
+        //    GameContext.m_context.m_activeMazeHintSolutionPath = GameContext.m_context.m_activeMaze.MazeSolutionPath;
 
-            EventManager.TriggerEvent("ShowMazeSolution");
-        }
+        //    EventManager.TriggerEvent("ShowMazeSolution");
+        //}
 
-        // TEST CODE: Shows the Maze Solution
-        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("GameManager: Hiding Maze Solution");
+        //// TEST CODE: Shows the Maze Solution
+        //if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.S))
+        //{
+        //    Debug.Log("GameManager: Hiding Maze Solution");
 
-            EventManager.TriggerEvent("HideMazeSolution");
-        }
-
-        // TEMP CODE: Shows the Maze Solution Based on the current Player position in the maze
-        // Should replace this with an in game UI element; such as a button
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.H))
-        {
-            Debug.Log("GameManager: Showing Maze Hint");
-
-            // Determine the current maze solution path based on the player's current position in the maze
-            MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse,
-                                           GameContext.m_context.m_activeMaze,
-                                           GameContext.m_context.m_activeMaze.GetCell(GameContext.m_context.m_currentPlayerMazePositionX, GameContext.m_context.m_currentPlayerMazePositionZ),
-                                           ref GameContext.m_context.m_activeMazeHintSolutionPath);
-
-            if (GameContext.m_context.m_activeMazeHintSolutionPath.Count >= 2)
-            {
-                EventManager.TriggerEvent("ShowMazeHint");
-
-                // Increment hint counter
-                ++hintCount;
-            }
-        }
+        //    EventManager.TriggerEvent("HideMazeSolution");
+        //}
 
         // TEMP CODE: For exiting maze level loop to return to main menu
         // Should replace this with an in game UI element; such as a button
@@ -247,13 +230,13 @@ public class GameManager : MonoBehaviour
         // *************************************************************************
         // *************************************************************************
 
-        // TEST CODE: Allows rapid testing of the score screen
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Z))
-        {
-            Debug.Log("GameManager: Skipping to Score Screen");
+        //// TEST CODE: Allows rapid testing of the score screen
+        //if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Z))
+        //{
+        //    Debug.Log("GameManager: Skipping to Score Screen");
 
-            EventManager.TriggerEvent("CompletedMaze");
-        }
+        //    EventManager.TriggerEvent("CompletedMaze");
+        //}
     }
 
     /// <summary>
@@ -354,5 +337,26 @@ public class GameManager : MonoBehaviour
         }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeCompleteScene);
+    }
+
+    public void HandleMazeHintRequest()
+    {
+        Debug.Log("GameManager: Showing Maze Hint");
+
+        // Determine the current maze solution path based on the player's current position in the maze
+        MazeStructure.MazeSolver.Solve(MazeStructure.MazeSolver.MazeSolverAlgorithmEnum.kRandomMouse,
+                                       GameContext.m_context.m_activeMaze,
+                                       GameContext.m_context.m_activeMaze.GetCell(GameContext.m_context.m_currentPlayerMazePositionX, GameContext.m_context.m_currentPlayerMazePositionZ),
+                                       ref GameContext.m_context.m_activeMazeHintSolutionPath);
+
+        if (GameContext.m_context.m_activeMazeHintSolutionPath.Count >= 2)
+        {
+            EventManager.TriggerEvent("ShowMazeHint");
+
+            // Increment hint counter
+            ++hintCount;
+        }
+
+        textMazeHintsCount.text = hintCount.ToString();
     }
 }
