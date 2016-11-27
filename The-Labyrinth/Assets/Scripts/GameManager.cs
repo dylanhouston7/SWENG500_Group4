@@ -192,21 +192,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game Paused");
 
         }
-        // Save game
-        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
-        {
-
-            var mazeGen = new MazeGenerator();
-            mazeGen.SaveMazes();
-            mazeGen.StoreMaze();
-            mazeGen.ExportMaze();
-
-            // save player location
-            int posX = GameContext.m_context.m_currentPlayerMazePositionX;
-            int posZ = GameContext.m_context.m_currentPlayerMazePositionZ;
-
-        }
-
 
 
         // *************************************************************************
