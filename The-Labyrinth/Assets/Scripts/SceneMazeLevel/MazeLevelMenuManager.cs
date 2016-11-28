@@ -82,7 +82,11 @@ public class MazeLevelMenuManager : MonoBehaviour
 
     void Update()
     {
-
+        // Mute Music
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            AudioListener.pause = !AudioListener.pause;
+        }
     }
 
     // ********************************************
