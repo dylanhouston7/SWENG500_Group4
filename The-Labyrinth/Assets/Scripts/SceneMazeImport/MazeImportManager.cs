@@ -11,6 +11,8 @@ using Plugins;
 public class MazeImportManager : MonoBehaviour
 {
     // Public References
+    public Button m_buttonImportMaze;
+    public Button m_buttonSaveMaze;
     public Text m_mazeImportStatus;
     public Text m_mazeNameProperty;
     public Text m_mazeSizeProperty;
