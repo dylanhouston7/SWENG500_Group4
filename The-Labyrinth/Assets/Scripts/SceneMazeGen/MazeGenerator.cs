@@ -131,13 +131,18 @@ public class MazeGenerator : MonoBehaviour
         // Position Camera over maze
         mainCamera.transform.position = new Vector3(sliderMazeSizeX.value / 2.0f, 0.0f, sliderMazeSizeZ.value / 2.0f);
         this.Zoom();
+
+        textMazeSolutionPathLenValue.text = activeMaze.MazeSolutionPath.Count.ToString();
     }
 
     public void ViewMazeSolution()
-    {
-        textMazeSolutionPathLenValue.text = activeMaze.MazeSolutionPath.Count.ToString();
-
+    {      
         mazeManagerRef.ShowMazeSolution();
+    }
+
+    public void HideMazeSolution()
+    {
+        mazeManagerRef.HideMazeSolution();
     }
 
     public void StoreMaze()

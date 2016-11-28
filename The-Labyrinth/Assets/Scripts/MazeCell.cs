@@ -203,6 +203,8 @@ public class MazeCell : MonoBehaviour
     public void HideSolutionCell()
     {
         cellFloorInstance.ResetColor();
+
+        CellType = CellType;
     }
 
 
