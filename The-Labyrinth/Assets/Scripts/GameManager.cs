@@ -171,6 +171,12 @@ public class GameManager : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.GameOverScene);
         }
 
+        // Mute Music
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            AudioListener.pause = !AudioListener.pause;
+        }
+
         // Screen Shot
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -179,7 +185,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("saved screen shot");
             Application.CaptureScreenshot(dayTime + ".png");
 
-        }
+        }        
 
         // Pause Button Logic    
         if (Input.GetKeyDown(KeyCode.P))

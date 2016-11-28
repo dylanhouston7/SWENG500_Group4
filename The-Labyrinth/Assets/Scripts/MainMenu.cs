@@ -102,7 +102,12 @@ public class MainMenu : MonoBehaviour {
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    void Update () {
-	
-	}
+    void Update ()
+    {
+        // Mute Music
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            AudioListener.pause = !AudioListener.pause;
+        }
+    }
 }
