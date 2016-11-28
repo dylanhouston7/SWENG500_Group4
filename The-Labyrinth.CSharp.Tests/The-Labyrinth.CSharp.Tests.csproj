@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B80E3FAF-FF8F-4D4A-865E-715F56732BDF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>The_Labyrinth.CSharp.Tests</RootNamespace>
+    <AssemblyName>The-Labyrinth.CSharp.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Pex.Framework">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\Pex\Microsoft.Pex.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\The-Labyrinth\Temp\UnityVS_bin\Debug\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\The-Labyrinth\The-Labyrinth.CSharp.csproj">
+      <Project>{88D3732D-09F0-EB72-6672-D827144B39E3}</Project>
+      <Name>The-Labyrinth.CSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="AccountCompletedMazeTest.cs" />
+    <Compile Include="AccountCompletedMazeTest.dateAchievedGetTest.g.cs">
+      <DependentUpon>AccountCompletedMazeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountCompletedMazeTest.dateAchievedSetTest.g.cs">
+      <DependentUpon>AccountCompletedMazeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountCompletedMazeTest.maze_guidGetTest.g.cs">
+      <DependentUpon>AccountCompletedMazeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountCompletedMazeTest.maze_guidSetTest.g.cs">
+      <DependentUpon>AccountCompletedMazeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountCompletedMazeTest.pointsGetTest.g.cs">
+      <DependentUpon>AccountCompletedMazeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountCompletedMazeTest.pointsSetTest.g.cs">
+      <DependentUpon>AccountCompletedMazeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataSaveLoadTest.cs" />
+    <Compile Include="AccountDataSaveLoadTest.LoadAccountDataTest.g.cs">
+      <DependentUpon>AccountDataSaveLoadTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataSaveLoadTest.SaveAccountDataTest.g.cs">
+      <DependentUpon>AccountDataSaveLoadTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.achievementsGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.achievementsSetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.birthdayGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.birthdaySetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.completedMazesGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.completedMazesSetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.cs" />
+    <Compile Include="AccountDataTest.emailGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.emailSetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.firstNameGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.firstNameSetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.gamerTagGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.gamerTagSetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.GetInstanceTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.IsNullTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.lastNameGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.lastNameSetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.passwordGetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountDataTest.passwordSetTest.g.cs">
+      <DependentUpon>AccountDataTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountManagerTest.cs" />
+    <Compile Include="AchievementTest.cs" />
+    <Compile Include="CameraControllerTest.cs" />
+    <Compile Include="CameraControllerTest001.cs" />
+    <Compile Include="Cell2DTest.CellCompareTest.g.cs">
+      <DependentUpon>Cell2DTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cell2DTest.cs" />
+    <Compile Include="Cell2DTest.GetInstanceTest.g.cs">
+      <DependentUpon>Cell2DTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DifficultyFactoryTest.CreateDifficultyTest.g.cs">
+      <DependentUpon>DifficultyFactoryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DifficultyFactoryTest.cs" />
+    <Compile Include="DifficultyMenuTest.cs" />
+    <Compile Include="EpicDifficultyTest.cs" />
+    <Compile Include="EpicDifficultyTest.DescriptionGetTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpicDifficultyTest.DifficultyGetTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpicDifficultyTest.DifficultyStringGetTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpicDifficultyTest.GetRandomMazeTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpicDifficultyTest.GetScoringMultiplierGetTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpicDifficultyTest.ResetTimerTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpicDifficultyTest.TimerGetTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpicDifficultyTest.TimerSetTest.g.cs">
+      <DependentUpon>EpicDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Factories\EpicDifficultyFactory.cs" />
+    <Compile Include="GameContextTest.cs" />
+    <Compile Include="GameManagerTest.cs" />
+    <Compile Include="MazeGeneratorTest.cs" />
+    <Compile Include="MazeTimerTest.cs" />
+    <Compile Include="MediumDifficultyTest.cs" />
+    <Compile Include="MediumDifficultyTest.DescriptionGetTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediumDifficultyTest.DifficultyGetTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediumDifficultyTest.DifficultyStringGetTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediumDifficultyTest.GetRandomMazeTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediumDifficultyTest.GetScoringMultiplierGetTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediumDifficultyTest.ResetTimerTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediumDifficultyTest.TimerGetTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediumDifficultyTest.TimerSetTest.g.cs">
+      <DependentUpon>MediumDifficultyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlayerControllerTest.cs" />
+    <Compile Include="PlayerTest.ConstructorTest.g.cs">
+      <DependentUpon>PlayerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlayerTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\PexAssemblyInfo.cs" />
+    <Compile Include="ScoreCalculatorTest.CalculateScoreTest.g.cs">
+      <DependentUpon>ScoreCalculatorTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScoreCalculatorTest.cs" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
