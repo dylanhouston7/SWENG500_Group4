@@ -261,6 +261,8 @@ public class MazeCell : MonoBehaviour
         if(cellFloorInstance != null)
         {
             cellFloorInstance.SetMaterial(floorMaterial);
+
+            CellType = CellType;
         }        
     }
 
