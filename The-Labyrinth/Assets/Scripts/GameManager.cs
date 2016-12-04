@@ -1,4 +1,7 @@
-﻿using System;
+﻿#define BUILD_RELEASE
+//#undef BUILD_RELEASE
+
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -339,7 +342,15 @@ public class GameManager : MonoBehaviour
 
         if (GameContext.m_context.m_registered)
         {
-            Account.AccountDataSaveLoad.SaveAccountData(Application.persistentDataPath + "/Account.dat", GameContext.m_context.m_activeUser);
+            Debug.Log("Saving Registered Player History");
+
+            String path = Application.persistentDataPath;
+
+#if (BUILD_RELEASE)
+            path = Application.dataPath;
+#endif
+
+            Account.AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", GameContext.m_context.m_activeUser);
         }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeCompleteScene);

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿#define BUILD_RELEASE
+//#undef BUILD_RELEASE
+
+using UnityEngine;
 using UnityEngine.UI;
 using Assets;
 using System;
@@ -48,7 +51,13 @@ namespace Account
                 setPassword(activeUser);
             }
 
-            AccountDataSaveLoad.SaveAccountData(Application.persistentDataPath + "/Account.dat", activeUser);
+            String path = Application.persistentDataPath;
+
+#if (BUILD_RELEASE)
+            path = Application.dataPath;
+#endif
+
+            AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", activeUser);
 
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainMenuScene);
         }
