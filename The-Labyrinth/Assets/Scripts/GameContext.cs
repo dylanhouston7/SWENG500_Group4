@@ -129,6 +129,8 @@ public class GameContext : MonoBehaviour
 
     void Initialize()
     {
+        Debug.Log("GameContext Initialize Called");
+
         m_installedMazesLoaded = false;
 
         m_activeMazeIndex = 0;
@@ -143,7 +145,8 @@ public class GameContext : MonoBehaviour
         m_mazeChallengeMazesChanged = false;
         m_mazeChallengeMazes = new List<MazeStructure.Maze2D>();
 
-        m_activeUser = new Account.AccountData.NullUser();
+        m_activeUser = Account.AccountData.GetInstance();
+        m_accountloaded = false;
 
         // Initializes the Materials Registry
         InitializeMaterialsRegistry();
@@ -185,6 +188,9 @@ public class GameContext : MonoBehaviour
 
     void OnEnable()
     {
+        Debug.Log("GameContext: OnEnable method Called");
+
+
         String path = Application.persistentDataPath;
 
 #if (BUILD_RELEASE)        
@@ -209,23 +215,33 @@ public class GameContext : MonoBehaviour
 
         if(!m_accountloaded)
         {
-            Account.AccountDataSaveLoad.LoadAccountData(path + "/Account.dat", ref m_activeUser);
+            m_accountloaded = Account.AccountDataSaveLoad.LoadAccountData(path + "/Account.dat", ref m_activeUser);
         }
     }
 
     void OnDisable()
     {
+        Debug.Log("GameContext: OnDisable method Called");
+
+
         String path = Application.persistentDataPath;
 
 #if (BUILD_RELEASE)
         path = Application.dataPath;
 #endif
 
+        // Save the Maze Challenge Mazes if they have been changed
         if (m_mazeChallengeMazesChanged)
         {
             MazeDataSaveLoad.SaveMazeData(path + "/ChallengeMazes.dat", m_mazeChallengeMazes);
 
             m_mazeChallengeMazesChanged = false;
+        }
+
+        // Save the Player History if the Player account is not a NullAccount meaning the user has registered an account
+        if (m_accountloaded)
+        {
+            Account.AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", m_activeUser);
         }
     }
 }

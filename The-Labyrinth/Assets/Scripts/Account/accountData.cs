@@ -6,7 +6,7 @@ namespace Account
 {
     [Serializable]
     public class AccountData
-    {
+    {       
         private String a_gamerTag;
         public String gamerTag
         {
@@ -63,17 +63,17 @@ namespace Account
             get { return a_completedMazes; }
         }
 
-        public virtual bool IsNull() { return false; }
-
-        [Serializable]
-        public class NullUser : AccountData
+        protected AccountData()
         {
-            public override bool IsNull() { return true; }
+            Debug.Log("Base AccountData Constructor Called");
+
+            a_completedMazes = new List<AccountCompletedMaze>();
         }
 
         public static AccountData GetInstance()
         {
             AccountData user = new AccountData();
+
             return user;
         }
     }
