@@ -41,6 +41,7 @@ namespace Account
             else
             { 
                 activeUser = AccountData.GetInstance();
+                GameContext.m_context.m_activeUser = activeUser;
             }
 
 
@@ -58,6 +59,7 @@ namespace Account
 #endif
 
             AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", activeUser);
+            GameContext.m_context.m_registered = true;
 
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainMenuScene);
         }
