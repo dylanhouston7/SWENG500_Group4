@@ -34,7 +34,7 @@ namespace Account
             //Check to see if there is an active user. This is done so that if a user registers after completing mazes 
             //(And before exit) they don't lose their completed maze history
 
-            if(GameContext.m_context.m_activeUser != null)
+            if(!GameContext.m_context.m_activeUser.IsNull())
             {
                 activeUser = GameContext.m_context.m_activeUser;
             }
