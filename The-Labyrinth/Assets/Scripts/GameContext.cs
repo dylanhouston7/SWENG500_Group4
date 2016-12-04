@@ -1,5 +1,5 @@
-﻿#define BUILD_RELEASE
-//#undef BUILD_RELEASE
+﻿//#define BUILD_RELEASE
+#undef BUILD_RELEASE
 
 using UnityEngine;
 using System;
@@ -129,6 +129,8 @@ public class GameContext : MonoBehaviour
 
     void Initialize()
     {
+        Debug.Log("GameContext Initialize Called");
+
         m_installedMazesLoaded = false;
 
         m_activeMazeIndex = 0;
@@ -143,7 +145,8 @@ public class GameContext : MonoBehaviour
         m_mazeChallengeMazesChanged = false;
         m_mazeChallengeMazes = new List<MazeStructure.Maze2D>();
 
-        m_activeUser = new Account.AccountData.NullUser();
+        m_activeUser = Account.AccountData.GetInstance(true);
+        m_accountloaded = false;
 
         // Initializes the Materials Registry
         InitializeMaterialsRegistry();
@@ -185,6 +188,9 @@ public class GameContext : MonoBehaviour
 
     void OnEnable()
     {
+        Debug.Log("GameContext: OnEnable method Called");
+
+
         String path = Application.persistentDataPath;
 
 #if (BUILD_RELEASE)        
@@ -209,23 +215,62 @@ public class GameContext : MonoBehaviour
 
         if(!m_accountloaded)
         {
+            if(m_activeUser.IsNull)
+            {
+                Debug.Log("OnEnable Pre Load: Have a null account");
+            }
+            else
+            {
+                Debug.Log("OnEnable Pre Load: Dont have a null account");
+            }
+
             Account.AccountDataSaveLoad.LoadAccountData(path + "/Account.dat", ref m_activeUser);
+
+            if (m_activeUser.IsNull)
+            {
+                Debug.Log("OnEnable Post Load: Have a null account");
+            }
+            else
+            {
+                Debug.Log("OnEnable Post Load: Dont have a null account");
+            }
+
+            m_accountloaded = true;
         }
     }
 
     void OnDisable()
     {
+        Debug.Log("GameContext: OnDisable method Called");
+
+
         String path = Application.persistentDataPath;
 
 #if (BUILD_RELEASE)
         path = Application.dataPath;
 #endif
 
+        // Save the Maze Challenge Mazes if they have been changed
         if (m_mazeChallengeMazesChanged)
         {
             MazeDataSaveLoad.SaveMazeData(path + "/ChallengeMazes.dat", m_mazeChallengeMazes);
 
             m_mazeChallengeMazesChanged = false;
+        }
+
+        if (m_activeUser.IsNull)
+        {
+            Debug.Log("OnDisable: Have a null account");
+        }
+        else
+        {
+            Debug.Log("OnDisable: Dont have a null account");
+        }
+
+        // Save the Player History if the Player account is not a NullAccount meaning the user has registered an account
+        if (!m_activeUser.IsNull)
+        {
+            //Account.AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", m_activeUser);
         }
     }
 }

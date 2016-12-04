@@ -44,20 +44,20 @@ namespace Account
             }
 
 
-            if (activeUser != null && !activeUser.IsNull())
+            if (activeUser != null && !activeUser.IsNull)
             {
                 SetGamerTag(activeUser);
                 setEmail(activeUser);
                 setPassword(activeUser);
             }
 
-            String path = Application.persistentDataPath;
+//            String path = Application.persistentDataPath;
 
-#if (BUILD_RELEASE)
-            path = Application.dataPath;
-#endif
+//#if (BUILD_RELEASE)
+//            path = Application.dataPath;
+//#endif
 
-            AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", activeUser);
+//            AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", activeUser);
 
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainMenuScene);
         }

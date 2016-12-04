@@ -333,25 +333,25 @@ public class GameManager : MonoBehaviour
         mazeCompleted.points = GameContext.m_context.score.TotalScore;
         mazeCompleted.maze_guid = GameContext.m_context.m_activeMaze.GUID;
 
-        if (GameContext.m_context.m_activeUser.completedMazes == null)
-        {
-            GameContext.m_context.m_activeUser.completedMazes = new List<Account.AccountCompletedMaze>();
-        }
+        //if (GameContext.m_context.m_activeUser.completedMazes == null)
+        //{
+        //    GameContext.m_context.m_activeUser.completedMazes = new List<Account.AccountCompletedMaze>();
+        //}
 
         GameContext.m_context.m_activeUser.completedMazes.Add(mazeCompleted);
 
-        if (GameContext.m_context.m_registered)
-        {
-            Debug.Log("Saving Registered Player History");
+//        if (GameContext.m_context.m_registered)
+//        {
+//            Debug.Log("Saving Registered Player History");
 
-            String path = Application.persistentDataPath;
+//            String path = Application.persistentDataPath;
 
-#if (BUILD_RELEASE)
-            path = Application.dataPath;
-#endif
+//#if (BUILD_RELEASE)
+//            path = Application.dataPath;
+//#endif
 
-            Account.AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", GameContext.m_context.m_activeUser);
-        }
+//            Account.AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", GameContext.m_context.m_activeUser);
+//        }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MazeCompleteScene);
     }
