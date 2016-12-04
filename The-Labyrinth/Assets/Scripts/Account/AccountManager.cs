@@ -34,30 +34,19 @@ namespace Account
             //Check to see if there is an active user. This is done so that if a user registers after completing mazes 
             //(And before exit) they don't lose their completed maze history
 
-            if(GameContext.m_context.m_activeUser != null)
-            {
-                activeUser = GameContext.m_context.m_activeUser;
-            }
-            else
-            { 
-                activeUser = AccountData.GetInstance();
-            }
+            SetGamerTag(activeUser);
+            setEmail(activeUser);
+            setPassword(activeUser);
 
+            //            String path = Application.persistentDataPath;
 
-            if (activeUser != null && !activeUser.IsNull)
-            {
-                SetGamerTag(activeUser);
-                setEmail(activeUser);
-                setPassword(activeUser);
-            }
+            //#if (BUILD_RELEASE)
+            //            path = Application.dataPath;
+            //#endif
 
-//            String path = Application.persistentDataPath;
+            //            AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", activeUser);
 
-//#if (BUILD_RELEASE)
-//            path = Application.dataPath;
-//#endif
-
-//            AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", activeUser);
+            GameContext.m_context.m_accountloaded = true;
 
             UnityEngine.SceneManagement.SceneManager.LoadScene(SceneConstants.MainMenuScene);
         }

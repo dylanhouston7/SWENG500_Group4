@@ -39,8 +39,10 @@ namespace Account
         /// </summary>
         /// <param name="path"></param>
         /// <param name="account_data"></param>
-        public static void LoadAccountData(String path, ref Account.AccountData account_data)
+        public static bool LoadAccountData(String path, ref Account.AccountData account_data)
         {
+            bool result = false;
+
             if (File.Exists(path))
             {
                 Debug.Log("Loading Account Data from " + path);
@@ -51,11 +53,15 @@ namespace Account
                 account_data = bf.Deserialize(file) as Account.AccountData;
 
                 file.Close();
+
+                result = true;
             }
             else
             {
                 Debug.Log("Error: Missing Account File at " + path);
             }
+
+            return result;
         }
     }
 }

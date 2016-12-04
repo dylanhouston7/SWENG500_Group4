@@ -145,7 +145,7 @@ public class GameContext : MonoBehaviour
         m_mazeChallengeMazesChanged = false;
         m_mazeChallengeMazes = new List<MazeStructure.Maze2D>();
 
-        m_activeUser = Account.AccountData.GetInstance(true);
+        m_activeUser = Account.AccountData.GetInstance();
         m_accountloaded = false;
 
         // Initializes the Materials Registry
@@ -215,27 +215,7 @@ public class GameContext : MonoBehaviour
 
         if(!m_accountloaded)
         {
-            if(m_activeUser.IsNull)
-            {
-                Debug.Log("OnEnable Pre Load: Have a null account");
-            }
-            else
-            {
-                Debug.Log("OnEnable Pre Load: Dont have a null account");
-            }
-
-            Account.AccountDataSaveLoad.LoadAccountData(path + "/Account.dat", ref m_activeUser);
-
-            if (m_activeUser.IsNull)
-            {
-                Debug.Log("OnEnable Post Load: Have a null account");
-            }
-            else
-            {
-                Debug.Log("OnEnable Post Load: Dont have a null account");
-            }
-
-            m_accountloaded = true;
+            m_accountloaded = Account.AccountDataSaveLoad.LoadAccountData(path + "/Account.dat", ref m_activeUser);
         }
     }
 
@@ -258,19 +238,10 @@ public class GameContext : MonoBehaviour
             m_mazeChallengeMazesChanged = false;
         }
 
-        if (m_activeUser.IsNull)
-        {
-            Debug.Log("OnDisable: Have a null account");
-        }
-        else
-        {
-            Debug.Log("OnDisable: Dont have a null account");
-        }
-
         // Save the Player History if the Player account is not a NullAccount meaning the user has registered an account
-        if (!m_activeUser.IsNull)
+        if (m_accountloaded)
         {
-            //Account.AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", m_activeUser);
+            Account.AccountDataSaveLoad.SaveAccountData(path + "/Account.dat", m_activeUser);
         }
     }
 }

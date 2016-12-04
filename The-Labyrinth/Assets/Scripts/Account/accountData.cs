@@ -63,25 +63,16 @@ namespace Account
             get { return a_completedMazes; }
         }
 
-        private bool m_isNull;
-        public bool IsNull
-        {
-            get { return m_isNull; }
-        }
-
         protected AccountData()
         {
             Debug.Log("Base AccountData Constructor Called");
 
             a_completedMazes = new List<AccountCompletedMaze>();
-            m_isNull = false;
         }
 
-        public static AccountData GetInstance(bool nullAccount = false)
+        public static AccountData GetInstance()
         {
             AccountData user = new AccountData();
-
-            user.m_isNull = nullAccount;
 
             return user;
         }
