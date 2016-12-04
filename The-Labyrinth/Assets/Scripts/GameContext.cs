@@ -1,5 +1,5 @@
-﻿//#define BUILD_RELEASE
-#undef BUILD_RELEASE
+﻿#define BUILD_RELEASE
+//#undef BUILD_RELEASE
 
 using UnityEngine;
 using System;
